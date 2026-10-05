@@ -38,22 +38,39 @@ export default function Sidebar({ isOpen, onClose }) {
 
   const isLinkActive = (linkPath) => {
     const [targetPathname, targetSearch] = linkPath.split('?');
-    if (location.pathname !== targetPathname) {
-      return false;
-    }
+    const currentPath = location.pathname;
     const currentParams = new URLSearchParams(location.search);
     const currentView = currentParams.get('view');
 
-    if (targetSearch) {
+    // --- Parent-path matching for detail pages ---
+    // /verifier/reports/:id  -> highlights "Antrean" (/verifier, no ?view=map)
+    if (targetPathname === '/verifier' && !targetSearch) {
+      if (currentPath.startsWith('/verifier/reports/')) return true;
+      if (currentPath !== '/verifier') return false;
+      return currentView !== 'map';
+    }
+
+    // /verifier?view=map  -> highlights "Peta Sebaran" only on /verifier?view=map
+    if (targetPathname === '/verifier' && targetSearch) {
+      if (currentPath !== '/verifier') return false;
       const targetParams = new URLSearchParams(targetSearch);
       return currentView === targetParams.get('view');
     }
 
-    if (targetPathname === '/verifier') {
-      return currentView !== 'map';
+    // /officer/reports/:id  -> highlights "Tugas Saya" (/officer)
+    if (targetPathname === '/officer') {
+      if (currentPath.startsWith('/officer/reports/')) return true;
+      return currentPath === '/officer';
     }
 
-    return true;
+    // /reports/:id (citizen)  -> highlights "Laporan Saya" (/reports/me)
+    if (targetPathname === '/reports/me') {
+      if (/^\/reports\/[^/]+$/.test(currentPath) && currentPath !== '/reports/create') return true;
+      return currentPath === '/reports/me';
+    }
+
+    // Exact match for all other paths (/dashboard, /admin, /reports/create, etc.)
+    return currentPath === targetPathname;
   };
 
   return (
