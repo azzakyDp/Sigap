@@ -1,0 +1,17 @@
+# Dependencies
+node_modules/
+.venv/
+venv/
+__pycache__/
+
+# Build outputs
+dist/
+build/
+*.pyc
+
+# Environment & local files
+.env
+*.log
+
+# Sensitive / Testing files
+frontend/testing gambar/

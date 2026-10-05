@@ -1,0 +1,67 @@
+@import "tailwindcss";
+@import "leaflet/dist/leaflet.css";
+
+@theme {
+  --color-primary: #2185D5;
+  --color-primary-hover: #1B6DAE;
+  --color-primary-light: #E8F2FB;
+
+  --color-background: #F8FAFC;
+  --color-surface: #FFFFFF;
+  --color-border: #BCCCDC;
+  --color-muted: #9AA6B2;
+  --color-ink: #0F172A;
+  --color-ink-soft: #475569;
+
+  --color-danger: #DC2626;
+  --color-danger-hover: #B91C1C;
+  --color-danger-light: #FEE2E2;
+
+  /* Status Colors */
+  --color-status-amber-bg: #FEF3C7;
+  --color-status-amber-text: #92400E;
+  --color-status-amber-border: #FCD34D;
+
+  --color-status-blue-bg: #DBEAFE;
+  --color-status-blue-text: #1E40AF;
+  --color-status-blue-border: #93C5FD;
+
+  --color-status-green-bg: #D1FAE5;
+  --color-status-green-text: #065F46;
+  --color-status-green-border: #6EE7B7;
+
+  --color-status-red-bg: #FEE2E2;
+  --color-status-red-text: #991B1B;
+  --color-status-red-border: #FCA5A5;
+
+  --color-status-orange-bg: #FFEDD5;
+  --color-status-orange-text: #9A3412;
+  --color-status-orange-border: #FDBA74;
+
+  --color-status-gray-bg: #F1F5F9;
+  --color-status-gray-text: #475569;
+  --color-status-gray-border: #CBD5E1;
+}
+
+body {
+  background-color: var(--color-background, #F8FAFC);
+  color: var(--color-ink, #0F172A);
+  font-family: var(--font-sans, Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.15s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
