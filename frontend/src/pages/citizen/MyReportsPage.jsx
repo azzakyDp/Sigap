@@ -17,6 +17,7 @@ import Button from '../../components/ui/Button';
 import Pagination from '../../components/ui/Pagination';
 import ReportList from '../../components/report/ReportList';
 import Alert from '../../components/ui/Alert';
+import { getErrorMessage } from '../../utils/errors';
 
 export default function MyReportsPage() {
   const navigate = useNavigate();

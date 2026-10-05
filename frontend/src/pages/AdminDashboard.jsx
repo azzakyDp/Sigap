@@ -1,27 +1,21 @@
 import React from 'react';
-import { User, Mail, Shield } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { User, Mail, Shield, ClipboardCheck, Info } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import DashboardLayout from '../components/layout/DashboardLayout';
 import Card from '../components/ui/Card';
 import Badge from '../components/ui/Badge';
-import Table from '../components/ui/Table';
+import Button from '../components/ui/Button';
 
 export default function AdminDashboard() {
   const { user } = useAuth();
-
-  const allReportsSample = [
-    { id: 1, title: 'Lampu Lalu Lintas Padam di Jl. Sudirman', status: 'PENDING_VERIFICATION', priority: 'MEDIUM', date: '2026-09-26' },
-    { id: 2, title: 'Kemacetan akibat Kecelakaan Ganda', status: 'VERIFIED', priority: 'URGENT', date: '2026-09-26' },
-    { id: 3, title: 'Pohon Tumbang Menutup Jalur', status: 'IN_PROGRESS', priority: 'HIGH', date: '2026-09-26' },
-    { id: 4, title: 'Banjir Genangan Air', status: 'RESOLVED', priority: 'MEDIUM', date: '2026-09-25' },
-    { id: 5, title: 'Laporan Pengaduan Palsu', status: 'REJECTED', priority: 'LOW', date: '2026-09-24' },
-  ];
+  const navigate = useNavigate();
 
   return (
     <DashboardLayout>
       <div className="mb-6">
         <h1 className="text-2xl font-extrabold text-ink tracking-tight">Dashboard Administrator</h1>
-        <p className="text-ink-soft text-sm mt-1">Portal manajemen sistem SIGAP & pemantauan global.</p>
+        <p className="text-ink-soft text-sm mt-1">Portal manajemen sistem SIGAP & verifikasi operasional.</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -48,24 +42,25 @@ export default function AdminDashboard() {
           </div>
         </Card>
 
-        <Card title="Monitoring Seluruh Pengaduan Sistem" subtitle="Pengujian visual warna status terpusat" className="lg:col-span-2">
-          <Table
-            headers={['ID', 'Judul Pengaduan', 'Status', 'Prioritas', 'Tanggal']}
-            data={allReportsSample}
-            renderRow={(row) => (
-              <tr key={row.id} className="hover:bg-background transition-colors">
-                <td className="px-4 py-3 font-mono text-xs text-ink-soft">#{row.id}</td>
-                <td className="px-4 py-3 font-semibold text-ink">{row.title}</td>
-                <td className="px-4 py-3">
-                  <Badge type="status" value={row.status} />
-                </td>
-                <td className="px-4 py-3">
-                  <Badge type="priority" value={row.priority} />
-                </td>
-                <td className="px-4 py-3 text-xs text-ink-soft">{row.date}</td>
-              </tr>
-            )}
-          />
+        <Card title="Operasional & Pengaduan Sistem" subtitle="Akses penuh verifikasi & manajemen laporan" className="lg:col-span-2">
+          <div className="py-8 px-4 text-center">
+            <div className="w-14 h-14 bg-primary-light rounded-full flex items-center justify-center mx-auto mb-4 border border-primary/20">
+              <ClipboardCheck className="w-7 h-7 text-primary" />
+            </div>
+            <h3 className="text-lg font-bold text-ink mb-1">
+              Verifikasi & Manajemen Laporan
+            </h3>
+            <p className="text-ink-soft text-sm max-w-md mx-auto mb-6">
+              Sebagai Administrator, Anda memiliki akses penuh untuk melakukan verifikasi, penugasan petugas, serta pemantauan sebaran laporan pada antrean verifikator.
+            </p>
+            <Button
+              variant="primary"
+              onClick={() => navigate('/verifier')}
+              icon={ClipboardCheck}
+            >
+              Buka Antrean Verifikasi Laporan
+            </Button>
+          </div>
         </Card>
       </div>
     </DashboardLayout>

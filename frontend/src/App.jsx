@@ -104,14 +104,6 @@ export default function App() {
             }
           />
           <Route
-            path="/verifier/map"
-            element={
-              <ProtectedRoute allowedRoles={['VERIFIER', 'ADMIN']}>
-                <VerifierQueuePage defaultView="map" />
-              </ProtectedRoute>
-            }
-          />
-          <Route
             path="/verifier/reports/:id"
             element={
               <ProtectedRoute allowedRoles={['VERIFIER', 'ADMIN']}>

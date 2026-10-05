@@ -2,16 +2,16 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Phase 6 - Report Map Spread E2E Tests', () => {
 
-  test('1. Open /verifier/map with status filter -> marker count matches queue items', async ({ page }) => {
+  test('1. Open /verifier?view=map with status filter -> marker count matches queue items', async ({ page }) => {
     // Login as verifier1
     await page.goto('/login');
     await page.fill('input[name="identifier"]', 'verifier1@sigap.test');
     await page.fill('input[name="password"]', 'Verifier123!');
     await page.click('button[type="submit"]');
-    await page.waitForURL('**/verifier');
+    await page.waitForURL('**/verifier*');
 
-    // Navigate to /verifier/map
-    await page.goto('/verifier/map');
+    // Navigate to /verifier?view=map
+    await page.goto('/verifier?view=map');
     await page.waitForLoadState('networkidle');
 
     // Assert Leaflet map container is rendered

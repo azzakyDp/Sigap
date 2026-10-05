@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, useSearchParams } from 'react-router-dom';
 import { ClipboardList, RefreshCw, AlertCircle, Clock, CheckCircle2, List, Table as TableIcon, MapPin } from 'lucide-react';
 import DashboardLayout from '../../components/layout/DashboardLayout';
 import Card from '../../components/ui/Card';
@@ -10,14 +10,14 @@ import ReportFilterBar from '../../components/verifier/ReportFilterBar';
 import ReportsMapPage from './ReportsMapPage';
 import { getReportsQueueApi } from '../../api/workflow';
 import Alert from '../../components/ui/Alert';
+import { getErrorMessage } from '../../utils/errors';
 
-export default function VerifierQueuePage({ defaultView = 'table' }) {
+export default function VerifierQueuePage() {
   const navigate = useNavigate();
   const location = useLocation();
-  
-  // Detect if route is /verifier/map
-  const isMapRoute = location.pathname === '/verifier/map' || defaultView === 'map';
-  const [viewMode, setViewMode] = useState(isMapRoute ? 'map' : 'table');
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const viewMode = searchParams.get('view') === 'map' ? 'map' : 'table';
 
   const [activeTab, setActiveTab] = useState('PENDING_VERIFICATION');
 
@@ -186,8 +186,9 @@ export default function VerifierQueuePage({ defaultView = 'table' }) {
             <button
               type="button"
               onClick={() => {
-                setViewMode('table');
-                if (location.pathname !== '/verifier') navigate('/verifier', { replace: true });
+                const nextParams = new URLSearchParams(searchParams);
+                nextParams.delete('view');
+                setSearchParams(nextParams, { replace: true });
               }}
               className={`px-3 py-1.5 rounded-md text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer ${
                 viewMode === 'table'
@@ -202,8 +203,9 @@ export default function VerifierQueuePage({ defaultView = 'table' }) {
             <button
               type="button"
               onClick={() => {
-                setViewMode('map');
-                if (location.pathname !== '/verifier/map') navigate('/verifier/map', { replace: true });
+                const nextParams = new URLSearchParams(searchParams);
+                nextParams.set('view', 'map');
+                setSearchParams(nextParams, { replace: true });
               }}
               className={`px-3 py-1.5 rounded-md text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer ${
                 viewMode === 'map'

@@ -1,17 +1,18 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import { Home, FileText, PlusCircle, ClipboardCheck, Wrench, Settings, MapPin } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
 export default function Sidebar({ isOpen, onClose }) {
   const { user } = useAuth();
+  const location = useLocation();
 
   const getNavLinks = (role) => {
     switch (role) {
       case 'VERIFIER':
         return [
           { name: 'Antrean Verifikasi', path: '/verifier', icon: ClipboardCheck },
-          { name: 'Peta Sebaran', path: '/verifier/map', icon: MapPin },
+          { name: 'Peta Sebaran', path: '/verifier?view=map', icon: MapPin },
         ];
       case 'OFFICER':
         return [
@@ -21,7 +22,7 @@ export default function Sidebar({ isOpen, onClose }) {
         return [
           { name: 'Dashboard Admin', path: '/admin', icon: Settings },
           { name: 'Antrean Verifikasi', path: '/verifier', icon: ClipboardCheck },
-          { name: 'Peta Sebaran', path: '/verifier/map', icon: MapPin },
+          { name: 'Peta Sebaran', path: '/verifier?view=map', icon: MapPin },
         ];
       case 'CITIZEN':
       default:
@@ -34,6 +35,26 @@ export default function Sidebar({ isOpen, onClose }) {
   };
 
   const links = getNavLinks(user?.role);
+
+  const isLinkActive = (linkPath) => {
+    const [targetPathname, targetSearch] = linkPath.split('?');
+    if (location.pathname !== targetPathname) {
+      return false;
+    }
+    const currentParams = new URLSearchParams(location.search);
+    const currentView = currentParams.get('view');
+
+    if (targetSearch) {
+      const targetParams = new URLSearchParams(targetSearch);
+      return currentView === targetParams.get('view');
+    }
+
+    if (targetPathname === '/verifier') {
+      return currentView !== 'map';
+    }
+
+    return true;
+  };
 
   return (
     <>
@@ -57,14 +78,15 @@ export default function Sidebar({ isOpen, onClose }) {
         <nav className="space-y-1">
           {links.map((link) => {
             const Icon = link.icon;
+            const active = isLinkActive(link.path);
             return (
               <NavLink
                 key={link.path}
                 to={link.path}
                 onClick={onClose}
-                className={({ isActive }) =>
+                className={
                   `flex items-center gap-3 px-3.5 py-2.5 rounded-md text-sm font-semibold transition-colors ${
-                    isActive
+                    active
                       ? 'bg-primary-light text-primary border border-primary/20'
                       : 'text-ink hover:bg-background hover:text-primary'
                   }`

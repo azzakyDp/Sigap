@@ -8,6 +8,7 @@ import Pagination from '../../components/ui/Pagination';
 import ReportList from '../../components/report/ReportList';
 import { getAssignedToMeApi } from '../../api/workflow';
 import Alert from '../../components/ui/Alert';
+import { getErrorMessage } from '../../utils/errors';
 
 export default function AssignedReportsPage() {
   const navigate = useNavigate();

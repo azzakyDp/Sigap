@@ -255,11 +255,14 @@ export default function AIAnalysisPanel({ reportId }) {
         )}
       </div>
 
-      {/* Summary (1-2 line clamped) */}
+      {/* Full Summary Container */}
       {analysis?.summary && (
-        <p className="text-xs text-ink leading-relaxed line-clamp-2 bg-background p-2.5 rounded border border-border/60">
+        <div
+          tabIndex={0}
+          className="max-h-36 overflow-y-auto break-words text-xs text-ink leading-relaxed bg-background p-2.5 rounded border border-border/60 focus:outline-none focus:ring-1 focus:ring-primary"
+        >
           {analysis.summary}
-        </p>
+        </div>
       )}
 
       {/* Toggle Expand Details */}
