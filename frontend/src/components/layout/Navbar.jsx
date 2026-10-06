@@ -22,7 +22,7 @@ export default function Navbar({ onToggleSidebar }) {
           )}
 
           <div className="flex items-center gap-2.5">
-            <span className="text-xl font-bold tracking-tight text-ink">
+            <span className="text-base font-semibold text-ink">
               SIGAP
             </span>
           </div>

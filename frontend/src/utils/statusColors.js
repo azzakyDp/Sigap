@@ -115,7 +115,7 @@ export const getPriorityBadgeClass = (priority) => {
     case 'HIGH':
       return 'bg-status-orange-bg text-status-orange-text border-status-orange-border';
     case 'URGENT':
-      return 'bg-status-red-bg text-status-red-text border-status-red-border font-bold';
+      return 'bg-status-red-bg text-status-red-text border-status-red-border font-semibold';
     default:
       return 'bg-status-gray-bg text-status-gray-text border-status-gray-border';
   }

@@ -15,25 +15,25 @@ export function ClosingCTA() {
               Mari Wujudkan Fasilitas Publik Yang Lebih Baik
             </div>
 
-            <h2 className="text-3xl md:text-5xl font-black tracking-tight leading-tight">
+            <h2 className="text-xl md:text-2xl font-semibold tracking-tight leading-tight">
               Menemukan Jalan Rusak atau Gangguan Lalu Lintas?
             </h2>
 
-            <p className="mt-4 text-base md:text-xl text-white/90 font-normal leading-relaxed">
+            <p className="mt-4 text-sm md:text-base text-white/90 font-normal leading-relaxed">
               Jangan biarkan membahayakan pengguna jalan lain. Laporkan segera melalui SIGAP dan pantau proses penanganannya secara transparan.
             </p>
 
             <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
                 to="/register"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl font-bold bg-white text-primary hover:bg-slate-100 hover:shadow-lg transition-all text-base group"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl font-semibold bg-white text-primary hover:bg-slate-100 hover:shadow-lg transition-all text-base group"
               >
                 <span>Buat Akun & Laporkan</span>
               </Link>
               
               <Link
                 to="/login"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl font-bold bg-white/10 hover:bg-white/20 text-white border border-white/30 transition-all text-base"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl font-semibold bg-white/10 hover:bg-white/20 text-white border border-white/30 transition-all text-base"
               >
                 <span>Sudah Punya Akun? Masuk</span>
               </Link>

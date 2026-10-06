@@ -66,7 +66,7 @@ export default function LoginPage() {
     <div className="min-h-screen bg-background flex flex-col justify-center items-center p-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-extrabold text-ink tracking-tight">SIGAP</h1>
+          <h1 className="text-2xl font-bold text-ink tracking-tight">SIGAP</h1>
           <p className="text-ink-soft text-sm mt-1">Sistem Informasi Pengaduan Gangguan Lalu Lintas</p>
         </div>
 

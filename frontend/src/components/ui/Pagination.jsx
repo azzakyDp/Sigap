@@ -55,17 +55,17 @@ export default function Pagination({
 
   return (
     <div className="flex flex-col sm:flex-row items-center justify-between gap-4 py-4 border-t border-border mt-4">
-      <div className="text-xs text-ink-soft font-medium text-center sm:text-left">
+      <div className="text-xs text-ink-soft font-normal text-center sm:text-left">
         {totalItems ? (
           <span>
-            Menampilkan <strong className="text-ink">{startItem}</strong> -{' '}
-            <strong className="text-ink">{endItem}</strong> dari{' '}
-            <strong className="text-ink">{totalItems}</strong> data
+            Menampilkan <span className="text-ink font-medium">{startItem}</span> -{' '}
+            <span className="text-ink font-medium">{endItem}</span> dari{' '}
+            <span className="text-ink font-medium">{totalItems}</span> data
           </span>
         ) : (
           <span>
-            Halaman <strong className="text-ink">{currentPage}</strong> dari{' '}
-            <strong className="text-ink">{totalPages}</strong>
+            Halaman <span className="text-ink font-medium">{currentPage}</span> dari{' '}
+            <span className="text-ink font-medium">{totalPages}</span>
           </span>
         )}
       </div>
@@ -91,7 +91,7 @@ export default function Pagination({
               disabled={disabled}
               className={`h-9 w-9 inline-flex items-center justify-center text-xs font-semibold rounded-md border transition-colors cursor-pointer ${
                 page === currentPage
-                  ? 'bg-primary text-white border-primary shadow-xs font-bold'
+                  ? 'bg-primary text-white border-primary shadow-xs font-semibold'
                   : 'bg-surface text-ink border-border hover:bg-background'
               }`}
             >

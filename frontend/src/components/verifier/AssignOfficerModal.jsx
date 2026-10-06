@@ -86,13 +86,13 @@ export default function AssignOfficerModal({ isOpen, onClose, report, onSuccess 
 
         {isReassign && (
           <div className="p-3 bg-status-blue-bg border border-status-blue-border rounded-lg text-status-blue-text text-xs">
-            Laporan ini saat ini ditugaskan kepada <strong>{currentOfficer}</strong>. Menugaskan ulang akan mengalihkan laporan ke petugas baru.
+            Laporan ini saat ini ditugaskan kepada <span className="font-semibold text-ink">{currentOfficer}</span>. Menugaskan ulang akan mengalihkan laporan ke petugas baru.
           </div>
         )}
 
         {/* Officer Selection */}
         <div>
-          <label className="block text-xs font-bold text-ink mb-1">
+          <label className="block text-xs font-medium text-ink-soft mb-1">
             Pilih Petugas Lapangan (Officer) <span className="text-danger">*</span>
           </label>
           {loadingOfficers ? (
@@ -119,7 +119,7 @@ export default function AssignOfficerModal({ isOpen, onClose, report, onSuccess 
 
         {/* Catatan Penugasan */}
         <div>
-          <label className="block text-xs font-bold text-ink mb-1">
+          <label className="block text-xs font-medium text-ink-soft mb-1">
             Instruksi / Catatan Penugasan (Opsional)
           </label>
           <textarea

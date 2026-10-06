@@ -53,7 +53,7 @@ export default function ReportFilterBar({ filters = {}, onFilterChange, onReset 
   return (
     <div className="bg-surface p-4 rounded-lg border border-border space-y-3">
       <div className="flex items-center justify-between">
-        <div className="font-bold text-ink text-sm">
+        <div className="font-semibold text-ink text-sm">
           <span>Filter & Pencarian Laporan</span>
         </div>
         {hasActiveFilters && (
@@ -71,7 +71,7 @@ export default function ReportFilterBar({ filters = {}, onFilterChange, onReset 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
         {/* Status Filter */}
         <div>
-          <label className="block text-ink-soft font-semibold mb-1">
+          <label className="block text-ink-soft font-normal mb-1">
             Status Laporan
           </label>
           <select
@@ -90,7 +90,7 @@ export default function ReportFilterBar({ filters = {}, onFilterChange, onReset 
 
         {/* Kategori Filter */}
         <div>
-          <label className="block text-ink-soft font-semibold mb-1">
+          <label className="block text-ink-soft font-normal mb-1">
             Kategori Pengaduan
           </label>
           <select
@@ -110,7 +110,7 @@ export default function ReportFilterBar({ filters = {}, onFilterChange, onReset 
 
         {/* Tanggal Awal Filter */}
         <div>
-          <label className="block text-ink-soft font-semibold mb-1">
+          <label className="block text-ink-soft font-normal mb-1">
             Tanggal Awal
           </label>
           <input
@@ -128,7 +128,7 @@ export default function ReportFilterBar({ filters = {}, onFilterChange, onReset 
 
         {/* Tanggal Akhir Filter */}
         <div>
-          <label className="block text-ink-soft font-semibold mb-1">
+          <label className="block text-ink-soft font-normal mb-1">
             Tanggal Akhir
           </label>
           <input

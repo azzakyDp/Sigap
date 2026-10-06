@@ -211,11 +211,11 @@ export default function AIAnalysisPanel({ reportId }) {
     <Card className="p-4 space-y-3.5 border-border/80">
       {/* Non-intrusive Disclaimer Header */}
       <div className="flex items-center justify-between gap-2 border-b border-border/60 pb-2.5">
-        <div className="text-xs font-bold text-ink-soft">
+        <div className="text-xs font-semibold text-ink-soft">
           <span>Asisten AI · saran, bukan keputusan</span>
         </div>
         {analysis?.needs_human_review && (
-          <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold bg-status-amber-bg text-status-amber-text border border-status-amber-border">
+          <span className="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-semibold bg-status-amber-bg text-status-amber-text border border-status-amber-border">
             Tinjau Manual
           </span>
         )}
@@ -232,13 +232,13 @@ export default function AIAnalysisPanel({ reportId }) {
       <div className="flex flex-wrap items-center gap-2 text-xs">
         {analysis?.suggested_category && (
           <div className="flex items-center gap-1 text-ink-soft bg-background px-2.5 py-1 rounded border border-border">
-            <span className="font-semibold text-ink-soft">Kategori:</span>
-            <span className="font-bold text-ink">{analysis.suggested_category}</span>
+            <span className="font-normal text-ink-soft">Kategori:</span>
+            <span className="font-normal text-ink">{analysis.suggested_category}</span>
           </div>
         )}
         {analysis?.suggested_priority && (
           <div className="flex items-center gap-1">
-            <span className="text-ink-soft font-semibold">Prioritas:</span>
+            <span className="text-ink-soft font-normal">Prioritas:</span>
             <Badge type="priority" value={analysis.suggested_priority} />
           </div>
         )}
@@ -259,7 +259,7 @@ export default function AIAnalysisPanel({ reportId }) {
         <button
           type="button"
           onClick={() => setIsExpanded(!isExpanded)}
-          className="inline-flex items-center gap-1 text-xs font-bold text-primary hover:text-primary-hover transition-colors cursor-pointer"
+          className="inline-flex items-center gap-1 text-xs font-semibold text-primary hover:text-primary-hover transition-colors cursor-pointer"
         >
           {isExpanded ? (
             <>
@@ -281,14 +281,14 @@ export default function AIAnalysisPanel({ reportId }) {
           {/* Confidence */}
           <div className="p-2.5 bg-background rounded border border-border/60 space-y-1">
             <div className="flex items-center justify-between">
-              <span className="font-semibold text-ink-soft">
+              <span className="font-normal text-ink-soft">
                 Tingkat Keyakinan Model:
               </span>
-              <span className="font-bold text-primary">
+              <span className="font-semibold text-primary">
                 Keyakinan {confidenceText} ({confidencePercent}%)
               </span>
             </div>
-            <p className="text-[10px] text-ink-soft">
+            <p className="text-xs text-ink-soft">
               Keyakinan internal model AI — bukan skor kebenaran laporan.
             </p>
           </div>
@@ -296,7 +296,7 @@ export default function AIAnalysisPanel({ reportId }) {
           {/* Warnings List */}
           {analysis?.warnings && analysis.warnings.length > 0 && (
             <div className="space-y-1">
-              <span className="font-bold text-status-amber-text flex items-center gap-1">
+              <span className="font-semibold text-status-amber-text flex items-center gap-1">
                 <Icon icon={AlertTriangle} size="sm" className="text-status-amber-text shrink-0" />
                 Peringatan / Catatan Perhatian:
               </span>
@@ -311,7 +311,7 @@ export default function AIAnalysisPanel({ reportId }) {
           {/* Evidence List */}
           {analysis?.evidence && analysis.evidence.length > 0 && (
             <div className="space-y-1">
-              <span className="font-bold text-ink-soft flex items-center gap-1">
+              <span className="font-semibold text-ink-soft flex items-center gap-1">
                 <FileText className="w-3.5 h-3.5 text-primary" />
                 Poin Bukti Pendukung:
               </span>
@@ -325,7 +325,7 @@ export default function AIAnalysisPanel({ reportId }) {
 
           {/* Timestamp */}
           {analysis?.created_at && (
-            <div className="flex items-center gap-1 text-[11px] text-ink-soft pt-1">
+            <div className="flex items-center gap-1 text-xs text-ink-soft pt-1">
               <Clock className="w-3 h-3 text-ink-soft" />
               <span>Dianalisis pada: {formatDate(analysis.created_at)}</span>
             </div>
@@ -346,7 +346,7 @@ export default function AIAnalysisPanel({ reportId }) {
             Minta AI Analisis Ulang
           </Button>
         </div>
-        <p className="text-[10px] text-ink-soft">
+        <p className="text-xs text-ink-soft">
           Analisis baru akan dibuat berdasarkan data laporan saat ini.
         </p>
       </div>

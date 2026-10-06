@@ -25,8 +25,8 @@ export default function LandingHeader() {
           className="flex items-center gap-2.5 cursor-pointer group"
         >
           <div className="flex flex-col">
-            <span className="font-bold text-base tracking-tight text-ink">SIGAP</span>
-            <span className="text-[10px] text-ink-soft font-semibold -mt-1">Sistem Pengaduan Lalu Lintas</span>
+            <span className="font-semibold text-base text-ink">SIGAP</span>
+            <span className="text-xs text-ink-soft font-semibold -mt-0.5">Sistem Pengaduan Lalu Lintas</span>
           </div>
         </div>
 

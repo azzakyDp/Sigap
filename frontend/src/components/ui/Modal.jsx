@@ -100,7 +100,7 @@ export default function Modal({
         <div className="px-6 py-4 border-b border-border/60 flex items-center justify-between shrink-0">
           <div>
             {title && (
-              <h3 id={titleId} className="text-lg font-bold text-ink">
+              <h3 id={titleId} className="text-base font-semibold text-ink">
                 {title}
               </h3>
             )}

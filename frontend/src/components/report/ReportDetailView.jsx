@@ -55,11 +55,11 @@ export default function ReportDetailView({
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-surface p-5 rounded-lg border border-border shadow-xs">
           <div>
             <div className="flex flex-wrap items-center gap-2 mb-1">
-              <span className="font-mono text-sm font-bold text-primary bg-primary-light px-2.5 py-0.5 rounded border border-primary/20">
+              <span className="font-mono text-sm font-semibold text-primary bg-primary-light px-2.5 py-0.5 rounded border border-primary/20">
                 {report.nomor_laporan}
               </span>
               {audience === 'staff' && (
-                <span className="font-mono text-xs font-bold text-ink-soft bg-background px-2 py-0.5 rounded border border-border flex items-center gap-1">
+                <span className="font-mono text-xs font-semibold text-ink-soft bg-background px-2 py-0.5 rounded border border-border flex items-center gap-1">
                   ID: {report.id}
                 </span>
               )}
@@ -78,7 +78,7 @@ export default function ReportDetailView({
               {audience === 'staff' && (
                 <>
                   <span>•</span>
-                  <span>Oleh <strong className="text-ink">{reporterName}</strong></span>
+                  <span>Oleh <span className="font-semibold text-ink">{reporterName}</span></span>
                 </>
               )}
             </p>
@@ -108,16 +108,16 @@ export default function ReportDetailView({
               {/* Category & Event Time */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-3.5 bg-background rounded-lg border border-border/60">
                 <div>
-                  <span className="text-xs font-semibold text-ink-soft block mb-1">
+                  <span className="text-xs font-normal text-ink-soft block mb-1">
                     Kategori Pengaduan
                   </span>
-                  <span className="font-bold text-ink">{report.category_name}</span>
+                  <span className="font-normal text-ink">{report.category_name}</span>
                 </div>
                 <div>
-                  <span className="text-xs font-semibold text-ink-soft block mb-1">
+                  <span className="text-xs font-normal text-ink-soft block mb-1">
                     Waktu Kejadian
                   </span>
-                  <span className="font-semibold text-ink block">
+                  <span className="font-normal text-ink block">
                     {formatDate(report.waktu_kejadian)}
                   </span>
                 </div>
@@ -135,10 +135,10 @@ export default function ReportDetailView({
                         key={idx}
                         className="p-3 bg-surface rounded-md border border-border/80 flex flex-col justify-between"
                       >
-                        <span className="text-xs text-ink-soft font-semibold capitalize">
+                        <span className="text-xs text-ink-soft font-normal capitalize">
                           {fv.field_name?.replace(/_/g, ' ')}
                         </span>
-                        <span className="font-bold text-ink mt-0.5">{fv.value}</span>
+                        <span className="font-normal text-ink mt-0.5">{fv.value}</span>
                       </div>
                     ))}
                   </div>
@@ -204,10 +204,10 @@ export default function ReportDetailView({
           <Card title="Lokasi Kejadian">
             <div className="space-y-3">
               <div className="p-3 bg-background rounded-lg border border-border/60">
-                <span className="text-xs font-semibold text-ink-soft block">
+                <span className="text-xs font-normal text-ink-soft block">
                   Alamat / Keterangan Lokasi
                 </span>
-                <p className="text-sm font-semibold text-ink mt-0.5">{report.alamat_lokasi}</p>
+                <p className="text-sm font-normal text-ink mt-0.5">{report.alamat_lokasi}</p>
                 <p className="text-xs text-ink-soft font-mono mt-1">
                   Koordinat: {report.latitude}, {report.longitude}
                 </p>
@@ -236,8 +236,8 @@ export default function ReportDetailView({
                     <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border/50 pb-2">
                       <div className="flex items-center gap-2">
                         <Badge variant="blue">{act.jenis_tindakan}</Badge>
-                        <span className="text-xs text-ink-soft font-semibold">
-                          Petugas: <strong className="text-ink">{act.officer_nama}</strong>
+                        <span className="text-xs text-ink-soft font-normal">
+                          Petugas: <span className="font-semibold text-ink">{act.officer_nama}</span>
                         </span>
                       </div>
                       <span className="text-xs text-ink-soft">
@@ -247,12 +247,12 @@ export default function ReportDetailView({
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                       <div className="p-2.5 bg-background rounded border border-border/50">
-                        <span className="text-ink-soft block font-semibold">Waktu Kedatangan:</span>
-                        <span className="font-bold text-ink">{formatDate(act.waktu_kedatangan)}</span>
+                        <span className="text-ink-soft block font-normal">Waktu Kedatangan:</span>
+                        <span className="font-normal text-ink">{formatDate(act.waktu_kedatangan)}</span>
                       </div>
                       <div className="p-2.5 bg-background rounded border border-border/50">
-                        <span className="text-ink-soft block font-semibold">Waktu Selesai:</span>
-                        <span className="font-bold text-ink">
+                        <span className="text-ink-soft block font-normal">Waktu Selesai:</span>
+                        <span className="font-normal text-ink">
                           {act.waktu_selesai ? formatDate(act.waktu_selesai) : 'Masih Berlangsung'}
                         </span>
                       </div>

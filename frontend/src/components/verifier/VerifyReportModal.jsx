@@ -85,14 +85,14 @@ export default function VerifyReportModal({ isOpen, onClose, report, onSuccess }
 
         {/* Keputusan Selection */}
         <div>
-          <label className="block text-xs font-bold text-ink mb-2">
+          <label className="block text-xs font-medium text-ink-soft mb-2">
             Keputusan Verifikasi <span className="text-danger">*</span>
           </label>
           <div className="grid grid-cols-3 gap-2">
             <button
               type="button"
               onClick={() => setDecision('VERIFIED')}
-              className={`p-3 rounded-lg border text-xs font-bold flex flex-col items-center gap-1.5 transition-all cursor-pointer ${
+              className={`p-3 rounded-lg border text-xs font-semibold flex flex-col items-center gap-1.5 transition-all cursor-pointer ${
                 decision === 'VERIFIED'
                   ? 'border-primary bg-primary-light text-primary ring-2 ring-primary/20'
                   : 'border-border bg-surface text-ink hover:bg-background'
@@ -105,7 +105,7 @@ export default function VerifyReportModal({ isOpen, onClose, report, onSuccess }
             <button
               type="button"
               onClick={() => setDecision('REJECTED')}
-              className={`p-3 rounded-lg border text-xs font-bold flex flex-col items-center gap-1.5 transition-all cursor-pointer ${
+              className={`p-3 rounded-lg border text-xs font-semibold flex flex-col items-center gap-1.5 transition-all cursor-pointer ${
                 decision === 'REJECTED'
                   ? 'border-danger bg-status-red-bg text-danger ring-2 ring-danger/20'
                   : 'border-border bg-surface text-ink hover:bg-background'
@@ -118,7 +118,7 @@ export default function VerifyReportModal({ isOpen, onClose, report, onSuccess }
             <button
               type="button"
               onClick={() => setDecision('DUPLICATE')}
-              className={`p-3 rounded-lg border text-xs font-bold flex flex-col items-center gap-1.5 transition-all cursor-pointer ${
+              className={`p-3 rounded-lg border text-xs font-semibold flex flex-col items-center gap-1.5 transition-all cursor-pointer ${
                 decision === 'DUPLICATE'
                   ? 'border-status-orange-border bg-status-orange-bg text-status-orange-text ring-2 ring-status-orange-border/30'
                   : 'border-border bg-surface text-ink hover:bg-background'
@@ -133,7 +133,7 @@ export default function VerifyReportModal({ isOpen, onClose, report, onSuccess }
         {/* ID Rujukan if DUPLICATE */}
         {decision === 'DUPLICATE' && (
           <div>
-            <label className="block text-xs font-bold text-ink mb-1">
+            <label className="block text-xs font-medium text-ink-soft mb-1">
               ID Laporan Rujukan <span className="text-danger">*</span>
             </label>
             <input
@@ -145,7 +145,7 @@ export default function VerifyReportModal({ isOpen, onClose, report, onSuccess }
               className="w-full px-3 py-2 text-sm bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-ink"
               required
             />
-            <p className="text-[11px] text-ink-soft mt-1">
+            <p className="text-xs text-ink-soft mt-1">
               ID laporan rujukan dapat ditemukan di header detail laporan yang dirujuk (misalnya ID: 12).
             </p>
           </div>
@@ -153,7 +153,7 @@ export default function VerifyReportModal({ isOpen, onClose, report, onSuccess }
 
         {/* Catatan / Alasan */}
         <div>
-          <label className="block text-xs font-bold text-ink mb-1">
+          <label className="block text-xs font-medium text-ink-soft mb-1">
             Catatan / Alasan Verifikasi {(decision === 'REJECTED' || decision === 'DUPLICATE') && <span className="text-danger">*</span>}
           </label>
           <textarea
@@ -168,7 +168,7 @@ export default function VerifyReportModal({ isOpen, onClose, report, onSuccess }
             className="w-full px-3 py-2 text-sm bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-ink"
             required={decision === 'REJECTED' || decision === 'DUPLICATE'}
           />
-          <p className="text-[11px] font-medium text-primary mt-1">
+          <p className="text-xs font-medium text-primary mt-1">
             Catatan ini terlihat oleh pelapor di timeline publik.
           </p>
         </div>

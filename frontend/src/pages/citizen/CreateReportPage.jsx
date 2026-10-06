@@ -371,11 +371,11 @@ export default function CreateReportPage() {
           <div className="flex justify-center mb-3">
             <Icon icon={CheckCircle2} size="nav" className="text-status-green-text" />
           </div>
-          <h4 className="text-ink font-bold text-lg mb-1">Terima Kasih Atas Laporan Anda</h4>
+          <h4 className="text-ink font-semibold text-base mb-1">Terima Kasih Atas Laporan Anda</h4>
           <p className="text-xs text-muted mb-4">Laporan Anda telah tercatat ke dalam sistem SIGAP.</p>
 
           <div className="p-3 bg-background border border-border rounded-md font-mono text-sm mb-4">
-            Nomor Laporan: <strong className="text-primary text-base">{successReport?.nomor_laporan}</strong>
+            Nomor Laporan: <span className="font-semibold text-primary text-sm">{successReport?.nomor_laporan}</span>
           </div>
 
           <Button

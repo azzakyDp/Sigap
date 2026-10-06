@@ -51,7 +51,7 @@ export function ToastProvider({ children }) {
             <div className="flex items-start gap-2.5 min-w-0">
               {toastIcons[t.type] || toastIcons.info}
               <div className="space-y-0.5 text-xs sm:text-sm">
-                {t.title && <h5 className="font-bold text-ink">{t.title}</h5>}
+                {t.title && <h5 className="font-semibold text-ink">{t.title}</h5>}
                 <p className="text-ink text-xs leading-relaxed">{t.message}</p>
               </div>
             </div>

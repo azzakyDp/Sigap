@@ -23,7 +23,7 @@ export default function Hero() {
               <span>Sistem Pengaduan Gangguan Lalu Lintas SIGAP</span>
             </div>
 
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-ink tracking-tight leading-tight">
+            <h1 className="text-xl sm:text-2xl lg:text-2xl font-bold text-ink tracking-tight leading-tight">
               Laporkan Gangguan Jalan dengan <span className="text-primary">Cepat, Tepat, dan Transparan</span>
             </h1>
 
@@ -36,7 +36,7 @@ export default function Hero() {
                 variant="primary"
                 size="md"
                 onClick={() => navigate('/register')}
-                className="font-bold text-sm px-6 py-3"
+                className="font-semibold text-sm px-6 py-3"
               >
                 Laporkan Gangguan
               </Button>
@@ -52,15 +52,15 @@ export default function Hero() {
 
             <div className="pt-4 grid grid-cols-3 gap-4 border-t border-border/80 text-xs text-ink-soft">
               <div>
-                <strong className="block text-ink text-base font-bold">Real-Time</strong>
+                <strong className="block text-ink text-sm font-semibold">Real-Time</strong>
                 <span>Pelacakan status laporan</span>
               </div>
               <div>
-                <strong className="block text-ink text-base font-bold">Verifikasi</strong>
+                <strong className="block text-ink text-sm font-semibold">Verifikasi</strong>
                 <span>Pemeriksaan staf resmi</span>
               </div>
               <div>
-                <strong className="block text-ink text-base font-bold">Petugas</strong>
+                <strong className="block text-ink text-sm font-semibold">Petugas</strong>
                 <span>Penanganan di lokasi</span>
               </div>
             </div>
@@ -72,7 +72,7 @@ export default function Hero() {
               {/* Header Badge & Report ID */}
               <div className="flex items-center justify-between gap-2 border-b border-border/60 pb-3">
                 <div className="flex items-center gap-2">
-                  <span className="font-mono text-xs font-bold text-primary bg-primary-light px-2.5 py-1 rounded border border-primary/20">
+                  <span className="font-mono text-xs font-semibold text-primary bg-primary-light px-2.5 py-1 rounded border border-primary/20">
                     SIGAP-2026-00042
                   </span>
                   <Badge type="status" value="IN_PROGRESS" audience="staff" />
@@ -82,7 +82,7 @@ export default function Hero() {
 
               {/* Category & Location */}
               <div>
-                <h3 className="text-base font-bold text-ink">
+                <h3 className="text-base font-semibold text-ink">
                   Jalan Berlubang di Dekat Alun-Alun
                 </h3>
                 <p className="text-xs text-ink-soft mt-1">
@@ -92,15 +92,15 @@ export default function Hero() {
 
               {/* AI Assistant Recommendation Badge */}
               <div className="p-3 bg-background rounded-lg border border-border/80 text-xs space-y-0.5">
-                <span className="font-bold text-ink block">Asisten AI · saran, bukan keputusan</span>
-                <p className="text-ink-soft text-[11px]">
+                <span className="font-semibold text-ink block">Asisten AI · saran, bukan keputusan</span>
+                <p className="text-ink-soft text-xs">
                   Rekomendasi prioritas Tinggi & kategori Jalan Berlubang untuk Verifikator.
                 </p>
               </div>
 
               {/* Status Timeline Mini Preview */}
               <div className="space-y-2 pt-1">
-                <span className="text-xs font-bold text-ink-soft block">
+                <span className="text-xs font-semibold text-ink-soft block">
                   Progres Penanganan
                 </span>
                 <div className="space-y-2 pl-2 border-l-2 border-primary/30 text-xs">
@@ -122,9 +122,9 @@ export default function Hero() {
               {/* Bottom Officer Tag */}
               <div className="pt-2 border-t border-border/60 flex items-center justify-between text-xs text-ink-soft">
                 <span>
-                  Petugas: <strong className="text-ink">Tim Lapangan 1</strong>
+                  Petugas: <span className="font-semibold text-ink">Tim Lapangan 1</span>
                 </span>
-                <span className="text-[11px]">Terbuka secara publik</span>
+                <span className="text-xs">Terbuka secara publik</span>
               </div>
             </div>
           </div>

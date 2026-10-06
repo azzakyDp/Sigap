@@ -519,4 +519,156 @@ test.describe('SIGAP UI Components & Regression Safety Net Suite', () => {
     await expect(page).toHaveURL('/verifier');
   });
 
+  /* -------------------------------------------------------------------------- */
+  /* 10. Smoke Test: Semua Rute App.jsx – tidak boleh ada pageerror/console.error */
+  /* -------------------------------------------------------------------------- */
+  test('10. Smoke: setiap rute App.jsx terbuka tanpa pageerror atau console.error', async ({ page }) => {
+    // ---- common mock data ----
+    const citizenUser   = { id: 1, email: 'citizen@example.com',  full_name: 'Warga Contoh',      role: 'CITIZEN'   };
+    const verifierUser  = { id: 2, email: 'verifier@example.com', full_name: 'Staf Verifikator',  role: 'VERIFIER'  };
+    const officerUser   = { id: 3, email: 'officer@example.com',  full_name: 'Petugas Lapangan',  role: 'OFFICER'   };
+    const adminUser     = { id: 4, email: 'admin@example.com',    full_name: 'Admin Sistem',       role: 'ADMIN'     };
+
+    const mockReport = {
+      id: 1,
+      nomor_laporan: 'SIGAP-2026-00001',
+      status_raw: 'PENDING_VERIFICATION',
+      category_name: 'Jalan Berlubang',
+      priority: 'HIGH',
+      waktu_kejadian: new Date().toISOString(),
+      created_at: new Date().toISOString(),
+      reporter_name: 'Warga Contoh',
+      alamat_lokasi: 'Jl. Pemuda No 1',
+      latitude: -7.11,
+      longitude: 112.41,
+      deskripsi: 'Tes deskripsi',
+      evidences: [],
+      status_histories: [],
+      field_values: [],
+      action_reports: [],
+      current_assignment: null,
+    };
+
+    // ---- route definitions: [url, userObj] ----
+    const routes = [
+      ['/',                    null],          // landing (unauthenticated)
+      ['/login',               null],
+      ['/register',            null],
+      ['/unauthorized',        null],
+      ['/dashboard',           citizenUser],
+      ['/reports/create',      citizenUser],
+      ['/reports/me',          citizenUser],
+      ['/reports/1',           citizenUser],
+      ['/verifier',            verifierUser],
+      ['/verifier?view=map',   verifierUser],
+      ['/verifier/reports/1',  verifierUser],
+      ['/officer',             officerUser],
+      ['/officer/reports/1',   officerUser],
+      ['/admin',               adminUser],
+    ];
+
+    const errors = [];
+
+    for (const [url, user] of routes) {
+      // Reset listeners each iteration
+      const pageErrors = [];
+      const consoleErrors = [];
+
+      const onPageError = (err) => pageErrors.push(err.message);
+      const onConsoleError = (msg) => {
+        if (msg.type() === 'error') consoleErrors.push(msg.text());
+      };
+
+      page.on('pageerror', onPageError);
+      page.on('console',   onConsoleError);
+
+      // ---- set up API mocks ----
+      // auth/me – returns current user (or 401 for unauthenticated routes)
+      await page.route('**/api/v1/auth/me', async (route) => {
+        if (!user) {
+          await route.fulfill({ status: 401, headers: { 'Access-Control-Allow-Origin': '*' },
+            contentType: 'application/json', body: JSON.stringify({ detail: 'Not authenticated' }) });
+        } else {
+          await route.fulfill({ status: 200, headers: { 'Access-Control-Allow-Origin': '*' },
+            contentType: 'application/json', body: JSON.stringify(user) });
+        }
+      });
+
+      await page.route('**/api/v1/notifications**', async (route) => {
+        await route.fulfill({ status: 200, headers: { 'Access-Control-Allow-Origin': '*' },
+          contentType: 'application/json', body: JSON.stringify([]) });
+      });
+
+      await page.route('**/api/v1/categories**', async (route) => {
+        await route.fulfill({ status: 200, headers: { 'Access-Control-Allow-Origin': '*' },
+          contentType: 'application/json', body: JSON.stringify([{ id: 1, name: 'Jalan Berlubang', code: 'HOLE', fields: [] }]) });
+      });
+
+      await page.route('**/api/v1/reports/1/ai-analysis', async (route) => {
+        await route.fulfill({ status: 200, headers: { 'Access-Control-Allow-Origin': '*' },
+          contentType: 'application/json',
+          body: JSON.stringify({ status: 'COMPLETED', summary: 'Tes AI', confidence: 0.9,
+            suggested_category: 'Jalan Berlubang', suggested_priority: 'HIGH' }) });
+      });
+
+      await page.route('**/api/v1/reports/1**', async (route) => {
+        await route.fulfill({ status: 200, headers: { 'Access-Control-Allow-Origin': '*' },
+          contentType: 'application/json', body: JSON.stringify(mockReport) });
+      });
+
+      await page.route('**/api/v1/reports**', async (route) => {
+        await route.fulfill({ status: 200, headers: { 'Access-Control-Allow-Origin': '*' },
+          contentType: 'application/json', body: JSON.stringify({ items: [], total: 0 }) });
+      });
+
+      await page.route('**/api/v1/officers**', async (route) => {
+        await route.fulfill({ status: 200, headers: { 'Access-Control-Allow-Origin': '*' },
+          contentType: 'application/json', body: JSON.stringify([]) });
+      });
+
+      // ---- inject session & navigate ----
+      // Go to /login first to set localStorage, then navigate
+      await page.goto('/login', { waitUntil: 'domcontentloaded' });
+      if (user) {
+        await page.evaluate((u) => {
+          localStorage.setItem('sigap_token', 'fake-jwt-token');
+          localStorage.setItem('sigap_user', JSON.stringify(u));
+        }, user);
+      } else {
+        await page.evaluate(() => {
+          localStorage.removeItem('sigap_token');
+          localStorage.removeItem('sigap_user');
+        });
+      }
+
+      await page.goto(url, { waitUntil: 'domcontentloaded' });
+      // short wait for React hydration
+      await page.waitForTimeout(600);
+
+      page.off('pageerror', onPageError);
+      page.off('console',   onConsoleError);
+
+      // Unroute all to reset for next iteration
+      await page.unrouteAll({ behavior: 'ignoreErrors' });
+
+      const routeErrors = [
+        ...pageErrors.map(m => `pageerror: ${m}`),
+        ...consoleErrors.map(m => `console.error: ${m}`),
+      ];
+
+      if (routeErrors.length) {
+        errors.push({ url, user: user?.role ?? 'anon', errors: routeErrors });
+      }
+
+      console.log(`[RUTE] ${url} (${user?.role ?? 'anon'}) -> ${routeErrors.length === 0 ? 'OK' : 'GAGAL: ' + routeErrors.join(' | ')}`);
+    }
+
+    if (errors.length > 0) {
+      const msg = errors.map(e =>
+        `\n  ${e.url} [${e.user}]:\n    - ${e.errors.join('\n    - ')}`
+      ).join('');
+      throw new Error(`Rute berikut menghasilkan error:${msg}`);
+    }
+  });
+
 });

@@ -13,7 +13,7 @@ export function LandingFooter() {
           {/* Brand Col */}
           <div className="md:col-span-2">
             <Link to="/" className="inline-flex items-center gap-2 mb-4">
-              <span className="font-bold text-xl tracking-tight text-ink">
+              <span className="font-semibold text-base text-ink">
                 SIGAP
               </span>
             </Link>
@@ -24,7 +24,7 @@ export function LandingFooter() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="font-bold text-sm text-ink tracking-wider uppercase mb-4">Navigasi</h4>
+            <h4 className="font-semibold text-sm text-ink mb-4">Navigasi</h4>
             <ul className="space-y-2.5 text-sm">
               <li>
                 <a href="#how-it-works" className="hover:text-primary transition-colors">
@@ -46,7 +46,7 @@ export function LandingFooter() {
 
           {/* Account Links */}
           <div>
-            <h4 className="font-bold text-sm text-ink tracking-wider uppercase mb-4">Akses Warga</h4>
+            <h4 className="font-semibold text-sm text-ink mb-4">Akses Warga</h4>
             <ul className="space-y-2.5 text-sm">
               <li>
                 <Link to="/login" className="hover:text-primary transition-colors">

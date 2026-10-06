@@ -70,7 +70,7 @@ export default function UpdatePriorityModal({ isOpen, onClose, report, onSuccess
 
         {/* Priority Selection */}
         <div>
-          <label className="block text-xs font-bold text-ink mb-2">
+          <label className="block text-xs font-medium text-ink-soft mb-2">
             Pilih Prioritas Baru <span className="text-danger">*</span>
           </label>
           <div className="grid grid-cols-2 gap-2">
@@ -79,7 +79,7 @@ export default function UpdatePriorityModal({ isOpen, onClose, report, onSuccess
                 key={item.value}
                 type="button"
                 onClick={() => setPriority(item.value)}
-                className={`p-3 rounded-lg border text-left text-xs font-bold flex items-center justify-between transition-all cursor-pointer ${
+                className={`p-3 rounded-lg border text-left text-xs font-semibold flex items-center justify-between transition-all cursor-pointer ${
                   priority === item.value
                     ? 'border-primary bg-primary-light text-primary ring-2 ring-primary/20'
                     : 'border-border bg-surface text-ink hover:bg-background'
@@ -94,7 +94,7 @@ export default function UpdatePriorityModal({ isOpen, onClose, report, onSuccess
 
         {/* Catatan (Internal) */}
         <div>
-          <label className="block text-xs font-bold text-ink mb-1">
+          <label className="block text-xs font-medium text-ink-soft mb-1">
             Catatan Internal (Opsional)
           </label>
           <textarea
@@ -104,7 +104,7 @@ export default function UpdatePriorityModal({ isOpen, onClose, report, onSuccess
             placeholder="Berikan alasan perubahan prioritas untuk rekaman internal..."
             className="w-full px-3 py-2 text-sm bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-ink"
           />
-          <p className="text-[11px] text-ink-soft mt-1">
+          <p className="text-xs text-ink-soft mt-1">
             Catatan ini hanya tersimpan untuk keperluan internal staf.
           </p>
         </div>

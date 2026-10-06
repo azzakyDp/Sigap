@@ -105,7 +105,7 @@ export default function OfficerReportDetailPage() {
           <div className="flex justify-center mb-4">
             <Icon icon={AlertCircle} size="nav" className="text-status-amber-text" />
           </div>
-          <h2 className="text-xl font-bold text-ink mb-2">Laporan Tidak Ditemukan</h2>
+          <h2 className="text-base font-semibold text-ink mb-2">Laporan Tidak Ditemukan</h2>
           <p className="text-ink-soft text-sm mb-6 max-w-md mx-auto">
             {error || 'Laporan pengaduan yang Anda cari tidak ditemukan atau Anda tidak memiliki hak akses untuk membukanya.'}
           </p>

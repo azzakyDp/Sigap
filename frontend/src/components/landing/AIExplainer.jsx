@@ -10,10 +10,10 @@ export function AIExplainer() {
           <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-primary/10 text-primary mb-4">
             Teknologi Pendukung
           </span>
-          <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight">
+          <h2 className="text-xl md:text-2xl font-semibold text-ink tracking-tight">
             Peran Kecerdasan Buatan (AI) di SIGAP
           </h2>
-          <p className="mt-4 text-base md:text-lg text-ink-soft leading-relaxed">
+          <p className="mt-4 text-sm md:text-base text-ink-soft leading-relaxed">
             SIGAP memanfaatkan modul AI sebagai asisten verifikator untuk mempercepat analisis laporan tanpa mengorbankan ketepatan dan kendali manusia.
           </p>
         </div>
@@ -22,7 +22,7 @@ export function AIExplainer() {
         <div className="mb-12 p-6 md:p-8 rounded-2xl bg-surface border border-border text-ink">
           <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
             <div>
-              <div className="inline-flex items-center gap-2 font-bold text-ink text-lg mb-1">
+              <div className="inline-flex items-center gap-2 font-semibold text-ink text-base mb-1">
                 Prinsip Utama: Keputusan Akhir Selalu di Tangan Manusia
               </div>
               <p className="text-sm md:text-base text-ink-soft leading-relaxed">
@@ -38,8 +38,8 @@ export function AIExplainer() {
           {/* Card 1: Automatic Summarization */}
           <div className="bg-surface p-8 rounded-2xl border border-border flex flex-col justify-between">
             <div>
-              <span className="text-xs font-bold text-primary tracking-wider uppercase">Fitur Rekomendasi</span>
-              <h3 className="text-xl font-bold text-ink mt-1 mb-3">
+              <span className="text-xs font-semibold text-primary">Fitur Rekomendasi</span>
+              <h3 className="text-base font-semibold text-ink mt-1 mb-3">
                 Ringkasan Otomatis Laporan
               </h3>
               <p className="text-sm text-ink-soft leading-relaxed">
@@ -55,8 +55,8 @@ export function AIExplainer() {
           {/* Card 2: Category & Priority Recommendation */}
           <div className="bg-surface p-8 rounded-2xl border border-border flex flex-col justify-between">
             <div>
-              <span className="text-xs font-bold text-primary tracking-wider uppercase">Fitur Analisis</span>
-              <h3 className="text-xl font-bold text-ink mt-1 mb-3">
+              <span className="text-xs font-semibold text-primary">Fitur Analisis</span>
+              <h3 className="text-base font-semibold text-ink mt-1 mb-3">
                 Rekomendasi Kategori & Prioritas
               </h3>
               <p className="text-sm text-ink-soft leading-relaxed">

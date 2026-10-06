@@ -33,7 +33,7 @@ export default function ReportList({ reports = [], audience = 'citizen', onOpen 
               onClick={() => handleOpen(row.id)}
               className="hover:bg-background/80 cursor-pointer transition-colors"
             >
-              <td className="px-4 py-3.5 font-mono text-xs font-bold text-primary-hover">
+              <td className="px-4 py-3.5 font-mono text-xs font-semibold text-primary-hover">
                 {row.nomor_laporan}
               </td>
               <td className="px-4 py-3.5 text-xs font-semibold text-ink">
@@ -78,7 +78,7 @@ export default function ReportList({ reports = [], audience = 'citizen', onOpen 
           >
             {/* Top Bar */}
             <div className="flex items-center justify-between gap-2">
-              <span className="font-mono text-xs font-bold text-primary bg-primary-light px-2 py-0.5 rounded border border-primary/20">
+              <span className="font-mono text-xs font-semibold text-primary bg-primary-light px-2 py-0.5 rounded border border-primary/20">
                 {row.nomor_laporan}
               </span>
               <Badge type="status" value={row.status_raw} audience={audience} />
@@ -86,7 +86,7 @@ export default function ReportList({ reports = [], audience = 'citizen', onOpen 
 
             {/* Category & Priority */}
             <div className="flex items-center justify-between gap-2">
-              <h4 className="font-bold text-ink text-sm">
+              <h4 className="font-semibold text-ink text-sm">
                 {row.category_name}
               </h4>
               <Badge type="priority" value={row.priority} />

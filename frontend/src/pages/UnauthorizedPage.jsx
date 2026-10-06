@@ -36,7 +36,7 @@ export default function UnauthorizedPage() {
         <Card>
           <h1 className="text-2xl font-bold text-ink mb-2">403 - Akses Ditolak</h1>
           <p className="text-ink-soft text-sm mb-6">
-            Anda tidak memiliki hak akses (role: <span className="font-bold text-ink">{user?.role || 'Guest'}</span>) untuk membuka halaman ini.
+            Anda tidak memiliki hak akses (role: <span className="font-semibold text-ink">{user?.role || 'Guest'}</span>) untuk membuka halaman ini.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-3">

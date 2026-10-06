@@ -43,7 +43,7 @@ export default function Alert({
       <div className="flex items-start gap-2.5 flex-1 min-w-0">
         <Icon icon={IconComponent} size="sm" className="mt-0.5" />
         <div className="space-y-1 flex-1 min-w-0">
-          {title && <h4 className="font-bold text-ink leading-snug">{title}</h4>}
+          {title && <h4 className="font-semibold text-ink leading-snug">{title}</h4>}
           {content && <div className="leading-relaxed break-words">{content}</div>}
         </div>
       </div>

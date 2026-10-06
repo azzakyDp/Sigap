@@ -120,7 +120,7 @@ export default function StatusTimeline({ histories = [], audience = 'citizen', c
             <div className="flex-1 bg-surface border border-border/80 rounded-lg p-4 shadow-xs hover:border-primary/30 transition-all">
               <div className="flex flex-wrap items-center justify-between gap-2 mb-1.5">
                 <div className="flex items-center gap-2">
-                  <span className="font-bold text-ink text-base">
+                  <span className="font-semibold text-ink text-sm">
                     {labelText}
                   </span>
                   {audience === 'staff' && (
@@ -150,7 +150,7 @@ export default function StatusTimeline({ histories = [], audience = 'citizen', c
                   )}
                   {item.changed_by_nama && (
                     <span className="flex items-center gap-1">
-                      <span>Oleh: <strong className="text-ink">{item.changed_by_nama}</strong></span>
+                      <span>Oleh: <span className="font-semibold text-ink">{item.changed_by_nama}</span></span>
                     </span>
                   )}
                 </div>

@@ -15,7 +15,7 @@ export default function DynamicFieldsForm({ fields = [], values = {}, onChange, 
 
   return (
     <div className="mb-6 p-4 bg-background border border-border rounded-lg">
-      <div className="mb-4 pb-2 border-b border-border/60 text-ink font-bold text-sm">
+      <div className="mb-4 pb-2 border-b border-border/60 text-ink font-semibold text-sm">
         <span>Informasi Tambahan Kategori</span>
       </div>
 
@@ -28,7 +28,7 @@ export default function DynamicFieldsForm({ fields = [], values = {}, onChange, 
           if (field.field_type === 'textarea') {
             return (
               <div key={field.id} className="sm:col-span-2">
-                <label className="block text-sm font-medium text-ink mb-1.5">
+                <label className="block text-sm font-medium text-ink-soft mb-1.5">
                   {field.field_name} {isRequired && <span className="text-danger">*</span>}
                 </label>
                 <textarea

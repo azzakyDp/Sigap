@@ -113,7 +113,7 @@ export default function MultiMarkerMap({
               <Popup className="sigap-map-popup">
                 <div className="p-1 max-w-xs space-y-2 text-ink">
                   <div className="flex items-center justify-between gap-2 border-b border-border pb-1.5">
-                    <span className="font-mono text-xs font-extrabold text-primary bg-primary-light px-1.5 py-0.5 rounded border border-primary/20">
+                    <span className="font-mono text-xs font-semibold text-primary bg-primary-light px-1.5 py-0.5 rounded border border-primary/20">
                       {item.nomor_laporan}
                     </span>
                     <Badge type="status" value={item.status_raw} audience="staff">
@@ -122,8 +122,8 @@ export default function MultiMarkerMap({
                   </div>
 
                   <div>
-                    <h4 className="font-bold text-xs text-ink">{item.category_name}</h4>
-                    <p className="text-[11px] text-ink-soft line-clamp-2 mt-0.5" title={item.alamat_lokasi}>
+                    <h4 className="font-semibold text-xs text-ink">{item.category_name}</h4>
+                    <p className="text-xs text-ink-soft line-clamp-2 mt-0.5" title={item.alamat_lokasi}>
                       {item.alamat_lokasi}
                     </p>
                   </div>
@@ -133,7 +133,7 @@ export default function MultiMarkerMap({
                     <button
                       type="button"
                       onClick={() => handleOpenDetail(item.id)}
-                      className="text-xs font-bold text-primary hover:text-primary-hover inline-flex items-center gap-1 cursor-pointer bg-primary-light/50 px-2 py-1 rounded border border-primary/20"
+                      className="text-xs font-semibold text-primary hover:text-primary-hover inline-flex items-center gap-1 cursor-pointer bg-primary-light/50 px-2 py-1 rounded border border-primary/20"
                     >
                       <span>Lihat Detail</span>
                       <ExternalLink className="w-3 h-3" />
@@ -147,8 +147,8 @@ export default function MultiMarkerMap({
       </MapContainer>
 
       {/* Floating Legend */}
-      <div className="absolute bottom-3 left-3 z-10 bg-surface/90 backdrop-blur-xs p-2.5 rounded-lg border border-border text-[11px] text-ink shadow-md max-w-[280px]">
-        <div className="font-bold text-xs mb-1.5 flex items-center gap-1.5 border-b border-border/60 pb-1">
+      <div className="absolute bottom-3 left-3 z-10 bg-surface/90 backdrop-blur-xs p-2.5 rounded-lg border border-border text-xs text-ink shadow-md max-w-[280px]">
+        <div className="font-semibold text-xs mb-1.5 flex items-center gap-1.5 border-b border-border/60 pb-1">
           <MapPin className="w-3.5 h-3.5 text-primary" />
           <span>Legenda Status Laporan</span>
         </div>

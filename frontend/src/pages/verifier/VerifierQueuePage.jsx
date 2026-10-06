@@ -303,7 +303,7 @@ export default function VerifierQueuePage() {
               <div className="w-16 h-16 bg-primary-light rounded-full flex items-center justify-center mx-auto mb-4 border border-primary/20">
                 <ClipboardList className="w-8 h-8 text-primary" />
               </div>
-              <h3 className="text-lg font-bold text-ink mb-1">
+              <h3 className="text-base font-semibold text-ink mb-1">
                 Tidak Ada Laporan Dalam Antrean
               </h3>
               <p className="text-ink-soft text-sm max-w-md mx-auto">

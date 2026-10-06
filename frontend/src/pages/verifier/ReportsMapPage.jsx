@@ -39,7 +39,7 @@ export default function ReportsMapPage({
       {/* Map View */}
       {reports.length === 0 ? (
         <div className="py-16 px-4 text-center bg-surface border border-border rounded-lg">
-          <h3 className="text-lg font-bold text-ink mb-1">
+          <h3 className="text-base font-semibold text-ink mb-1">
             Tidak Ada Laporan Berkoordinat
           </h3>
           <p className="text-ink-soft text-sm max-w-md mx-auto">

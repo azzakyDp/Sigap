@@ -67,14 +67,14 @@ export default function ResolveReportModal({ isOpen, onClose, report, onSuccess 
 
         {/* Decision Selection */}
         <div>
-          <label className="block text-xs font-bold text-ink mb-2">
+          <label className="block text-xs font-medium text-ink-soft mb-2">
             Pilih Status Akhir Penanganan <span className="text-danger">*</span>
           </label>
           <div className="grid grid-cols-2 gap-3">
             <button
               type="button"
               onClick={() => setDecision('RESOLVED')}
-              className={`p-3.5 rounded-lg border text-xs font-bold flex flex-col items-center gap-2 transition-all cursor-pointer ${
+              className={`p-3.5 rounded-lg border text-xs font-semibold flex flex-col items-center gap-2 transition-all cursor-pointer ${
                 decision === 'RESOLVED'
                   ? 'border-primary bg-primary-light text-primary ring-2 ring-primary/20'
                   : 'border-border bg-surface text-ink hover:bg-background'
@@ -87,7 +87,7 @@ export default function ResolveReportModal({ isOpen, onClose, report, onSuccess 
             <button
               type="button"
               onClick={() => setDecision('UNRESOLVED')}
-              className={`p-3.5 rounded-lg border text-xs font-bold flex flex-col items-center gap-2 transition-all cursor-pointer ${
+              className={`p-3.5 rounded-lg border text-xs font-semibold flex flex-col items-center gap-2 transition-all cursor-pointer ${
                 decision === 'UNRESOLVED'
                   ? 'border-status-amber-border bg-status-amber-bg text-status-amber-text ring-2 ring-status-amber-border/30'
                   : 'border-border bg-surface text-ink hover:bg-background'
@@ -102,7 +102,7 @@ export default function ResolveReportModal({ isOpen, onClose, report, onSuccess 
         {/* UNRESOLVED Info Banner */}
         {decision === 'UNRESOLVED' && (
           <div className="p-3 bg-status-amber-bg border border-status-amber-border rounded-lg text-status-amber-text text-xs space-y-1">
-            <p className="font-bold flex items-center gap-1.5">
+            <p className="font-semibold flex items-center gap-1.5">
               <Icon icon={AlertTriangle} size="sm" />
               Penanganan Belum Selesai (UNRESOLVED)
             </p>
@@ -114,7 +114,7 @@ export default function ResolveReportModal({ isOpen, onClose, report, onSuccess 
 
         {/* Catatan / Ringkasan Penyelesaian */}
         <div>
-          <label className="block text-xs font-bold text-ink mb-1">
+          <label className="block text-xs font-medium text-ink-soft mb-1">
             Catatan Ringkasan Penyelesaian <span className="text-danger">*</span>
           </label>
           <textarea

@@ -90,7 +90,7 @@ export default function AssignedReportsPage() {
           </div>
         ) : reports.length === 0 ? (
           <div className="py-16 px-4 text-center">
-            <h3 className="text-lg font-bold text-ink mb-1">
+            <h3 className="text-base font-semibold text-ink mb-1">
               Tidak Ada Tugas Penanganan
             </h3>
             <p className="text-ink-soft text-sm max-w-md mx-auto">

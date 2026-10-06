@@ -98,7 +98,7 @@ export default function RegisterPage() {
     <div className="min-h-screen bg-background flex flex-col justify-center items-center p-4 py-8">
       <div className="w-full max-w-lg">
         <div className="text-center mb-6">
-          <h1 className="text-2xl font-extrabold text-ink tracking-tight">Registrasi Akun SIGAP</h1>
+          <h1 className="text-2xl font-bold text-ink tracking-tight">Registrasi Akun SIGAP</h1>
           <p className="text-ink-soft text-xs mt-1">Daftarkan akun masyarakat (CITIZEN) untuk menyampaikan laporan</p>
         </div>
 

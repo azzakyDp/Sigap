@@ -45,10 +45,10 @@ export function FAQ() {
           <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-primary/10 text-primary mb-4">
             Pertanyaan Umum
           </span>
-          <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight">
+          <h2 className="text-xl md:text-2xl font-semibold text-ink tracking-tight">
             Pertanyaan Yang Sering Diajukan
           </h2>
-          <p className="mt-4 text-base md:text-lg text-ink-soft">
+          <p className="mt-4 text-sm md:text-base text-ink-soft">
             Temukan jawaban atas pertanyaan umum seputar penggunaan platform SIGAP.
           </p>
         </div>
@@ -68,7 +68,7 @@ export function FAQ() {
                   className="w-full text-left px-6 py-5 flex items-center justify-between gap-4 font-semibold text-ink hover:text-primary transition-colors focus:outline-none focus:ring-2 focus:ring-primary/20"
                   aria-expanded={isOpen}
                 >
-                  <span className="text-base md:text-lg">{faq.question}</span>
+                  <span className="text-sm md:text-base">{faq.question}</span>
                   <Icon
                     icon={ChevronDown}
                     size="sm"
@@ -78,7 +78,7 @@ export function FAQ() {
                   />
                 </button>
                 {isOpen && (
-                  <div className="px-6 pb-5 pt-1 text-sm md:text-base text-ink-soft border-t border-border/40 leading-relaxed">
+                  <div className="px-6 pb-5 pt-1 text-xs md:text-sm text-ink-soft border-t border-border/40 leading-relaxed">
                     {faq.answer}
                   </div>
                 )}

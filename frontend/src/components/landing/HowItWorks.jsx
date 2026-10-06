@@ -32,10 +32,10 @@ export function HowItWorks() {
           <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-primary/10 text-primary mb-4">
             Alur Transparan
           </span>
-          <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight">
+          <h2 className="text-xl md:text-2xl font-semibold text-ink tracking-tight">
             Bagaimana SIGAP Bekerja?
           </h2>
-          <p className="mt-4 text-base md:text-lg text-ink-soft leading-relaxed">
+          <p className="mt-4 text-sm md:text-base text-ink-soft leading-relaxed">
             Setiap laporan jalan atau kelalulintasan diproses melalui 4 tahapan jelas yang dapat kamu pantau secara real-time.
           </p>
         </div>
@@ -51,12 +51,12 @@ export function HowItWorks() {
                 {/* Step badge */}
                 <div>
                   <div className="flex items-center justify-between mb-6">
-                    <span className="text-2xl font-black text-ink-soft/40 group-hover:text-primary transition-colors">
+                    <span className="text-base font-semibold text-ink-soft/40 group-hover:text-primary transition-colors">
                       {item.step}
                     </span>
                   </div>
 
-                  <h3 className="text-lg font-bold text-ink mb-2 group-hover:text-primary transition-colors">
+                  <h3 className="text-base font-semibold text-ink mb-2 group-hover:text-primary transition-colors">
                     {item.title}
                   </h3>
                   <p className="text-sm text-ink-soft leading-relaxed">

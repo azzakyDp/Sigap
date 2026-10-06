@@ -58,17 +58,17 @@ export default function CloseCaseModal({ isOpen, onClose, report, onSuccess }) {
         )}
 
         <div className="p-4 bg-background rounded-lg border border-border text-xs text-ink space-y-2">
-          <p className="font-bold text-ink">
+          <p className="font-semibold text-ink">
             Konfirmasi Penutupan Kasus
           </p>
           <p className="text-ink-soft">
-            Kasus pengaduan ini akan ditutup secara permanen (berstatus <strong>CLOSED</strong>). Pastikan seluruh tindakan penanganan dan evaluasi telah selesai dilakukan.
+            Kasus pengaduan ini akan ditutup secara permanen (berstatus <span className="font-semibold text-ink">CLOSED</span>). Pastikan seluruh tindakan penanganan dan evaluasi telah selesai dilakukan.
           </p>
         </div>
 
         {/* Catatan Penutupan */}
         <div>
-          <label className="block text-xs font-bold text-ink mb-1">
+          <label className="block text-xs font-medium text-ink-soft mb-1">
             Catatan Penutupan Kasus (Opsional)
           </label>
           <textarea

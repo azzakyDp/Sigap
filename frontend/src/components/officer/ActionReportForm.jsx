@@ -103,7 +103,7 @@ export default function ActionReportForm({ isOpen, onClose, report, onSuccess })
 
         {/* Jenis Tindakan */}
         <div>
-          <label className="block text-xs font-bold text-ink mb-1">
+          <label className="block text-xs font-medium text-ink-soft mb-1">
             Jenis Tindakan <span className="text-danger">*</span>
           </label>
           <input
@@ -120,7 +120,7 @@ export default function ActionReportForm({ isOpen, onClose, report, onSuccess })
         {/* Waktu Kedatangan & Waktu Selesai (Responsive Grid) */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="block text-xs font-bold text-ink mb-1">
+            <label className="block text-xs font-medium text-ink-soft mb-1">
               Waktu Kedatangan <span className="text-danger">*</span>
             </label>
             <input
@@ -133,7 +133,7 @@ export default function ActionReportForm({ isOpen, onClose, report, onSuccess })
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-ink mb-1">
+            <label className="block text-xs font-medium text-ink-soft mb-1">
               Waktu Selesai <span className="text-ink-soft font-normal">(Opsional)</span>
             </label>
             <input
@@ -142,7 +142,7 @@ export default function ActionReportForm({ isOpen, onClose, report, onSuccess })
               onChange={(e) => setWaktuSelesai(e.target.value)}
               className="w-full px-3.5 py-2.5 text-sm bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-ink"
             />
-            <p className="text-[11px] text-ink-soft mt-1">
+            <p className="text-xs text-ink-soft mt-1">
               Biarkan kosong jika penanganan masih berlangsung di lokasi.
             </p>
           </div>
@@ -150,7 +150,7 @@ export default function ActionReportForm({ isOpen, onClose, report, onSuccess })
 
         {/* Deskripsi Rinci */}
         <div>
-          <label className="block text-xs font-bold text-ink mb-1">
+          <label className="block text-xs font-medium text-ink-soft mb-1">
             Deskripsi Tindakan <span className="text-danger">*</span>
           </label>
           <textarea
@@ -166,7 +166,7 @@ export default function ActionReportForm({ isOpen, onClose, report, onSuccess })
 
         {/* Hasil Penanganan */}
         <div>
-          <label className="block text-xs font-bold text-ink mb-1">
+          <label className="block text-xs font-medium text-ink-soft mb-1">
             Hasil Akhir Tindakan <span className="text-danger">*</span>
           </label>
           <textarea

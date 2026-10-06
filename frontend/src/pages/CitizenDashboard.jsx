@@ -33,19 +33,19 @@ export default function CitizenDashboard() {
         <Card title={`Halo, ${user?.nama || 'User'}`} subtitle="Informasi Akun Terdaftar" className="lg:col-span-1">
           <div className="space-y-3 text-ink text-sm">
             <div className="flex items-center justify-between py-2 border-b border-border/50">
-              <span className="text-ink-soft font-medium">Nama:</span>
-              <span className="font-bold">{user?.nama}</span>
+              <span className="text-ink-soft font-normal">Nama:</span>
+              <span className="font-normal text-ink">{user?.nama}</span>
             </div>
             <div className="flex items-center justify-between py-2 border-b border-border/50">
-              <span className="text-ink-soft font-medium">Email:</span>
-              <span className="font-semibold text-xs text-ink">{user?.email}</span>
+              <span className="text-ink-soft font-normal">Email:</span>
+              <span className="font-normal text-xs text-ink">{user?.email}</span>
             </div>
             <div className="flex items-center justify-between py-2 border-b border-border/50">
-              <span className="text-ink-soft font-medium">HP:</span>
-              <span className="font-semibold">{user?.nomor_hp}</span>
+              <span className="text-ink-soft font-normal">HP:</span>
+              <span className="font-normal text-ink">{user?.nomor_hp}</span>
             </div>
             <div className="flex items-center justify-between py-2 border-b border-border/50">
-              <span className="text-ink-soft font-medium">Role:</span>
+              <span className="text-ink-soft font-normal">Role:</span>
               <Badge variant="blue">{user?.role}</Badge>
             </div>
           </div>
