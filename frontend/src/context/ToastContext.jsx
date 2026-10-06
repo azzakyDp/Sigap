@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useCallback } from 'react';
 import { AlertCircle, CheckCircle2, AlertTriangle, Info, X } from 'lucide-react';
+import Icon from '../components/ui/Icon';
 
 const ToastContext = createContext(null);
 
@@ -22,10 +23,10 @@ export function ToastProvider({ children }) {
   }, []);
 
   const toastIcons = {
-    success: <CheckCircle2 className="w-5 h-5 text-status-green-text shrink-0" />,
-    error: <AlertCircle className="w-5 h-5 text-danger shrink-0" />,
-    warning: <AlertTriangle className="w-5 h-5 text-status-amber-text shrink-0" />,
-    info: <Info className="w-5 h-5 text-primary shrink-0" />,
+    success: <Icon icon={CheckCircle2} size="sm" className="text-status-green-text shrink-0" />,
+    error: <Icon icon={AlertCircle} size="sm" className="text-danger shrink-0" />,
+    warning: <Icon icon={AlertTriangle} size="sm" className="text-status-amber-text shrink-0" />,
+    info: <Icon icon={Info} size="sm" className="text-primary shrink-0" />,
   };
 
   const toastBorders = {
@@ -56,10 +57,10 @@ export function ToastProvider({ children }) {
             </div>
             <button
               onClick={() => removeToast(t.id)}
-              className="p-1 text-ink-soft hover:text-ink rounded-md transition-colors shrink-0 cursor-pointer"
+              className="p-1 text-ink-soft hover:text-ink rounded-md transition-colors shrink-0 cursor-pointer inline-flex items-center justify-center"
               aria-label="Tutup notifikasi"
             >
-              <X className="w-4 h-4" />
+              <Icon icon={X} size="sm" />
             </button>
           </div>
         ))}

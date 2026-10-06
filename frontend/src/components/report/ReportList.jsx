@@ -1,5 +1,5 @@
 import React from 'react';
-import { Eye, MapPin, Calendar } from 'lucide-react';
+
 import Table from '../ui/Table';
 import Badge from '../ui/Badge';
 import Button from '../ui/Button';
@@ -55,7 +55,6 @@ export default function ReportList({ reports = [], audience = 'citizen', onOpen 
                 <Button
                   variant="secondary"
                   size="sm"
-                  icon={Eye}
                   onClick={(e) => {
                     e.stopPropagation();
                     handleOpen(row.id);
@@ -79,7 +78,7 @@ export default function ReportList({ reports = [], audience = 'citizen', onOpen 
           >
             {/* Top Bar */}
             <div className="flex items-center justify-between gap-2">
-              <span className="font-mono text-xs font-extrabold text-primary bg-primary-light px-2 py-0.5 rounded border border-primary/20">
+              <span className="font-mono text-xs font-bold text-primary bg-primary-light px-2 py-0.5 rounded border border-primary/20">
                 {row.nomor_laporan}
               </span>
               <Badge type="status" value={row.status_raw} audience={audience} />
@@ -95,13 +94,11 @@ export default function ReportList({ reports = [], audience = 'citizen', onOpen 
 
             {/* Meta Details */}
             <div className="space-y-1 text-xs text-ink-soft">
-              <div className="flex items-start gap-1.5">
-                <MapPin className="w-3.5 h-3.5 text-primary shrink-0 mt-0.5" />
-                <span className="line-clamp-2 text-ink">{row.alamat_lokasi}</span>
+              <div className="text-ink line-clamp-2">
+                {row.alamat_lokasi}
               </div>
-              <div className="flex items-center gap-1.5">
-                <Calendar className="w-3.5 h-3.5 text-ink-soft shrink-0" />
-                <span>{formatDate(row.waktu_kejadian)}</span>
+              <div>
+                {formatDate(row.waktu_kejadian)}
               </div>
             </div>
 
@@ -110,7 +107,6 @@ export default function ReportList({ reports = [], audience = 'citizen', onOpen 
               <Button
                 variant="secondary"
                 size="sm"
-                icon={Eye}
                 className="w-full sm:w-auto"
                 onClick={(e) => {
                   e.stopPropagation();

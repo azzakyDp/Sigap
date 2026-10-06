@@ -2,6 +2,12 @@
 @import "leaflet/dist/leaflet.css";
 
 @theme {
+  --text-xs: 12px;
+  --text-sm: 14px;
+  --text-base: 16px;
+  --text-xl: 20px;
+  --text-2xl: 24px;
+
   --color-primary: #2185D5;
   --color-primary-hover: #1B6DAE;
   --color-primary-light: #E8F2FB;
@@ -9,6 +15,7 @@
   --color-background: #F8FAFC;
   --color-surface: #FFFFFF;
   --color-border: #BCCCDC;
+  --color-border-strong: #7A8B9E;
   --color-muted: #9AA6B2;
   --color-ink: #0F172A;
   --color-ink-soft: #475569;

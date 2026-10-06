@@ -1,6 +1,6 @@
 import React from 'react';
 import Input from '../ui/Input';
-import { Sliders } from 'lucide-react';
+
 
 export default function DynamicFieldsForm({ fields = [], values = {}, onChange, errors = {} }) {
   if (!fields || fields.length === 0) {
@@ -15,8 +15,7 @@ export default function DynamicFieldsForm({ fields = [], values = {}, onChange, 
 
   return (
     <div className="mb-6 p-4 bg-background border border-border rounded-lg">
-      <div className="flex items-center gap-2 mb-4 pb-2 border-b border-border/60 text-ink font-bold text-sm">
-        <Sliders className="w-4 h-4 text-primary" />
+      <div className="mb-4 pb-2 border-b border-border/60 text-ink font-bold text-sm">
         <span>Informasi Tambahan Kategori</span>
       </div>
 

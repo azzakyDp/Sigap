@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, AlertCircle, RefreshCw } from 'lucide-react';
+import { AlertCircle } from 'lucide-react';
+import Icon from '../../components/ui/Icon';
 import { getReportDetailApi } from '../../api/reports';
 import DashboardLayout from '../../components/layout/DashboardLayout';
 import Button from '../../components/ui/Button';
@@ -55,18 +56,18 @@ export default function ReportDetailPage() {
     return (
       <DashboardLayout>
         <div className="max-w-2xl mx-auto py-12 px-4 text-center">
-          <div className="w-16 h-16 bg-status-amber-bg rounded-full flex items-center justify-center mx-auto mb-4 border border-status-amber-border text-status-amber-text">
-            <AlertCircle className="w-8 h-8" />
+          <div className="flex justify-center mb-4">
+            <Icon icon={AlertCircle} size="nav" className="text-status-amber-text" />
           </div>
           <h2 className="text-xl font-bold text-ink mb-2">Laporan Tidak Ditemukan</h2>
           <p className="text-ink-soft text-sm mb-6 max-w-md mx-auto">
             {error || 'Laporan pengaduan yang Anda cari tidak ditemukan atau Anda tidak memiliki hak akses untuk membukanya.'}
           </p>
           <div className="flex items-center justify-center gap-3">
-            <Button variant="secondary" onClick={() => navigate('/reports/me')} icon={ArrowLeft}>
+            <Button variant="secondary" onClick={() => navigate('/reports/me')}>
               Kembali ke Daftar Laporan Saya
             </Button>
-            <Button variant="primary" onClick={fetchDetail} icon={RefreshCw}>
+            <Button variant="primary" onClick={fetchDetail}>
               Coba Lagi
             </Button>
           </div>

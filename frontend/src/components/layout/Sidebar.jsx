@@ -109,7 +109,7 @@ export default function Sidebar({ isOpen, onClose }) {
                   }`
                 }
               >
-                <Icon className="w-4 h-4 shrink-0" />
+                <Icon className="w-5 h-5 shrink-0 text-current" strokeWidth={1.75} />
                 {link.name}
               </NavLink>
             );

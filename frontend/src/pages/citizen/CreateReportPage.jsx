@@ -1,15 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-  FileText,
-  MapPin,
-  Camera,
-  Trash2,
-  AlertCircle,
-  CheckCircle2,
-  ArrowLeft,
-  UploadCloud,
-} from 'lucide-react';
+import { AlertCircle, CheckCircle2, Trash2 } from 'lucide-react';
+import Icon from '../../components/ui/Icon';
 import DashboardLayout from '../../components/layout/DashboardLayout';
 import Card from '../../components/ui/Card';
 import Input from '../../components/ui/Input';
@@ -210,16 +202,16 @@ export default function CreateReportPage() {
             onClick={() => navigate('/dashboard')}
             className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary hover:underline mb-2 cursor-pointer"
           >
-            <ArrowLeft className="w-3.5 h-3.5" /> Kembali ke Dashboard
+            Kembali ke Dashboard
           </button>
-          <h1 className="text-2xl font-extrabold text-ink tracking-tight">Buat Pengaduan Laporan Baru</h1>
+          <h1 className="text-2xl font-bold text-ink tracking-tight">Buat Pengaduan Laporan Baru</h1>
           <p className="text-muted text-sm mt-1">Sampaikan laporan gangguan lalu lintas di sekitar Anda.</p>
         </div>
       </div>
 
       {serverError && (
         <div className="mb-6 p-4 bg-danger-light border border-danger/30 rounded-lg text-sm text-danger font-semibold flex items-center gap-3">
-          <AlertCircle className="w-5 h-5 shrink-0 text-danger" />
+          <Icon icon={AlertCircle} size="sm" />
           <span>{serverError}</span>
         </div>
       )}
@@ -244,8 +236,8 @@ export default function CreateReportPage() {
           )}
 
           <div className="mb-4">
-            <label className="block text-sm font-medium text-ink mb-1.5 flex items-center gap-1.5">
-              <FileText className="w-4 h-4 text-primary" /> Deskripsi Kejadian <span className="text-danger">*</span>
+            <label className="block text-sm font-medium text-ink mb-1.5">
+              Deskripsi Kejadian <span className="text-danger">*</span>
             </label>
             <textarea
               value={deskripsi}
@@ -273,8 +265,8 @@ export default function CreateReportPage() {
 
         <Card title="2. Lokasi Kejadian" subtitle="Pilih titik koordinat di peta dan isi rincian alamat">
           <div className="mb-4">
-            <label className="block text-sm font-medium text-ink mb-1.5 flex items-center gap-1.5">
-              <MapPin className="w-4 h-4 text-primary" /> Titik Peta Koordinat <span className="text-danger">*</span>
+            <label className="block text-sm font-medium text-ink mb-1.5">
+              Titik Peta Koordinat <span className="text-danger">*</span>
             </label>
             <MapPicker
               marker={{ lat: location.latitude, lng: location.longitude }}
@@ -300,13 +292,12 @@ export default function CreateReportPage() {
 
         <Card title="3. Foto Bukti Kejadian" subtitle="Unggah minimal 1 foto bukti (maksimal 5 foto, format JPG/PNG)">
           <div className="mb-4">
-            <label className="block text-sm font-medium text-ink mb-2 flex items-center gap-1.5">
-              <Camera className="w-4 h-4 text-primary" /> Unggah Foto <span className="text-danger">*</span>
+            <label className="block text-sm font-medium text-ink mb-2">
+              Unggah Foto <span className="text-danger">*</span>
             </label>
 
             {photos.length < 5 && (
               <label className="border-2 border-dashed border-border hover:border-primary bg-background rounded-lg p-6 flex flex-col items-center justify-center cursor-pointer transition-colors text-center mb-4">
-                <UploadCloud className="w-8 h-8 text-primary mb-2" />
                 <span className="text-sm font-semibold text-ink">Klik untuk memilih foto</span>
                 <span className="text-xs text-muted mt-1">Format JPG, JPEG, atau PNG (Maks 5MB per file)</span>
                 <input
@@ -330,10 +321,11 @@ export default function CreateReportPage() {
                     <button
                       type="button"
                       onClick={() => handleRemovePhoto(idx)}
-                      className="absolute top-1 right-1 bg-danger text-white p-1 rounded-md shadow-md opacity-90 hover:opacity-100 transition-opacity cursor-pointer"
+                      className="absolute top-1 right-1 bg-danger text-white p-1 rounded-md shadow-md opacity-90 hover:opacity-100 transition-opacity cursor-pointer inline-flex items-center justify-center"
                       title="Hapus foto ini"
+                      aria-label="Hapus foto"
                     >
-                      <Trash2 className="w-3.5 h-3.5" />
+                      <Icon icon={Trash2} size="sm" />
                     </button>
                     <span className="absolute bottom-1 left-1 bg-ink/70 text-white text-xs px-1.5 py-0.5 rounded">
                       #{idx + 1}
@@ -376,8 +368,8 @@ export default function CreateReportPage() {
         title="Pengaduan Laporan Berhasil Dibuat!"
       >
         <div className="text-center py-4">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-status-green-bg border border-status-green-border rounded-full text-status-green-text mb-3">
-            <CheckCircle2 className="w-8 h-8" />
+          <div className="flex justify-center mb-3">
+            <Icon icon={CheckCircle2} size="nav" className="text-status-green-text" />
           </div>
           <h4 className="text-ink font-bold text-lg mb-1">Terima Kasih Atas Laporan Anda</h4>
           <p className="text-xs text-muted mb-4">Laporan Anda telah tercatat ke dalam sistem SIGAP.</p>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { ShieldAlert, AlertCircle } from 'lucide-react';
+import { AlertCircle } from 'lucide-react';
+import Icon from '../components/ui/Icon';
 import { useAuth } from '../context/AuthContext';
 import Card from '../components/ui/Card';
 import Input from '../components/ui/Input';
@@ -97,9 +98,6 @@ export default function RegisterPage() {
     <div className="min-h-screen bg-background flex flex-col justify-center items-center p-4 py-8">
       <div className="w-full max-w-lg">
         <div className="text-center mb-6">
-          <div className="inline-flex items-center justify-center w-12 h-12 bg-primary rounded-xl text-white font-extrabold shadow-md mb-2">
-            <ShieldAlert className="w-6 h-6" />
-          </div>
           <h1 className="text-2xl font-extrabold text-ink tracking-tight">Registrasi Akun SIGAP</h1>
           <p className="text-ink-soft text-xs mt-1">Daftarkan akun masyarakat (CITIZEN) untuk menyampaikan laporan</p>
         </div>
@@ -107,7 +105,7 @@ export default function RegisterPage() {
         <Card title="Buat Akun Baru" subtitle="Isi formulir pendaftaran di bawah ini">
           {error && (
             <div className="mb-4 p-3.5 bg-danger-light border border-danger/30 rounded-md text-sm text-danger font-medium flex items-center gap-2">
-              <AlertCircle className="w-4 h-4 shrink-0 text-danger" />
+              <Icon icon={AlertCircle} size="sm" />
               <span>{error}</span>
             </div>
           )}

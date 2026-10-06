@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { UserCheck, AlertCircle, Loader2 } from 'lucide-react';
+import { AlertCircle, Loader2 } from 'lucide-react';
+import Icon from '../ui/Icon';
 import Modal from '../ui/Modal';
 import Button from '../ui/Button';
 import { getOfficersApi, assignReportApi } from '../../api/workflow';
@@ -78,7 +79,7 @@ export default function AssignOfficerModal({ isOpen, onClose, report, onSuccess 
       <form onSubmit={handleSubmit} className="space-y-4">
         {error && (
           <div className="p-3 bg-status-red-bg border border-status-red-border rounded-lg text-status-red-text text-xs flex items-center gap-2">
-            <AlertCircle className="w-4 h-4 shrink-0" />
+            <Icon icon={AlertCircle} size="sm" />
             <span>{error}</span>
           </div>
         )}
@@ -96,7 +97,7 @@ export default function AssignOfficerModal({ isOpen, onClose, report, onSuccess 
           </label>
           {loadingOfficers ? (
             <div className="py-4 text-center text-ink-soft text-xs flex items-center justify-center gap-2">
-              <Loader2 className="w-4 h-4 animate-spin text-primary" />
+              <Icon icon={Loader2} size="sm" className="animate-spin" />
               <span>Memuat daftar petugas...</span>
             </div>
           ) : (
@@ -140,7 +141,6 @@ export default function AssignOfficerModal({ isOpen, onClose, report, onSuccess 
             variant="primary"
             loading={submitting}
             disabled={loadingOfficers}
-            icon={UserCheck}
           >
             {isReassign ? 'Tugaskan Ulang' : 'Tugaskan Petugas'}
           </Button>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Lock, AlertCircle } from 'lucide-react';
+import { AlertCircle } from 'lucide-react';
+import Icon from '../ui/Icon';
 import Modal from '../ui/Modal';
 import Button from '../ui/Button';
 import { closeReportApi } from '../../api/workflow';
@@ -51,14 +52,13 @@ export default function CloseCaseModal({ isOpen, onClose, report, onSuccess }) {
       <form onSubmit={handleSubmit} className="space-y-4">
         {error && (
           <div className="p-3 bg-status-red-bg border border-status-red-border rounded-lg text-status-red-text text-xs flex items-center gap-2">
-            <AlertCircle className="w-4 h-4 shrink-0" />
+            <Icon icon={AlertCircle} size="sm" />
             <span>{error}</span>
           </div>
         )}
 
         <div className="p-4 bg-background rounded-lg border border-border text-xs text-ink space-y-2">
-          <p className="font-bold flex items-center gap-1.5 text-primary">
-            <Lock className="w-4 h-4" />
+          <p className="font-bold text-ink">
             Konfirmasi Penutupan Kasus
           </p>
           <p className="text-ink-soft">
@@ -85,7 +85,7 @@ export default function CloseCaseModal({ isOpen, onClose, report, onSuccess }) {
           <Button variant="secondary" onClick={onClose} disabled={loading}>
             Batal
           </Button>
-          <Button type="submit" variant="primary" loading={loading} icon={Lock}>
+          <Button type="submit" variant="primary" loading={loading}>
             Tutup Kasus
           </Button>
         </div>

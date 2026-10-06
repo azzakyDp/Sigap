@@ -1,5 +1,6 @@
 import React from 'react';
-import { Clock, CheckCircle2, AlertCircle, XCircle, FileSearch, ArrowRight, User } from 'lucide-react';
+import { Clock, CheckCircle2, AlertCircle, XCircle, FileSearch, ArrowRight } from 'lucide-react';
+import Icon from '../ui/Icon';
 import Badge from '../ui/Badge';
 import { getStatusBadgeClass, getStaffStatusLabel, getCitizenStatusLabel } from '../../utils/statusColors';
 import { formatDate } from '../../utils/formatters';
@@ -9,19 +10,19 @@ const getStatusIcon = (statusRaw) => {
   switch (status) {
     case 'RESOLVED':
     case 'CLOSED':
-      return <CheckCircle2 className="w-5 h-5 text-status-green-text" />;
+      return <Icon icon={CheckCircle2} size="sm" className="text-status-green-text" />;
     case 'REJECTED':
-      return <XCircle className="w-5 h-5 text-status-red-text" />;
+      return <Icon icon={XCircle} size="sm" className="text-status-red-text" />;
     case 'DUPLICATE':
-      return <AlertCircle className="w-5 h-5 text-status-orange-text" />;
+      return <Icon icon={AlertCircle} size="sm" className="text-status-orange-text" />;
     case 'IN_PROGRESS':
     case 'ASSIGNED':
     case 'VERIFIED':
-      return <Clock className="w-5 h-5 text-status-blue-text" />;
+      return <Icon icon={Clock} size="sm" className="text-status-blue-text" />;
     case 'PENDING_VERIFICATION':
     case 'SUBMITTED':
     default:
-      return <FileSearch className="w-5 h-5 text-status-amber-text" />;
+      return <Icon icon={FileSearch} size="sm" className="text-status-amber-text" />;
   }
 };
 
@@ -133,7 +134,6 @@ export default function StatusTimeline({ histories = [], audience = 'citizen', c
                 </div>
 
                 <div className="flex items-center text-xs text-ink-soft font-medium">
-                  <Clock className="w-3.5 h-3.5 mr-1 text-ink-soft shrink-0" />
                   <span>{formatDate(item.changed_at)}</span>
                 </div>
               </div>
@@ -144,13 +144,12 @@ export default function StatusTimeline({ histories = [], audience = 'citizen', c
                   {item.status_from_raw && (
                     <span className="flex items-center gap-1 font-mono text-xs text-ink-soft">
                       <span>{item.status_from_raw}</span>
-                      <ArrowRight className="w-3 h-3 text-ink-soft" />
+                      <Icon icon={ArrowRight} size="sm" />
                       <span className="font-semibold text-ink">{statusRaw}</span>
                     </span>
                   )}
                   {item.changed_by_nama && (
                     <span className="flex items-center gap-1">
-                      <User className="w-3 h-3 text-ink-soft" />
                       <span>Oleh: <strong className="text-ink">{item.changed_by_nama}</strong></span>
                     </span>
                   )}

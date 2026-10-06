@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Filter, RotateCcw, Calendar, Tag, Activity } from 'lucide-react';
+
 import Button from '../ui/Button';
 import { getCategoriesApi } from '../../api/categories';
 import { getStaffStatusLabel } from '../../utils/statusColors';
@@ -53,8 +53,7 @@ export default function ReportFilterBar({ filters = {}, onFilterChange, onReset 
   return (
     <div className="bg-surface p-4 rounded-lg border border-border space-y-3">
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2 font-bold text-ink text-sm">
-          <Filter className="w-4 h-4 text-primary" />
+        <div className="font-bold text-ink text-sm">
           <span>Filter & Pencarian Laporan</span>
         </div>
         {hasActiveFilters && (
@@ -62,7 +61,6 @@ export default function ReportFilterBar({ filters = {}, onFilterChange, onReset 
             variant="secondary"
             size="sm"
             onClick={onReset}
-            icon={RotateCcw}
             className="text-xs py-1"
           >
             Reset Filter
@@ -73,8 +71,7 @@ export default function ReportFilterBar({ filters = {}, onFilterChange, onReset 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
         {/* Status Filter */}
         <div>
-          <label className="block text-ink-soft font-semibold mb-1 flex items-center gap-1">
-            <Activity className="w-3.5 h-3.5 text-primary" />
+          <label className="block text-ink-soft font-semibold mb-1">
             Status Laporan
           </label>
           <select
@@ -93,8 +90,7 @@ export default function ReportFilterBar({ filters = {}, onFilterChange, onReset 
 
         {/* Kategori Filter */}
         <div>
-          <label className="block text-ink-soft font-semibold mb-1 flex items-center gap-1">
-            <Tag className="w-3.5 h-3.5 text-primary" />
+          <label className="block text-ink-soft font-semibold mb-1">
             Kategori Pengaduan
           </label>
           <select
@@ -114,8 +110,7 @@ export default function ReportFilterBar({ filters = {}, onFilterChange, onReset 
 
         {/* Tanggal Awal Filter */}
         <div>
-          <label className="block text-ink-soft font-semibold mb-1 flex items-center gap-1">
-            <Calendar className="w-3.5 h-3.5 text-primary" />
+          <label className="block text-ink-soft font-semibold mb-1">
             Tanggal Awal
           </label>
           <input
@@ -133,8 +128,7 @@ export default function ReportFilterBar({ filters = {}, onFilterChange, onReset 
 
         {/* Tanggal Akhir Filter */}
         <div>
-          <label className="block text-ink-soft font-semibold mb-1 flex items-center gap-1">
-            <Calendar className="w-3.5 h-3.5 text-primary" />
+          <label className="block text-ink-soft font-semibold mb-1">
             Tanggal Akhir
           </label>
           <input

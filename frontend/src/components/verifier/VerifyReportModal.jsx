@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { CheckCircle2, XCircle, Copy, AlertCircle } from 'lucide-react';
+import Icon from '../ui/Icon';
 import Modal from '../ui/Modal';
 import Button from '../ui/Button';
 import { verifyReportApi } from '../../api/workflow';
@@ -77,7 +78,7 @@ export default function VerifyReportModal({ isOpen, onClose, report, onSuccess }
       <form onSubmit={handleSubmit} noValidate className="space-y-4">
         {error && (
           <div className="p-3 bg-status-red-bg border border-status-red-border rounded-lg text-status-red-text text-xs flex items-center gap-2">
-            <AlertCircle className="w-4 h-4 shrink-0" />
+            <Icon icon={AlertCircle} size="sm" />
             <span>{error}</span>
           </div>
         )}
@@ -97,7 +98,7 @@ export default function VerifyReportModal({ isOpen, onClose, report, onSuccess }
                   : 'border-border bg-surface text-ink hover:bg-background'
               }`}
             >
-              <CheckCircle2 className="w-5 h-5 text-primary" />
+              <Icon icon={CheckCircle2} size="nav" className="text-primary" />
               <span>VERIFIED</span>
             </button>
 
@@ -110,7 +111,7 @@ export default function VerifyReportModal({ isOpen, onClose, report, onSuccess }
                   : 'border-border bg-surface text-ink hover:bg-background'
               }`}
             >
-              <XCircle className="w-5 h-5 text-danger" />
+              <Icon icon={XCircle} size="nav" className="text-danger" />
               <span>REJECTED</span>
             </button>
 
@@ -123,7 +124,7 @@ export default function VerifyReportModal({ isOpen, onClose, report, onSuccess }
                   : 'border-border bg-surface text-ink hover:bg-background'
               }`}
             >
-              <Copy className="w-5 h-5 text-status-orange-text" />
+              <Icon icon={Copy} size="nav" className="text-status-orange-text" />
               <span>DUPLICATE</span>
             </button>
           </div>

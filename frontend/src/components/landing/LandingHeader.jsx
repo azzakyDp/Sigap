@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ShieldAlert, Menu, X, ArrowRight } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
+import Icon from '../ui/Icon';
 import Button from '../ui/Button';
 
 export default function LandingHeader() {
@@ -23,11 +24,8 @@ export default function LandingHeader() {
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           className="flex items-center gap-2.5 cursor-pointer group"
         >
-          <div className="w-9 h-9 rounded-lg bg-primary flex items-center justify-center text-white shadow-xs group-hover:bg-primary-hover transition-colors">
-            <ShieldAlert className="w-5 h-5" />
-          </div>
           <div className="flex flex-col">
-            <span className="font-extrabold text-base tracking-tight text-ink">SIGAP</span>
+            <span className="font-bold text-base tracking-tight text-ink">SIGAP</span>
             <span className="text-[10px] text-ink-soft font-semibold -mt-1">Sistem Pengaduan Lalu Lintas</span>
           </div>
         </div>
@@ -67,7 +65,6 @@ export default function LandingHeader() {
             variant="primary"
             size="sm"
             onClick={() => navigate('/register')}
-            icon={ArrowRight}
           >
             Buat Laporan
           </Button>
@@ -77,10 +74,10 @@ export default function LandingHeader() {
         <button
           type="button"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="md:hidden p-2 text-ink-soft hover:text-ink rounded-md hover:bg-background transition-colors cursor-pointer"
+          className="md:hidden p-2 text-ink-soft hover:text-ink rounded-md hover:bg-background transition-colors cursor-pointer inline-flex items-center justify-center shrink-0"
           aria-label="Buka menu navigasi"
         >
-          {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          {mobileMenuOpen ? <Icon icon={X} size="nav" /> : <Icon icon={Menu} size="nav" />}
         </button>
       </div>
 
@@ -125,7 +122,6 @@ export default function LandingHeader() {
                 setMobileMenuOpen(false);
                 navigate('/register');
               }}
-              icon={ArrowRight}
             >
               Buat Laporan
             </Button>

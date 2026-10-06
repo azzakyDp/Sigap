@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Wrench, RefreshCw, AlertCircle, CheckCircle2 } from 'lucide-react';
+
 import DashboardLayout from '../../components/layout/DashboardLayout';
 import Card from '../../components/ui/Card';
 import Button from '../../components/ui/Button';
@@ -48,8 +48,7 @@ export default function AssignedReportsPage() {
       {/* Header */}
       <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-extrabold text-ink tracking-tight flex items-center gap-2">
-            <Wrench className="w-7 h-7 text-primary" />
+          <h1 className="text-2xl font-bold text-ink tracking-tight">
             Tugas Saya
           </h1>
           <p className="text-ink-soft text-sm mt-1">
@@ -62,7 +61,6 @@ export default function AssignedReportsPage() {
             variant="secondary"
             onClick={() => fetchAssignedReports(page)}
             loading={loading}
-            icon={RefreshCw}
           >
             Refresh
           </Button>
@@ -92,9 +90,6 @@ export default function AssignedReportsPage() {
           </div>
         ) : reports.length === 0 ? (
           <div className="py-16 px-4 text-center">
-            <div className="w-16 h-16 bg-status-green-bg rounded-full flex items-center justify-center mx-auto mb-4 border border-status-green-border text-status-green-text">
-              <CheckCircle2 className="w-8 h-8" />
-            </div>
             <h3 className="text-lg font-bold text-ink mb-1">
               Tidak Ada Tugas Penanganan
             </h3>

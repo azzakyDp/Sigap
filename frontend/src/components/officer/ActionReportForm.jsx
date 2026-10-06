@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Wrench, AlertCircle, Calendar, Clock } from 'lucide-react';
+import { AlertCircle } from 'lucide-react';
+import Icon from '../ui/Icon';
 import Modal from '../ui/Modal';
 import Button from '../ui/Button';
 import { createActionReportApi } from '../../api/workflow';
@@ -95,7 +96,7 @@ export default function ActionReportForm({ isOpen, onClose, report, onSuccess })
       <form onSubmit={handleSubmit} className="space-y-4 text-ink">
         {error && (
           <div className="p-3.5 bg-status-red-bg border border-status-red-border rounded-lg text-status-red-text text-xs flex items-center gap-2">
-            <AlertCircle className="w-4 h-4 shrink-0" />
+            <Icon icon={AlertCircle} size="sm" />
             <span>{error}</span>
           </div>
         )}
@@ -119,8 +120,7 @@ export default function ActionReportForm({ isOpen, onClose, report, onSuccess })
         {/* Waktu Kedatangan & Waktu Selesai (Responsive Grid) */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="block text-xs font-bold text-ink mb-1 flex items-center gap-1">
-              <Calendar className="w-3.5 h-3.5 text-primary" />
+            <label className="block text-xs font-bold text-ink mb-1">
               Waktu Kedatangan <span className="text-danger">*</span>
             </label>
             <input
@@ -133,8 +133,7 @@ export default function ActionReportForm({ isOpen, onClose, report, onSuccess })
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-ink mb-1 flex items-center gap-1">
-              <Clock className="w-3.5 h-3.5 text-ink-soft" />
+            <label className="block text-xs font-bold text-ink mb-1">
               Waktu Selesai <span className="text-ink-soft font-normal">(Opsional)</span>
             </label>
             <input
@@ -197,7 +196,6 @@ export default function ActionReportForm({ isOpen, onClose, report, onSuccess })
             type="submit"
             variant="primary"
             loading={loading}
-            icon={Wrench}
             fullWidth={true}
             className="sm:w-auto"
           >

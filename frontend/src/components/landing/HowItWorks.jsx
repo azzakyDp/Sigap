@@ -1,28 +1,23 @@
 import React from 'react';
-import { FileEdit, ShieldCheck, UserCheck, CheckCircle2 } from 'lucide-react';
 
 const steps = [
   {
     step: '01',
-    icon: FileEdit,
     title: 'Buat Laporan',
     description: 'Ambil foto, tentukan titik lokasi presisi di peta, dan jelaskan kendala fasilitas jalan atau lalu lintas yang kamu temui.',
   },
   {
     step: '02',
-    icon: ShieldCheck,
     title: 'Diverifikasi',
     description: 'Tim verifikator mengecek kelayakan laporan, mengonfirmasi kategori, serta menentukan skala prioritas penanganan.',
   },
   {
     step: '03',
-    icon: UserCheck,
     title: 'Ditugaskan ke Petugas',
     description: 'Laporan diteruskan langsung ke unit petugas lapangan terdekat untuk pemeliharaan atau tindakan perbaikan.',
   },
   {
     step: '04',
-    icon: CheckCircle2,
     title: 'Selesai Ditangani',
     description: 'Petugas memperbarui status penanganan dengan foto hasil perbaikan. Warga dapat memantau linimasa hingga tuntas.',
   },
@@ -48,21 +43,17 @@ export function HowItWorks() {
         {/* Steps Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
           {steps.map((item) => {
-            const IconComponent = item.icon;
             return (
               <div
                 key={item.step}
                 className="relative bg-background p-6 rounded-2xl border border-border hover:border-primary/40 hover:shadow-lg transition-all duration-300 flex flex-col justify-between group"
               >
-                {/* Step badge & icon */}
+                {/* Step badge */}
                 <div>
                   <div className="flex items-center justify-between mb-6">
                     <span className="text-2xl font-black text-ink-soft/40 group-hover:text-primary transition-colors">
                       {item.step}
                     </span>
-                    <div className="p-3 rounded-xl bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white transition-colors duration-300">
-                      <IconComponent className="w-6 h-6" />
-                    </div>
                   </div>
 
                   <h3 className="text-lg font-bold text-ink mb-2 group-hover:text-primary transition-colors">
@@ -71,13 +62,6 @@ export function HowItWorks() {
                   <p className="text-sm text-ink-soft leading-relaxed">
                     {item.description}
                   </p>
-                </div>
-
-                <div className="mt-6 pt-4 border-t border-border/60 flex items-center gap-2 text-xs font-medium text-primary opacity-0 group-hover:opacity-100 transition-opacity">
-                  <span>Pantau di aplikasi</span>
-                  <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
                 </div>
               </div>
             );

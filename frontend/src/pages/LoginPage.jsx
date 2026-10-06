@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
-import { ShieldAlert, Info, AlertCircle } from 'lucide-react';
+import { Info, AlertCircle } from 'lucide-react';
+import Icon from '../components/ui/Icon';
 import { useAuth } from '../context/AuthContext';
 import Card from '../components/ui/Card';
 import Input from '../components/ui/Input';
@@ -65,9 +66,6 @@ export default function LoginPage() {
     <div className="min-h-screen bg-background flex flex-col justify-center items-center p-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-14 h-14 bg-primary rounded-xl text-white font-extrabold shadow-md mb-3">
-            <ShieldAlert className="w-8 h-8" />
-          </div>
           <h1 className="text-3xl font-extrabold text-ink tracking-tight">SIGAP</h1>
           <p className="text-ink-soft text-sm mt-1">Sistem Informasi Pengaduan Gangguan Lalu Lintas</p>
         </div>
@@ -75,14 +73,14 @@ export default function LoginPage() {
         <Card title="Masuk ke Akun Anda" subtitle="Masukkan kredensial yang sudah terdaftar">
           {successMessage && (
             <div className="mb-4 p-3.5 bg-status-green-bg border border-status-green-border rounded-md text-sm text-status-green-text font-medium flex items-center gap-2">
-              <Info className="w-4 h-4 shrink-0 text-status-green-text" />
+              <Icon icon={Info} size="sm" />
               <span>{successMessage}</span>
             </div>
           )}
 
           {error && (
             <div className="mb-4 p-3.5 bg-danger-light border border-danger/30 rounded-md text-sm text-danger font-medium flex items-center gap-2">
-              <AlertCircle className="w-4 h-4 shrink-0 text-danger" />
+              <Icon icon={AlertCircle} size="sm" />
               <span>{error}</span>
             </div>
           )}

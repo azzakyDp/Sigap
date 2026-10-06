@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { getCategoriesApi } from '../../api/categories';
-import { Tag, Loader2 } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
+import Icon from '../ui/Icon';
 
 export default function CategorySelect({ value, onChange, error, disabled = false }) {
   const [categories, setCategories] = useState([]);
@@ -32,13 +33,13 @@ export default function CategorySelect({ value, onChange, error, disabled = fals
 
   return (
     <div className="w-full mb-4">
-      <label className="block text-sm font-medium text-ink mb-1.5 flex items-center gap-1.5">
-        <Tag className="w-4 h-4 text-primary" /> Kategori Pengaduan <span className="text-danger">*</span>
+      <label className="block text-sm font-medium text-ink mb-1.5">
+        Kategori Pengaduan <span className="text-danger">*</span>
       </label>
 
       {loading ? (
         <div className="flex items-center gap-2 text-xs text-ink-soft p-2.5 border border-border rounded-md bg-background">
-          <Loader2 className="w-4 h-4 animate-spin text-primary" />
+          <Icon icon={Loader2} size="sm" className="animate-spin" />
           <span>Memuat daftar kategori...</span>
         </div>
       ) : fetchError ? (

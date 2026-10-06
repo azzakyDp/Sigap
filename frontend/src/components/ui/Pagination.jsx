@@ -1,5 +1,6 @@
 import React from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import Icon from './Icon';
 
 export default function Pagination({
   currentPage = 1,
@@ -74,11 +75,11 @@ export default function Pagination({
           type="button"
           onClick={handlePrev}
           disabled={currentPage === 1 || disabled}
-          className="inline-flex items-center justify-center h-9 px-3 text-xs font-semibold text-ink bg-surface border border-border rounded-md hover:bg-background disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+          className="inline-flex items-center justify-center h-9 px-3 text-xs font-semibold text-ink bg-surface border border-border rounded-md hover:bg-background disabled:opacity-40 disabled:cursor-not-allowed transition-colors gap-1 cursor-pointer"
           aria-label="Halaman sebelumnya"
         >
-          <ChevronLeft className="w-4 h-4 mr-1" />
-          Sebelumnya
+          <Icon icon={ChevronLeft} size="sm" />
+          <span>Sebelumnya</span>
         </button>
 
         <div className="hidden sm:flex items-center gap-1">
@@ -88,7 +89,7 @@ export default function Pagination({
               type="button"
               onClick={() => onPageChange && onPageChange(page)}
               disabled={disabled}
-              className={`h-9 w-9 inline-flex items-center justify-center text-xs font-semibold rounded-md border transition-colors ${
+              className={`h-9 w-9 inline-flex items-center justify-center text-xs font-semibold rounded-md border transition-colors cursor-pointer ${
                 page === currentPage
                   ? 'bg-primary text-white border-primary shadow-xs font-bold'
                   : 'bg-surface text-ink border-border hover:bg-background'
@@ -103,11 +104,11 @@ export default function Pagination({
           type="button"
           onClick={handleNext}
           disabled={currentPage === totalPages || disabled}
-          className="inline-flex items-center justify-center h-9 px-3 text-xs font-semibold text-ink bg-surface border border-border rounded-md hover:bg-background disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+          className="inline-flex items-center justify-center h-9 px-3 text-xs font-semibold text-ink bg-surface border border-border rounded-md hover:bg-background disabled:opacity-40 disabled:cursor-not-allowed transition-colors gap-1 cursor-pointer"
           aria-label="Halaman selanjutnya"
         >
-          Selanjutnya
-          <ChevronRight className="w-4 h-4 ml-1" />
+          <span>Selanjutnya</span>
+          <Icon icon={ChevronRight} size="sm" />
         </button>
       </div>
     </div>

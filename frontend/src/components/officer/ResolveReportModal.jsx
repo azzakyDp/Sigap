@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { CheckCircle2, AlertTriangle, AlertCircle, Send } from 'lucide-react';
+import { CheckCircle2, AlertTriangle, AlertCircle } from 'lucide-react';
+import Icon from '../ui/Icon';
 import Modal from '../ui/Modal';
 import Button from '../ui/Button';
 import { resolveReportApi } from '../../api/workflow';
@@ -59,7 +60,7 @@ export default function ResolveReportModal({ isOpen, onClose, report, onSuccess 
       <form onSubmit={handleSubmit} className="space-y-4 text-ink">
         {error && (
           <div className="p-3.5 bg-status-red-bg border border-status-red-border rounded-lg text-status-red-text text-xs flex items-center gap-2">
-            <AlertCircle className="w-4 h-4 shrink-0" />
+            <Icon icon={AlertCircle} size="sm" />
             <span>{error}</span>
           </div>
         )}
@@ -79,7 +80,7 @@ export default function ResolveReportModal({ isOpen, onClose, report, onSuccess 
                   : 'border-border bg-surface text-ink hover:bg-background'
               }`}
             >
-              <CheckCircle2 className="w-6 h-6 text-primary" />
+              <Icon icon={CheckCircle2} size="nav" className="text-primary" />
               <span>RESOLVED (Selesai)</span>
             </button>
 
@@ -92,7 +93,7 @@ export default function ResolveReportModal({ isOpen, onClose, report, onSuccess 
                   : 'border-border bg-surface text-ink hover:bg-background'
               }`}
             >
-              <AlertTriangle className="w-6 h-6 text-status-amber-text" />
+              <Icon icon={AlertTriangle} size="nav" className="text-status-amber-text" />
               <span>UNRESOLVED (Belum Selesai)</span>
             </button>
           </div>
@@ -102,7 +103,7 @@ export default function ResolveReportModal({ isOpen, onClose, report, onSuccess 
         {decision === 'UNRESOLVED' && (
           <div className="p-3 bg-status-amber-bg border border-status-amber-border rounded-lg text-status-amber-text text-xs space-y-1">
             <p className="font-bold flex items-center gap-1.5">
-              <AlertTriangle className="w-4 h-4 shrink-0" />
+              <Icon icon={AlertTriangle} size="sm" />
               Penanganan Belum Selesai (UNRESOLVED)
             </p>
             <p className="text-status-amber-text/90">
@@ -147,7 +148,6 @@ export default function ResolveReportModal({ isOpen, onClose, report, onSuccess 
             type="submit"
             variant="primary"
             loading={loading}
-            icon={Send}
             fullWidth={true}
             className="sm:w-auto"
           >

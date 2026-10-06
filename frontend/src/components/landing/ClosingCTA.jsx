@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, ShieldCheck, FilePlus } from 'lucide-react';
 
 export function ClosingCTA() {
   return (
@@ -13,7 +12,7 @@ export function ClosingCTA() {
 
           <div className="relative z-10 max-w-3xl mx-auto text-center">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/15 backdrop-blur-md text-xs font-semibold text-white mb-6">
-              <ShieldCheck className="w-4 h-4" /> Mari Wujudkan Fasilitas Publik Yang Lebih Baik
+              Mari Wujudkan Fasilitas Publik Yang Lebih Baik
             </div>
 
             <h2 className="text-3xl md:text-5xl font-black tracking-tight leading-tight">
@@ -29,9 +28,7 @@ export function ClosingCTA() {
                 to="/register"
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl font-bold bg-white text-primary hover:bg-slate-100 hover:shadow-lg transition-all text-base group"
               >
-                <FilePlus className="w-5 h-5" />
                 <span>Buat Akun & Laporkan</span>
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Link>
               
               <Link

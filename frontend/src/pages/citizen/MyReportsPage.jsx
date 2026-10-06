@@ -1,14 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-  PlusCircle,
-  FileText,
-  Eye,
-  MapPin,
-  Calendar,
-  RefreshCw,
-  AlertCircle,
-} from 'lucide-react';
+
 import { getMyReportsApi } from '../../api/reports';
 import DashboardLayout from '../../components/layout/DashboardLayout';
 import Card from '../../components/ui/Card';
@@ -57,8 +49,7 @@ export default function MyReportsPage() {
       {/* Page Header */}
       <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-extrabold text-ink tracking-tight flex items-center gap-2">
-            <FileText className="w-7 h-7 text-primary" />
+          <h1 className="text-2xl font-bold text-ink tracking-tight">
             Laporan Saya
           </h1>
           <p className="text-ink-soft text-sm mt-1">
@@ -71,14 +62,12 @@ export default function MyReportsPage() {
             variant="secondary"
             onClick={() => fetchMyReports(page)}
             loading={loading}
-            icon={RefreshCw}
           >
             Refresh
           </Button>
           <Button
             variant="primary"
             onClick={() => navigate('/reports/create')}
-            icon={PlusCircle}
           >
             Buat Laporan Baru
           </Button>
@@ -111,9 +100,6 @@ export default function MyReportsPage() {
         ) : reports.length === 0 ? (
           /* Empty State Verification */
           <div className="py-16 px-4 text-center">
-            <div className="w-16 h-16 bg-primary-light rounded-full flex items-center justify-center mx-auto mb-4 border border-primary/20">
-              <FileText className="w-8 h-8 text-primary" />
-            </div>
             <h3 className="text-lg font-bold text-ink mb-1">
               Belum Ada Laporan Pengaduan
             </h3>
@@ -123,7 +109,6 @@ export default function MyReportsPage() {
             <Button
               variant="primary"
               onClick={() => navigate('/reports/create')}
-              icon={PlusCircle}
             >
               Buat Laporan Pertama
             </Button>

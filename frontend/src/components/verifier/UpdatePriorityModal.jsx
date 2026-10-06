@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { AlertCircle, ShieldAlert } from 'lucide-react';
+import { AlertCircle } from 'lucide-react';
+import Icon from '../ui/Icon';
 import Modal from '../ui/Modal';
 import Button from '../ui/Button';
 import Badge from '../ui/Badge';
@@ -62,7 +63,7 @@ export default function UpdatePriorityModal({ isOpen, onClose, report, onSuccess
       <form onSubmit={handleSubmit} className="space-y-4">
         {error && (
           <div className="p-3 bg-status-red-bg border border-status-red-border rounded-lg text-status-red-text text-xs flex items-center gap-2">
-            <AlertCircle className="w-4 h-4 shrink-0" />
+            <Icon icon={AlertCircle} size="sm" />
             <span>{error}</span>
           </div>
         )}
@@ -113,7 +114,7 @@ export default function UpdatePriorityModal({ isOpen, onClose, report, onSuccess
           <Button variant="secondary" onClick={onClose} disabled={loading}>
             Batal
           </Button>
-          <Button type="submit" variant="primary" loading={loading} icon={ShieldAlert}>
+          <Button type="submit" variant="primary" loading={loading}>
             Simpan Prioritas
           </Button>
         </div>

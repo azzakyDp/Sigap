@@ -1,15 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import {
-  Cpu,
-  RefreshCw,
-  AlertTriangle,
-  ChevronDown,
-  ChevronUp,
-  Info,
-  ShieldCheck,
-  FileText,
-  Clock,
-} from 'lucide-react';
+import { ChevronDown, ChevronUp, AlertTriangle, RefreshCw } from 'lucide-react';
+import Icon from '../ui/Icon';
 import Card from '../ui/Card';
 import Badge from '../ui/Badge';
 import Alert from '../ui/Alert';
@@ -189,7 +180,7 @@ export default function AIAnalysisPanel({ reportId }) {
         </Alert>
 
         <div className="flex items-center justify-between pt-1">
-          <Button variant="secondary" size="sm" onClick={handleRetryFetch} icon={RefreshCw}>
+          <Button variant="secondary" size="sm" onClick={handleRetryFetch}>
             Coba lagi
           </Button>
           <Button
@@ -197,7 +188,6 @@ export default function AIAnalysisPanel({ reportId }) {
             size="sm"
             onClick={handleReanalyze}
             loading={isReanalyzing}
-            icon={RefreshCw}
           >
             Analisis Ulang
           </Button>
@@ -218,15 +208,14 @@ export default function AIAnalysisPanel({ reportId }) {
   }
 
   return (
-    <Card className="p-4 space-y-3.5 border-border/80 shadow-xs">
+    <Card className="p-4 space-y-3.5 border-border/80">
       {/* Non-intrusive Disclaimer Header */}
       <div className="flex items-center justify-between gap-2 border-b border-border/60 pb-2.5">
-        <div className="flex items-center gap-1.5 text-xs font-bold text-ink-soft">
-          <Cpu className="w-4 h-4 text-primary shrink-0" />
-          <span>Rekomendasi AI — bukan keputusan final</span>
+        <div className="text-xs font-bold text-ink-soft">
+          <span>Asisten AI · saran, bukan keputusan</span>
         </div>
         {analysis?.needs_human_review && (
-          <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-extrabold bg-status-amber-bg text-status-amber-text border border-status-amber-border">
+          <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold bg-status-amber-bg text-status-amber-text border border-status-amber-border">
             Tinjau Manual
           </span>
         )}
@@ -275,12 +264,12 @@ export default function AIAnalysisPanel({ reportId }) {
           {isExpanded ? (
             <>
               <span>Sembunyikan detail</span>
-              <ChevronUp className="w-3.5 h-3.5" />
+              <Icon icon={ChevronUp} size="sm" />
             </>
           ) : (
             <>
               <span>Lihat selengkapnya</span>
-              <ChevronDown className="w-3.5 h-3.5" />
+              <Icon icon={ChevronDown} size="sm" />
             </>
           )}
         </button>
@@ -292,11 +281,10 @@ export default function AIAnalysisPanel({ reportId }) {
           {/* Confidence */}
           <div className="p-2.5 bg-background rounded border border-border/60 space-y-1">
             <div className="flex items-center justify-between">
-              <span className="font-semibold text-ink-soft flex items-center gap-1">
-                <ShieldCheck className="w-3.5 h-3.5 text-primary" />
+              <span className="font-semibold text-ink-soft">
                 Tingkat Keyakinan Model:
               </span>
-              <span className="font-extrabold text-primary">
+              <span className="font-bold text-primary">
                 Keyakinan {confidenceText} ({confidencePercent}%)
               </span>
             </div>
@@ -309,7 +297,7 @@ export default function AIAnalysisPanel({ reportId }) {
           {analysis?.warnings && analysis.warnings.length > 0 && (
             <div className="space-y-1">
               <span className="font-bold text-status-amber-text flex items-center gap-1">
-                <AlertTriangle className="w-3.5 h-3.5" />
+                <Icon icon={AlertTriangle} size="sm" className="text-status-amber-text shrink-0" />
                 Peringatan / Catatan Perhatian:
               </span>
               <ul className="list-disc list-inside space-y-1 p-2.5 bg-status-amber-bg/40 border border-status-amber-border rounded text-ink">

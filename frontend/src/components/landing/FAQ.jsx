@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { ChevronDown, HelpCircle } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
+import Icon from '../ui/Icon';
 
 const faqs = [
   {
@@ -41,8 +42,8 @@ export function FAQ() {
         
         {/* Section Header */}
         <div className="text-center mb-14">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-primary/10 text-primary mb-4">
-            <HelpCircle className="w-3.5 h-3.5" /> Pertanyaan Umum
+          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-primary/10 text-primary mb-4">
+            Pertanyaan Umum
           </span>
           <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight">
             Pertanyaan Yang Sering Diajukan
@@ -68,9 +69,11 @@ export function FAQ() {
                   aria-expanded={isOpen}
                 >
                   <span className="text-base md:text-lg">{faq.question}</span>
-                  <ChevronDown
-                    className={`w-5 h-5 text-ink-soft shrink-0 transition-transform duration-200 ${
-                      isOpen ? 'rotate-180 text-primary' : ''
+                  <Icon
+                    icon={ChevronDown}
+                    size="sm"
+                    className={`transition-transform duration-200 ${
+                      isOpen ? 'rotate-180 text-primary' : 'text-ink-soft'
                     }`}
                   />
                 </button>

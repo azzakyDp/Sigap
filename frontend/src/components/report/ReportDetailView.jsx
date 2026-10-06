@@ -1,20 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-  ArrowLeft,
-  FileText,
-  MapPin,
-  Calendar,
-  Clock,
-  User,
-  Layers,
-  ZoomIn,
-  Wrench,
-  CheckCircle2,
-  RefreshCw,
-  ImageOff,
-  Hash,
-} from 'lucide-react';
+import { CheckCircle2 } from 'lucide-react';
+import Icon from '../ui/Icon';
 import Card from '../ui/Card';
 import Badge from '../ui/Badge';
 import Button from '../ui/Button';
@@ -61,7 +48,6 @@ export default function ReportDetailView({
             onClick={() => navigate(backTo)}
             className="inline-flex items-center gap-1.5 text-xs font-semibold text-ink-soft hover:text-primary transition-colors cursor-pointer"
           >
-            <ArrowLeft className="w-4 h-4" />
             {backLabel}
           </button>
         )}
@@ -69,12 +55,11 @@ export default function ReportDetailView({
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-surface p-5 rounded-lg border border-border shadow-xs">
           <div>
             <div className="flex flex-wrap items-center gap-2 mb-1">
-              <span className="font-mono text-sm font-extrabold text-primary bg-primary-light px-2.5 py-0.5 rounded border border-primary/20">
+              <span className="font-mono text-sm font-bold text-primary bg-primary-light px-2.5 py-0.5 rounded border border-primary/20">
                 {report.nomor_laporan}
               </span>
               {audience === 'staff' && (
                 <span className="font-mono text-xs font-bold text-ink-soft bg-background px-2 py-0.5 rounded border border-border flex items-center gap-1">
-                  <Hash className="w-3 h-3 text-ink-soft" />
                   ID: {report.id}
                 </span>
               )}
@@ -84,7 +69,7 @@ export default function ReportDetailView({
               <Badge type="priority" value={report.priority} />
             </div>
 
-            <h1 className="text-xl font-extrabold text-ink tracking-tight mt-1">
+            <h1 className="text-xl font-bold text-ink tracking-tight mt-1">
               {report.category_name}
             </h1>
 
@@ -105,7 +90,6 @@ export default function ReportDetailView({
               <Button
                 variant="secondary"
                 size="sm"
-                icon={RefreshCw}
                 onClick={onRefresh}
               >
                 Perbarui Data
@@ -119,7 +103,7 @@ export default function ReportDetailView({
         {/* Left Column: Details, Evidences, Location, Officer Actions */}
         <div className="lg:col-span-2 space-y-6">
           {/* Main Details */}
-          <Card title="Detail Pengaduan Laporan" icon={FileText}>
+          <Card title="Detail Pengaduan Laporan">
             <div className="space-y-4 text-sm text-ink">
               {/* Category & Event Time */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-3.5 bg-background rounded-lg border border-border/60">
@@ -133,8 +117,7 @@ export default function ReportDetailView({
                   <span className="text-xs font-semibold text-ink-soft block mb-1">
                     Waktu Kejadian
                   </span>
-                  <span className="font-semibold text-ink flex items-center gap-1.5">
-                    <Calendar className="w-4 h-4 text-primary" />
+                  <span className="font-semibold text-ink block">
                     {formatDate(report.waktu_kejadian)}
                   </span>
                 </div>
@@ -143,8 +126,7 @@ export default function ReportDetailView({
               {/* Dynamic Fields */}
               {report.field_values && report.field_values.length > 0 && (
                 <div className="space-y-2">
-                  <h4 className="text-xs font-semibold text-ink-soft flex items-center gap-1.5">
-                    <Layers className="w-4 h-4 text-primary" />
+                  <h4 className="text-xs font-semibold text-ink-soft">
                     Informasi Spesifik Kategori
                   </h4>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -192,7 +174,6 @@ export default function ReportDetailView({
                     >
                       {isFailed ? (
                         <div className="w-full h-full flex flex-col items-center justify-center p-2 text-center text-ink-soft bg-background">
-                          <ImageOff className="w-6 h-6 mb-1 text-ink-soft shrink-0" />
                           <span className="text-xs">Foto tidak tersedia</span>
                         </div>
                       ) : (
@@ -204,7 +185,6 @@ export default function ReportDetailView({
                             onError={() => handleImageError(ev.id)}
                           />
                           <div className="absolute inset-0 bg-ink/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white font-semibold text-xs gap-1">
-                            <ZoomIn className="w-5 h-5" />
                             <span>Perbesar</span>
                           </div>
                         </>
@@ -221,19 +201,16 @@ export default function ReportDetailView({
           </Card>
 
           {/* Location */}
-          <Card title="Lokasi Kejadian" icon={MapPin}>
+          <Card title="Lokasi Kejadian">
             <div className="space-y-3">
-              <div className="p-3 bg-background rounded-lg border border-border/60 flex items-start gap-2.5">
-                <MapPin className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                <div>
-                  <span className="text-xs font-semibold text-ink-soft block">
-                    Alamat / Keterangan Lokasi
-                  </span>
-                  <p className="text-sm font-semibold text-ink mt-0.5">{report.alamat_lokasi}</p>
-                  <p className="text-xs text-ink-soft font-mono mt-1">
-                    Koordinat: {report.latitude}, {report.longitude}
-                  </p>
-                </div>
+              <div className="p-3 bg-background rounded-lg border border-border/60">
+                <span className="text-xs font-semibold text-ink-soft block">
+                  Alamat / Keterangan Lokasi
+                </span>
+                <p className="text-sm font-semibold text-ink mt-0.5">{report.alamat_lokasi}</p>
+                <p className="text-xs text-ink-soft font-mono mt-1">
+                  Koordinat: {report.latitude}, {report.longitude}
+                </p>
               </div>
 
               <MapPicker
@@ -249,7 +226,6 @@ export default function ReportDetailView({
             <Card
               title="Laporan Penanganan Petugas Lapangan"
               subtitle="Tindakan progresif yang dicatat oleh petugas di lokasi"
-              icon={Wrench}
             >
               <div className="space-y-4">
                 {report.action_reports.map((act) => (
@@ -260,13 +236,11 @@ export default function ReportDetailView({
                     <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border/50 pb-2">
                       <div className="flex items-center gap-2">
                         <Badge variant="blue">{act.jenis_tindakan}</Badge>
-                        <span className="text-xs text-ink-soft flex items-center gap-1 font-semibold">
-                          <User className="w-3.5 h-3.5 text-primary" />
+                        <span className="text-xs text-ink-soft font-semibold">
                           Petugas: <strong className="text-ink">{act.officer_nama}</strong>
                         </span>
                       </div>
-                      <span className="text-xs text-ink-soft flex items-center gap-1">
-                        <Clock className="w-3.5 h-3.5" />
+                      <span className="text-xs text-ink-soft">
                         {formatDate(act.created_at)}
                       </span>
                     </div>
@@ -298,7 +272,7 @@ export default function ReportDetailView({
                         Hasil Akhir:
                       </span>
                       <p className="text-xs font-semibold text-status-green-text bg-status-green-bg p-3 rounded border border-status-green-border flex items-start gap-1.5">
-                        <CheckCircle2 className="w-4 h-4 shrink-0 mt-0.5" />
+                        <Icon icon={CheckCircle2} size="sm" />
                         <span>{act.hasil}</span>
                       </p>
                     </div>

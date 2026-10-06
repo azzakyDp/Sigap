@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { PlusCircle, Info, User, Mail, Phone, Shield } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import DashboardLayout from '../components/layout/DashboardLayout';
 import Card from '../components/ui/Card';
@@ -17,14 +16,14 @@ export default function CitizenDashboard() {
     <DashboardLayout>
       <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-extrabold text-ink tracking-tight">Dashboard Masyarakat (Citizen)</h1>
+          <h1 className="text-2xl font-bold text-ink tracking-tight">Dashboard Masyarakat (Citizen)</h1>
           <p className="text-ink-soft text-sm mt-1">Selamat datang kembali di portal layanan pengaduan SIGAP.</p>
         </div>
         <div className="flex items-center gap-3">
-          <Button variant="primary" onClick={() => navigate('/reports/create')} icon={PlusCircle}>
+          <Button variant="primary" onClick={() => navigate('/reports/create')}>
             Buat Laporan Baru
           </Button>
-          <Button variant="secondary" onClick={() => setIsModalOpen(true)} icon={Info}>
+          <Button variant="secondary" onClick={() => setIsModalOpen(true)}>
             Info Sistem
           </Button>
         </div>
@@ -34,27 +33,19 @@ export default function CitizenDashboard() {
         <Card title={`Halo, ${user?.nama || 'User'}`} subtitle="Informasi Akun Terdaftar" className="lg:col-span-1">
           <div className="space-y-3 text-ink text-sm">
             <div className="flex items-center justify-between py-2 border-b border-border/50">
-              <span className="text-ink-soft font-medium flex items-center gap-1.5">
-                <User className="w-4 h-4 text-primary" /> Nama:
-              </span>
+              <span className="text-ink-soft font-medium">Nama:</span>
               <span className="font-bold">{user?.nama}</span>
             </div>
             <div className="flex items-center justify-between py-2 border-b border-border/50">
-              <span className="text-ink-soft font-medium flex items-center gap-1.5">
-                <Mail className="w-4 h-4 text-primary" /> Email:
-              </span>
+              <span className="text-ink-soft font-medium">Email:</span>
               <span className="font-semibold text-xs text-ink">{user?.email}</span>
             </div>
             <div className="flex items-center justify-between py-2 border-b border-border/50">
-              <span className="text-ink-soft font-medium flex items-center gap-1.5">
-                <Phone className="w-4 h-4 text-primary" /> HP:
-              </span>
+              <span className="text-ink-soft font-medium">HP:</span>
               <span className="font-semibold">{user?.nomor_hp}</span>
             </div>
             <div className="flex items-center justify-between py-2 border-b border-border/50">
-              <span className="text-ink-soft font-medium flex items-center gap-1.5">
-                <Shield className="w-4 h-4 text-primary" /> Role:
-              </span>
+              <span className="text-ink-soft font-medium">Role:</span>
               <Badge variant="blue">{user?.role}</Badge>
             </div>
           </div>

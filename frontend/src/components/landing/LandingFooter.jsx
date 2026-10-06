@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Shield } from 'lucide-react';
+
 
 export function LandingFooter() {
   const currentYear = new Date().getFullYear();
@@ -13,10 +13,7 @@ export function LandingFooter() {
           {/* Brand Col */}
           <div className="md:col-span-2">
             <Link to="/" className="inline-flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-lg bg-primary text-white flex items-center justify-center font-bold">
-                <Shield className="w-5 h-5" />
-              </div>
-              <span className="font-extrabold text-xl tracking-tight text-ink">
+              <span className="font-bold text-xl tracking-tight text-ink">
                 SIGAP
               </span>
             </Link>
