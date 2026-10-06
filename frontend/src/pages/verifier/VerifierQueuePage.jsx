@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation, useSearchParams } from 'react-router-dom';
 import { AlertCircle, Clock, CheckCircle2, List, Table as TableIcon, MapPin, ClipboardList } from 'lucide-react';
 import Icon from '../../components/ui/Icon';
-import DashboardLayout from '../../components/layout/DashboardLayout';
+
 import Card from '../../components/ui/Card';
 import Button from '../../components/ui/Button';
 import Pagination from '../../components/ui/Pagination';
@@ -168,7 +168,7 @@ export default function VerifierQueuePage() {
   };
 
   return (
-    <DashboardLayout>
+    <>
       {/* Header & View Switcher */}
       <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
@@ -339,6 +339,6 @@ export default function VerifierQueuePage() {
           onSelectReport={(id) => navigate(`/verifier/reports/${id}`)}
         />
       )}
-    </DashboardLayout>
+    </>
   );
 }

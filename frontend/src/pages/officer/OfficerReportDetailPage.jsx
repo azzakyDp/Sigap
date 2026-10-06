@@ -5,7 +5,6 @@ import Icon from '../../components/ui/Icon';
 import { useAuth } from '../../context/AuthContext';
 import { getReportDetailApi } from '../../api/reports';
 import { startHandlingApi } from '../../api/workflow';
-import DashboardLayout from '../../components/layout/DashboardLayout';
 import Button from '../../components/ui/Button';
 import ReportDetailView from '../../components/report/ReportDetailView';
 import ActionReportForm from '../../components/officer/ActionReportForm';
@@ -67,7 +66,6 @@ export default function OfficerReportDetailPage() {
 
   const handleActionSuccess = (newActionReport) => {
     if (newActionReport && report) {
-      // Append new action report and refetch to sync all histories
       const updatedActions = [newActionReport, ...(report.action_reports || [])];
       setReport((prev) => ({
         ...prev,
@@ -89,36 +87,32 @@ export default function OfficerReportDetailPage() {
 
   if (loading) {
     return (
-      <DashboardLayout>
-        <div className="py-20 text-center text-ink-soft">
-          <div className="inline-block animate-spin rounded-full h-10 w-10 border-b-2 border-primary mb-3"></div>
-          <p className="text-sm font-medium">Memuat detail tugas penanganan #{id}...</p>
-        </div>
-      </DashboardLayout>
+      <div className="py-20 text-center text-ink-soft">
+        <div className="inline-block animate-spin rounded-full h-10 w-10 border-b-2 border-primary mb-3"></div>
+        <p className="text-sm font-medium">Memuat detail tugas penanganan #{id}...</p>
+      </div>
     );
   }
 
   if (error || !report) {
     return (
-      <DashboardLayout>
-        <div className="max-w-2xl mx-auto py-12 px-4 text-center">
-          <div className="flex justify-center mb-4">
-            <Icon icon={AlertCircle} size="nav" className="text-status-amber-text" />
-          </div>
-          <h2 className="text-base font-semibold text-ink mb-2">Laporan Tidak Ditemukan</h2>
-          <p className="text-ink-soft text-sm mb-6 max-w-md mx-auto">
-            {error || 'Laporan pengaduan yang Anda cari tidak ditemukan atau Anda tidak memiliki hak akses untuk membukanya.'}
-          </p>
-          <div className="flex items-center justify-center gap-3">
-            <Button variant="secondary" onClick={() => navigate('/officer')}>
-              Kembali ke Tugas Saya
-            </Button>
-            <Button variant="primary" onClick={fetchDetail}>
-              Coba Lagi
-            </Button>
-          </div>
+      <div className="max-w-2xl mx-auto py-12 px-4 text-center">
+        <div className="flex justify-center mb-4">
+          <Icon icon={AlertCircle} size="nav" className="text-status-amber-text" />
         </div>
-      </DashboardLayout>
+        <h2 className="text-base font-semibold text-ink mb-2">Laporan Tidak Ditemukan</h2>
+        <p className="text-ink-soft text-sm mb-6 max-w-md mx-auto">
+          {error || 'Laporan pengaduan yang Anda cari tidak ditemukan atau Anda tidak memiliki hak akses untuk membukanya.'}
+        </p>
+        <div className="flex items-center justify-center gap-3">
+          <Button variant="secondary" onClick={() => navigate('/officer')}>
+            Kembali ke Tugas Saya
+          </Button>
+          <Button variant="primary" onClick={fetchDetail}>
+            Coba Lagi
+          </Button>
+        </div>
+      </div>
     );
   }
 
@@ -165,7 +159,7 @@ export default function OfficerReportDetailPage() {
   ) : null;
 
   return (
-    <DashboardLayout>
+    <>
       <ReportDetailView
         report={report}
         audience="staff"
@@ -190,6 +184,6 @@ export default function OfficerReportDetailPage() {
         report={report}
         onSuccess={handleResolveSuccess}
       />
-    </DashboardLayout>
+    </>
   );
 }

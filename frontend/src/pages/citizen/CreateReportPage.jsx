@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AlertCircle, CheckCircle2, Trash2 } from 'lucide-react';
 import Icon from '../../components/ui/Icon';
-import DashboardLayout from '../../components/layout/DashboardLayout';
+
 import Card from '../../components/ui/Card';
 import Input from '../../components/ui/Input';
 import Button from '../../components/ui/Button';
@@ -195,7 +195,7 @@ export default function CreateReportPage() {
   };
 
   return (
-    <DashboardLayout>
+    <>
       <div className="mb-6 flex items-center justify-between">
         <div>
           <button
@@ -390,6 +390,6 @@ export default function CreateReportPage() {
           </Button>
         </div>
       </Modal>
-    </DashboardLayout>
+    </>
   );
 }

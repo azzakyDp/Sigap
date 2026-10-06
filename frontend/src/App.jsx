@@ -1,7 +1,9 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import { ToastProvider } from './context/ToastContext';
 import ProtectedRoute from './components/ProtectedRoute';
+import DashboardLayout from './components/layout/DashboardLayout';
 
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
@@ -15,7 +17,6 @@ import AssignedReportsPage from './pages/officer/AssignedReportsPage';
 import OfficerReportDetailPage from './pages/officer/OfficerReportDetailPage';
 import AdminDashboard from './pages/AdminDashboard';
 import UnauthorizedPage from './pages/UnauthorizedPage';
-
 import LandingPage from './pages/LandingPage';
 
 function RootRedirect() {
@@ -46,101 +47,55 @@ function RootRedirect() {
   }
 }
 
-import { ToastProvider } from './context/ToastContext';
-
 export default function App() {
   return (
     <AuthProvider>
       <ToastProvider>
         <BrowserRouter>
-        <Routes>
-          {/* Root Redirect */}
-          <Route path="/" element={<RootRedirect />} />
+          <Routes>
+            {/* Root Redirect */}
+            <Route path="/" element={<RootRedirect />} />
 
-          {/* Public Routes */}
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="/unauthorized" element={<UnauthorizedPage />} />
+            {/* Public Routes */}
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/unauthorized" element={<UnauthorizedPage />} />
 
-          {/* Protected Routes by Role */}
-          <Route
-            path="/dashboard"
-            element={
-              <ProtectedRoute allowedRoles={['CITIZEN']}>
-                <CitizenDashboard />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/reports/create"
-            element={
-              <ProtectedRoute allowedRoles={['CITIZEN']}>
-                <CreateReportPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/reports/me"
-            element={
-              <ProtectedRoute allowedRoles={['CITIZEN']}>
-                <MyReportsPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/reports/:id"
-            element={
-              <ProtectedRoute allowedRoles={['CITIZEN']}>
-                <ReportDetailPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/verifier"
-            element={
-              <ProtectedRoute allowedRoles={['VERIFIER', 'ADMIN']}>
-                <VerifierQueuePage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/verifier/reports/:id"
-            element={
-              <ProtectedRoute allowedRoles={['VERIFIER', 'ADMIN']}>
-                <VerifierReportDetailPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/officer"
-            element={
-              <ProtectedRoute allowedRoles={['OFFICER']}>
-                <AssignedReportsPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/officer/reports/:id"
-            element={
-              <ProtectedRoute allowedRoles={['OFFICER']}>
-                <OfficerReportDetailPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/admin"
-            element={
-              <ProtectedRoute allowedRoles={['ADMIN']}>
-                <AdminDashboard />
-              </ProtectedRoute>
-            }
-          />
+            {/* Protected Routes by Role */}
+            <Route element={<ProtectedRoute allowedRoles={['CITIZEN']} />}>
+              <Route element={<DashboardLayout />}>
+                <Route path="/dashboard" element={<CitizenDashboard />} />
+                <Route path="/reports/create" element={<CreateReportPage />} />
+                <Route path="/reports/me" element={<MyReportsPage />} />
+                <Route path="/reports/:id" element={<ReportDetailPage />} />
+              </Route>
+            </Route>
 
-          {/* Fallback route */}
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </BrowserRouter>
-    </ToastProvider>
-  </AuthProvider>
+            <Route element={<ProtectedRoute allowedRoles={['VERIFIER', 'ADMIN']} />}>
+              <Route element={<DashboardLayout />}>
+                <Route path="/verifier" element={<VerifierQueuePage />} />
+                <Route path="/verifier/reports/:id" element={<VerifierReportDetailPage />} />
+              </Route>
+            </Route>
+
+            <Route element={<ProtectedRoute allowedRoles={['OFFICER']} />}>
+              <Route element={<DashboardLayout />}>
+                <Route path="/officer" element={<AssignedReportsPage />} />
+                <Route path="/officer/reports/:id" element={<OfficerReportDetailPage />} />
+              </Route>
+            </Route>
+
+            <Route element={<ProtectedRoute allowedRoles={['ADMIN']} />}>
+              <Route element={<DashboardLayout />}>
+                <Route path="/admin" element={<AdminDashboard />} />
+              </Route>
+            </Route>
+
+            {/* Fallback route */}
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </BrowserRouter>
+      </ToastProvider>
+    </AuthProvider>
   );
 }

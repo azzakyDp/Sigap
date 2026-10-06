@@ -3,7 +3,6 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { AlertCircle } from 'lucide-react';
 import Icon from '../../components/ui/Icon';
 import { getReportDetailApi } from '../../api/reports';
-import DashboardLayout from '../../components/layout/DashboardLayout';
 import Button from '../../components/ui/Button';
 import ReportDetailView from '../../components/report/ReportDetailView';
 import { getErrorMessage } from '../../utils/errors';
@@ -43,48 +42,42 @@ export default function ReportDetailPage() {
 
   if (loading) {
     return (
-      <DashboardLayout>
-        <div className="py-20 text-center text-ink-soft">
-          <div className="inline-block animate-spin rounded-full h-10 w-10 border-b-2 border-primary mb-3"></div>
-          <p className="text-sm font-medium">Memuat detail pengaduan laporan #{id}...</p>
-        </div>
-      </DashboardLayout>
+      <div className="py-20 text-center text-ink-soft">
+        <div className="inline-block animate-spin rounded-full h-10 w-10 border-b-2 border-primary mb-3"></div>
+        <p className="text-sm font-medium">Memuat detail pengaduan laporan #{id}...</p>
+      </div>
     );
   }
 
   if (error || !report) {
     return (
-      <DashboardLayout>
-        <div className="max-w-2xl mx-auto py-12 px-4 text-center">
-          <div className="flex justify-center mb-4">
-            <Icon icon={AlertCircle} size="nav" className="text-status-amber-text" />
-          </div>
-          <h2 className="text-base font-semibold text-ink mb-2">Laporan Tidak Ditemukan</h2>
-          <p className="text-ink-soft text-sm mb-6 max-w-md mx-auto">
-            {error || 'Laporan pengaduan yang Anda cari tidak ditemukan atau Anda tidak memiliki hak akses untuk membukanya.'}
-          </p>
-          <div className="flex items-center justify-center gap-3">
-            <Button variant="secondary" onClick={() => navigate('/reports/me')}>
-              Kembali ke Daftar Laporan Saya
-            </Button>
-            <Button variant="primary" onClick={fetchDetail}>
-              Coba Lagi
-            </Button>
-          </div>
+      <div className="max-w-2xl mx-auto py-12 px-4 text-center">
+        <div className="flex justify-center mb-4">
+          <Icon icon={AlertCircle} size="nav" className="text-status-amber-text" />
         </div>
-      </DashboardLayout>
+        <h2 className="text-base font-semibold text-ink mb-2">Laporan Tidak Ditemukan</h2>
+        <p className="text-ink-soft text-sm mb-6 max-w-md mx-auto">
+          {error || 'Laporan pengaduan yang Anda cari tidak ditemukan atau Anda tidak memiliki hak akses untuk membukanya.'}
+        </p>
+        <div className="flex items-center justify-center gap-3">
+          <Button variant="secondary" onClick={() => navigate('/reports/me')}>
+            Kembali ke Daftar Laporan Saya
+          </Button>
+          <Button variant="primary" onClick={fetchDetail}>
+            Coba Lagi
+          </Button>
+        </div>
+      </div>
     );
   }
 
   return (
-    <DashboardLayout>
-      <ReportDetailView
-        report={report}
-        audience="citizen"
-        backTo="/reports/me"
-        backLabel="Kembali ke Daftar Laporan"
-        onRefresh={fetchDetail}
-      />
-    </DashboardLayout>
+    <ReportDetailView
+      report={report}
+      audience="citizen"
+      backTo="/reports/me"
+      backLabel="Kembali ke Daftar Laporan"
+      onRefresh={fetchDetail}
+    />
   );
 }

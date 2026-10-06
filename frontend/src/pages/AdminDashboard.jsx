@@ -1,7 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import DashboardLayout from '../components/layout/DashboardLayout';
 import Card from '../components/ui/Card';
 import Badge from '../components/ui/Badge';
 import Button from '../components/ui/Button';
@@ -11,7 +10,7 @@ export default function AdminDashboard() {
   const navigate = useNavigate();
 
   return (
-    <DashboardLayout>
+    <>
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-ink tracking-tight">Dashboard Administrator</h1>
         <p className="text-ink-soft text-sm mt-1">Portal manajemen sistem SIGAP & verifikasi operasional.</p>
@@ -52,6 +51,6 @@ export default function AdminDashboard() {
           </div>
         </Card>
       </div>
-    </DashboardLayout>
+    </>
   );
 }

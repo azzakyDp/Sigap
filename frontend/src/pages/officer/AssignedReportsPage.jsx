@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import DashboardLayout from '../../components/layout/DashboardLayout';
+
 import Card from '../../components/ui/Card';
 import Button from '../../components/ui/Button';
 import Pagination from '../../components/ui/Pagination';
@@ -44,7 +44,7 @@ export default function AssignedReportsPage() {
   }, [page]);
 
   return (
-    <DashboardLayout>
+    <>
       {/* Header */}
       <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
@@ -118,6 +118,6 @@ export default function AssignedReportsPage() {
           </div>
         )}
       </Card>
-    </DashboardLayout>
+    </>
   );
 }

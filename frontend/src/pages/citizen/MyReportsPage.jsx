@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { getMyReportsApi } from '../../api/reports';
-import DashboardLayout from '../../components/layout/DashboardLayout';
+
 import Card from '../../components/ui/Card';
 import Badge from '../../components/ui/Badge';
 import Button from '../../components/ui/Button';
@@ -45,7 +45,7 @@ export default function MyReportsPage() {
   }, [page]);
 
   return (
-    <DashboardLayout>
+    <>
       {/* Page Header */}
       <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
@@ -135,6 +135,6 @@ export default function MyReportsPage() {
           </div>
         )}
       </Card>
-    </DashboardLayout>
+    </>
   );
 }

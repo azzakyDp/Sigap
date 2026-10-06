@@ -3,7 +3,6 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { AlertCircle } from 'lucide-react';
 import Icon from '../../components/ui/Icon';
 import { getReportDetailApi } from '../../api/reports';
-import DashboardLayout from '../../components/layout/DashboardLayout';
 import Button from '../../components/ui/Button';
 import ReportDetailView from '../../components/report/ReportDetailView';
 import VerifyReportModal from '../../components/verifier/VerifyReportModal';
@@ -62,50 +61,42 @@ export default function VerifierReportDetailPage() {
 
   if (loading) {
     return (
-      <DashboardLayout>
-        <div className="py-20 text-center text-ink-soft">
-          <div className="inline-block animate-spin rounded-full h-10 w-10 border-b-2 border-primary mb-3"></div>
-          <p className="text-sm font-medium">Memuat detail laporan verifikasi #{id}...</p>
-        </div>
-      </DashboardLayout>
+      <div className="py-20 text-center text-ink-soft">
+        <div className="inline-block animate-spin rounded-full h-10 w-10 border-b-2 border-primary mb-3"></div>
+        <p className="text-sm font-medium">Memuat detail laporan verifikasi #{id}...</p>
+      </div>
     );
   }
 
   if (error || !report) {
     return (
-      <DashboardLayout>
-        <div className="max-w-2xl mx-auto py-12 px-4 text-center">
-          <div className="flex justify-center mb-4">
-            <Icon icon={AlertCircle} size="nav" className="text-status-amber-text" />
-          </div>
-          <h2 className="text-base font-semibold text-ink mb-2">Laporan Tidak Ditemukan</h2>
-          <p className="text-ink-soft text-sm mb-6 max-w-md mx-auto">
-            {error || 'Laporan pengaduan yang Anda cari tidak ditemukan atau Anda tidak memiliki hak akses untuk membukanya.'}
-          </p>
-          <div className="flex items-center justify-center gap-3">
-            <Button variant="secondary" onClick={() => navigate('/verifier')}>
-              Kembali ke Antrean Verifikasi
-            </Button>
-            <Button variant="primary" onClick={fetchDetail}>
-              Coba Lagi
-            </Button>
-          </div>
+      <div className="max-w-2xl mx-auto py-12 px-4 text-center">
+        <div className="flex justify-center mb-4">
+          <Icon icon={AlertCircle} size="nav" className="text-status-amber-text" />
         </div>
-      </DashboardLayout>
+        <h2 className="text-base font-semibold text-ink mb-2">Laporan Tidak Ditemukan</h2>
+        <p className="text-ink-soft text-sm mb-6 max-w-md mx-auto">
+          {error || 'Laporan pengaduan yang Anda cari tidak ditemukan atau Anda tidak memiliki hak akses untuk membukanya.'}
+        </p>
+        <div className="flex items-center justify-center gap-3">
+          <Button variant="secondary" onClick={() => navigate('/verifier')}>
+            Kembali ke Antrean Verifikasi
+          </Button>
+          <Button variant="primary" onClick={fetchDetail}>
+            Coba Lagi
+          </Button>
+        </div>
+      </div>
     );
   }
 
   const statusRaw = report.status_raw;
   const isPendingVerification = statusRaw === 'PENDING_VERIFICATION';
   const isAssignable = ['VERIFIED', 'ASSIGNED', 'UNRESOLVED'].includes(statusRaw);
-  const isClosable = ['RESOLVED', 'UNRESOLVED'].includes(statusRaw);
-  const isPriorityModifiable = !['REJECTED', 'DUPLICATE', 'CLOSED'].includes(statusRaw);
-
-  const hasAssignment = !!report.current_assignment;
-  const assignButtonLabel = hasAssignment ? 'Tugaskan Ulang' : 'Tugaskan';
+  const isClosable = !['CLOSED', 'REJECTED'].includes(statusRaw);
 
   return (
-    <DashboardLayout>
+    <>
       <ReportDetailView
         report={report}
         audience="staff"
@@ -113,30 +104,19 @@ export default function VerifierReportDetailPage() {
         backLabel="Kembali ke Antrean Verifikasi"
         actions={
           <div className="flex flex-wrap items-center gap-2">
-            {/* 1. Verifikasi */}
+            {/* PENDING_VERIFICATION -> Verifikasi Laporan */}
             {isPendingVerification && (
               <Button
                 variant="primary"
                 size="sm"
                 onClick={() => setShowVerifyModal(true)}
               >
-                Verifikasi
+                Verifikasi Laporan
               </Button>
             )}
 
-            {/* 2. Tugaskan / Tugaskan Ulang */}
-            {isAssignable && (
-              <Button
-                variant="primary"
-                size="sm"
-                onClick={() => setShowAssignModal(true)}
-              >
-                {assignButtonLabel}
-              </Button>
-            )}
-
-            {/* 3. Ubah Prioritas */}
-            {isPriorityModifiable && (
+            {/* PENDING / VERIFIED / ASSIGNED / IN_PROGRESS -> Ubah Prioritas */}
+            {isClosable && (
               <Button
                 variant="secondary"
                 size="sm"
@@ -146,7 +126,18 @@ export default function VerifierReportDetailPage() {
               </Button>
             )}
 
-            {/* 4. Tutup Kasus */}
+            {/* VERIFIED / ASSIGNED / UNRESOLVED -> Tugaskan Petugas */}
+            {isAssignable && (
+              <Button
+                variant="primary"
+                size="sm"
+                onClick={() => setShowAssignModal(true)}
+              >
+                Tugaskan Petugas
+              </Button>
+            )}
+
+            {/* Any active case -> Tutup Kasus */}
             {isClosable && (
               <Button
                 variant="secondary"
@@ -192,6 +183,6 @@ export default function VerifierReportDetailPage() {
         report={report}
         onSuccess={handleActionSuccess}
       />
-    </DashboardLayout>
+    </>
   );
 }

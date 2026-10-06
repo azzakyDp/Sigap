@@ -673,4 +673,212 @@ test.describe('SIGAP UI Components & Regression Safety Net Suite', () => {
     }
   });
 
+  /* -------------------------------------------------------------------------- */
+  /* 11. Tahap 3 Commit A: Role-Based Route Protection Matrix                   */
+  /* -------------------------------------------------------------------------- */
+  test('11. Role-Based Route Protection Matrix', async ({ page }) => {
+    const citizenUser  = { id: 1, email: 'citizen@example.com',  full_name: 'Warga Contoh',     role: 'CITIZEN'  };
+    const verifierUser = { id: 2, email: 'verifier@example.com', full_name: 'Staf Verifikator', role: 'VERIFIER' };
+    const officerUser  = { id: 3, email: 'officer@example.com',  full_name: 'Petugas Lapangan', role: 'OFFICER'  };
+    const adminUser    = { id: 4, email: 'admin@example.com',    full_name: 'Admin Sistem',      role: 'ADMIN'    };
+
+    const matrix = [
+      // anon
+      { user: null, url: '/dashboard', expectedPath: '/login' },
+      { user: null, url: '/verifier', expectedPath: '/login' },
+      { user: null, url: '/officer', expectedPath: '/login' },
+      { user: null, url: '/admin', expectedPath: '/login' },
+      // CITIZEN
+      { user: citizenUser, url: '/verifier', expectedPath: '/unauthorized' },
+      { user: citizenUser, url: '/officer', expectedPath: '/unauthorized' },
+      { user: citizenUser, url: '/admin', expectedPath: '/unauthorized' },
+      // VERIFIER
+      { user: verifierUser, url: '/admin', expectedPath: '/unauthorized' },
+      { user: verifierUser, url: '/officer', expectedPath: '/unauthorized' },
+      { user: verifierUser, url: '/dashboard', expectedPath: '/unauthorized' },
+      { user: verifierUser, url: '/verifier', expectedPath: '/verifier' },
+      // OFFICER
+      { user: officerUser, url: '/verifier', expectedPath: '/unauthorized' },
+      { user: officerUser, url: '/admin', expectedPath: '/unauthorized' },
+      // ADMIN
+      { user: adminUser, url: '/verifier', expectedPath: '/verifier' },
+      { user: adminUser, url: '/verifier/reports/1', expectedPath: '/verifier/reports/1' },
+      { user: adminUser, url: '/dashboard', expectedPath: '/unauthorized' },
+    ];
+
+    const mockReport = {
+      id: 1, nomor_laporan: 'SIGAP-2026-00001', status_raw: 'PENDING_VERIFICATION',
+      category_name: 'Jalan Berlubang', priority: 'HIGH', waktu_kejadian: new Date().toISOString(),
+      created_at: new Date().toISOString(), reporter_name: 'Warga Contoh', alamat_lokasi: 'Jl. Pemuda No 1',
+      latitude: -7.11, longitude: 112.41, deskripsi: 'Tes deskripsi', evidences: [], status_histories: [],
+      field_values: [], action_reports: [], current_assignment: null
+    };
+
+    await page.route('**/api/v1/notifications**', async (route) => {
+      await route.fulfill({ status: 200, headers: { 'Access-Control-Allow-Origin': '*' }, contentType: 'application/json', body: JSON.stringify([]) });
+    });
+    await page.route('**/api/v1/categories**', async (route) => {
+      await route.fulfill({ status: 200, headers: { 'Access-Control-Allow-Origin': '*' }, contentType: 'application/json', body: JSON.stringify([]) });
+    });
+    await page.route('**/api/v1/reports/1**', async (route) => {
+      await route.fulfill({ status: 200, headers: { 'Access-Control-Allow-Origin': '*' }, contentType: 'application/json', body: JSON.stringify(mockReport) });
+    });
+    await page.route('**/api/v1/reports**', async (route) => {
+      await route.fulfill({ status: 200, headers: { 'Access-Control-Allow-Origin': '*' }, contentType: 'application/json', body: JSON.stringify({ items: [], total: 0 }) });
+    });
+
+    const resultsTable = [];
+
+    for (const item of matrix) {
+      const userRole = item.user ? item.user.role : 'anon';
+      
+      await page.route('**/api/v1/auth/me', async (route) => {
+        if (!item.user) {
+          await route.fulfill({ status: 401, headers: { 'Access-Control-Allow-Origin': '*' }, contentType: 'application/json', body: JSON.stringify({ detail: 'Not authenticated' }) });
+        } else {
+          await route.fulfill({ status: 200, headers: { 'Access-Control-Allow-Origin': '*' }, contentType: 'application/json', body: JSON.stringify(item.user) });
+        }
+      });
+
+      await page.goto('/login');
+      if (item.user) {
+        await page.evaluate((u) => {
+          localStorage.setItem('sigap_token', 'fake-jwt-token');
+          localStorage.setItem('sigap_user', JSON.stringify(u));
+        }, item.user);
+      } else {
+        await page.evaluate(() => {
+          localStorage.removeItem('sigap_token');
+          localStorage.removeItem('sigap_user');
+        });
+      }
+
+      await page.goto(item.url);
+      await page.waitForLoadState('domcontentloaded');
+      await page.waitForTimeout(300);
+
+      const finalUrl = new URL(page.url()).pathname;
+      const pass = finalUrl === item.expectedPath;
+
+      resultsTable.push({
+        role: userRole,
+        url: item.url,
+        finalUrl,
+        hasil: pass ? 'PASS' : 'FAIL'
+      });
+
+      expect(finalUrl).toBe(item.expectedPath);
+      await page.unroute('**/api/v1/auth/me');
+    }
+
+    console.log('\n=== TABEL HAK AKSES PER ROLE ===');
+    console.table(resultsTable);
+  });
+
+  /* -------------------------------------------------------------------------- */
+  /* 12. Tahap 3 Commit A: Persistent Layout Across Client-Side Navigation       */
+  /* -------------------------------------------------------------------------- */
+  test('12. Persistent DashboardLayout across client-side navigation', async ({ page }) => {
+    const verifierUser = { id: 2, email: 'verifier@example.com', full_name: 'Staf Verifikator', role: 'VERIFIER' };
+    const mockReport = {
+      id: 1, nomor_laporan: 'SIGAP-2026-00001', status_raw: 'PENDING_VERIFICATION',
+      category_name: 'Jalan Berlubang', priority: 'HIGH', waktu_kejadian: new Date().toISOString(),
+      created_at: new Date().toISOString(), reporter_name: 'Warga Contoh', alamat_lokasi: 'Jl. Pemuda No 1',
+      latitude: -7.11, longitude: 112.41, deskripsi: 'Tes deskripsi', evidences: [], status_histories: [],
+      field_values: [], action_reports: [], current_assignment: null
+    };
+
+    await page.route('**/api/v1/auth/me', async (route) => {
+      await route.fulfill({ status: 200, headers: { 'Access-Control-Allow-Origin': '*' }, contentType: 'application/json', body: JSON.stringify(verifierUser) });
+    });
+    await page.route('**/api/v1/notifications**', async (route) => {
+      await route.fulfill({ status: 200, headers: { 'Access-Control-Allow-Origin': '*' }, contentType: 'application/json', body: JSON.stringify([]) });
+    });
+    await page.route('**/api/v1/categories**', async (route) => {
+      await route.fulfill({ status: 200, headers: { 'Access-Control-Allow-Origin': '*' }, contentType: 'application/json', body: JSON.stringify([]) });
+    });
+    await page.route('**/api/v1/reports/1**', async (route) => {
+      await route.fulfill({ status: 200, headers: { 'Access-Control-Allow-Origin': '*' }, contentType: 'application/json', body: JSON.stringify(mockReport) });
+    });
+    await page.route('**/api/v1/reports**', async (route) => {
+      await route.fulfill({ status: 200, headers: { 'Access-Control-Allow-Origin': '*' }, contentType: 'application/json', body: JSON.stringify({ items: [mockReport], total: 1 }) });
+    });
+
+    await page.goto('/login');
+    await page.evaluate((u) => {
+      localStorage.setItem('sigap_token', 'fake-jwt-token');
+      localStorage.setItem('sigap_user', JSON.stringify(u));
+    }, verifierUser);
+
+    await page.goto('/verifier');
+    await page.waitForLoadState('networkidle');
+    await page.waitForSelector('header');
+
+    // Attach DOM data-marker on navbar header
+    await page.evaluate(() => {
+      const header = document.querySelector('header');
+      if (header) header.setAttribute('data-marker', 'persistent-layout-test');
+    });
+
+    const initialMarker = await page.evaluate(() => document.querySelector('header')?.getAttribute('data-marker'));
+    expect(initialMarker).toBe('persistent-layout-test');
+
+    // Client-side navigation to report detail via clicking report row or link
+    await page.locator('tr').filter({ hasText: 'SIGAP-2026-00001' }).click();
+    await page.waitForURL('**/verifier/reports/1');
+
+    const navigatedMarker = await page.evaluate(() => document.querySelector('header')?.getAttribute('data-marker'));
+    expect(navigatedMarker).toBe('persistent-layout-test');
+  });
+
+  /* -------------------------------------------------------------------------- */
+  /* 13. Tahap 3 Commit A: Viewport 375 Mobile Sidebar Auto-Close on Navigation */
+  /* -------------------------------------------------------------------------- */
+  test('13. Mobile sidebar drawer closes automatically on navigation at viewport 375', async ({ page }) => {
+    await page.setViewportSize({ width: 375, height: 800 });
+    const citizenUser = { id: 1, email: 'citizen@example.com', full_name: 'Warga Contoh', role: 'CITIZEN' };
+
+    await page.route('**/api/v1/auth/me', async (route) => {
+      await route.fulfill({ status: 200, headers: { 'Access-Control-Allow-Origin': '*' }, contentType: 'application/json', body: JSON.stringify(citizenUser) });
+    });
+    await page.route('**/api/v1/notifications**', async (route) => {
+      await route.fulfill({ status: 200, headers: { 'Access-Control-Allow-Origin': '*' }, contentType: 'application/json', body: JSON.stringify([]) });
+    });
+    await page.route('**/api/v1/reports**', async (route) => {
+      await route.fulfill({ status: 200, headers: { 'Access-Control-Allow-Origin': '*' }, contentType: 'application/json', body: JSON.stringify({ items: [], total: 0 }) });
+    });
+
+    await page.goto('/login');
+    await page.evaluate((u) => {
+      localStorage.setItem('sigap_token', 'fake-jwt-token');
+      localStorage.setItem('sigap_user', JSON.stringify(u));
+    }, citizenUser);
+
+    await page.goto('/dashboard');
+    await page.waitForLoadState('domcontentloaded');
+
+    // Open mobile sidebar drawer using hamburger button
+    const hamburgerBtn = page.locator('header button').first();
+    await hamburgerBtn.click();
+    await page.waitForTimeout(200);
+
+    // Click navigation item in sidebar (e.g., Laporan Saya)
+    const sidebarLink = page.locator('aside a', { hasText: 'Laporan Saya' });
+    await sidebarLink.click();
+    await page.waitForURL('**/reports/me');
+    await page.waitForTimeout(300);
+
+    // Sidebar drawer should be closed
+    const isSidebarVisible = await page.evaluate(() => {
+      const aside = document.querySelector('aside');
+      if (!aside) return false;
+      const rect = aside.getBoundingClientRect();
+      const style = window.getComputedStyle(aside);
+      return style.display !== 'none' && style.visibility !== 'hidden' && rect.width > 0 && rect.left >= 0;
+    });
+
+    expect(isSidebarVisible).toBe(false);
+  });
+
 });
+

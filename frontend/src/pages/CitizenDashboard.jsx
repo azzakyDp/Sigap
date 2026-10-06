@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import DashboardLayout from '../components/layout/DashboardLayout';
 import Card from '../components/ui/Card';
 import Badge from '../components/ui/Badge';
 import Button from '../components/ui/Button';
@@ -13,7 +12,7 @@ export default function CitizenDashboard() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
-    <DashboardLayout>
+    <>
       <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-ink tracking-tight">Dashboard Masyarakat (Citizen)</h1>
@@ -79,6 +78,6 @@ export default function CitizenDashboard() {
           Pada Phase 1 & 2 ini, fondasi autentikasi, manajemen token, protected routes, komponen UI primitif, serta alur pengajuan laporan masyarakat telah aktif.
         </p>
       </Modal>
-    </DashboardLayout>
+    </>
   );
 }
