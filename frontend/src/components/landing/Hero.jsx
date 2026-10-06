@@ -23,7 +23,7 @@ export default function Hero() {
               <span>Sistem Pengaduan Gangguan Lalu Lintas SIGAP</span>
             </div>
 
-            <h1 className="text-xl sm:text-2xl lg:text-2xl font-bold text-ink tracking-tight leading-tight">
+            <h1 className="text-2xl md:text-display font-bold text-ink tracking-tight">
               Laporkan Gangguan Jalan dengan <span className="text-primary">Cepat, Tepat, dan Transparan</span>
             </h1>
 

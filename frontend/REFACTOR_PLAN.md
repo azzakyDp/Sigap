@@ -30,7 +30,7 @@ tipografi, divider, whitespace, bukan kotak.
   border #BCCCDC (hanya pemisah). Semantik hanya untuk status. Badge role netral.
 - Tipografi: ukuran 12/14/16/20/24. Bobot 400/500/600; 700 hanya judul halaman. Tanpa
   extrabold/black dan tanpa ukuran arbitrer text-[10px]/[11px]. Label = teks biasa warna
-  ink-soft; nilai = bobot normal. Lebar paragraf maks ~65 karakter.
+  ink-soft; nilai = bobot normal. Lebar paragraf maks ~65 karakter. Pengecualian: judul hero landing memakai token text-display (32px, >=768px), satu kali.
 - Spacing: basis 4px. Jarak antar-section 24, padding card 16-20.
 - Radius: 6 kontrol, 8 surface, full hanya avatar/dot. Shadow hanya untuk overlay.
 - Ikon: 16px inline, 20px navigasi. Tanpa lingkaran pembungkus. Hapus ikon dekoratif.

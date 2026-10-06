@@ -7,6 +7,8 @@
   --text-base: 16px;
   --text-xl: 20px;
   --text-2xl: 24px;
+  --text-display: 2rem;
+  --text-display--line-height: 1.2;
 
   --color-primary: #2185D5;
   --color-primary-hover: #1B6DAE;

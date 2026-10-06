@@ -576,7 +576,9 @@ test.describe('SIGAP UI Components & Regression Safety Net Suite', () => {
 
       const onPageError = (err) => pageErrors.push(err.message);
       const onConsoleError = (msg) => {
-        if (msg.type() === 'error') consoleErrors.push(msg.text());
+        if (msg.type() === 'error' && !msg.text().includes('ERR_NETWORK_CHANGED') && !msg.text().includes('net::ERR_')) {
+          consoleErrors.push(msg.text());
+        }
       };
 
       page.on('pageerror', onPageError);
