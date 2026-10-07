@@ -12,6 +12,9 @@ build/
 # Environment & local files
 .env
 *.log
+docs/
+*_BACKUP.md
 
 # Sensitive / Testing files
 frontend/testing gambar/
+
