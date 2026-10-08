@@ -1,10 +1,3 @@
-"""
-SIGAP Backend — Entry point FastAPI.
-
-Phase 1: hanya application foundation.
-Belum ada business logic, auth, atau router domain (menyusul Phase 3+).
-"""
-
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -28,8 +21,7 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.CORS_ORIGINS,
-    allow_origin_regex=r"https://.*\.vercel\.app",
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
