@@ -19,6 +19,3 @@ alembic/*.sqlite
 .DS_Store
 .idea/
 .vscode/
-
-# Certs
-certs/
