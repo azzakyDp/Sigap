@@ -5,9 +5,11 @@ Semua nilai dibaca dari environment variable / file .env.
 Jangan hardcode secret di sini.
 """
 
+import json
 from functools import lru_cache
+from typing import Any
 
-from pydantic import Field
+from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -36,7 +38,26 @@ class Settings(BaseSettings):
     JWT_ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
 
     # --- CORS ---
-    CORS_ORIGINS: list[str] = ["http://localhost:5173"]
+    CORS_ORIGINS: list[str] = [
+        "http://localhost:5173",
+        "http://localhost:3000",
+        "https://sigap-2hg1.vercel.app",
+    ]
+
+    @field_validator("CORS_ORIGINS", mode="before")
+    @classmethod
+    def parse_cors_origins(cls, v: Any) -> list[str]:
+        if isinstance(v, str):
+            v = v.strip()
+            if v.startswith("[") and v.endswith("]"):
+                try:
+                    return json.loads(v)
+                except Exception:
+                    pass
+            if "," in v:
+                return [i.strip() for i in v.split(",") if i.strip()]
+            return [v]
+        return v
 
     # --- File / Object Storage (disiapkan strukturnya, diaktifkan di Phase 5) ---
     STORAGE_BACKEND: str = "local"  # local | s3 | dst (ditentukan saat Phase 5)
