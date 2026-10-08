@@ -74,8 +74,8 @@ export default function CitizenDashboard() {
         title="Informasi Sistem SIGAP"
         footer={<Button variant="secondary" onClick={() => setIsModalOpen(false)}>Tutup</Button>}
       >
-        <p className="text-ink">
-          Pada Phase 1 & 2 ini, fondasi autentikasi, manajemen token, protected routes, komponen UI primitif, serta alur pengajuan laporan masyarakat telah aktif.
+        <p className="text-ink text-sm leading-relaxed">
+          Platform SIGAP siap menerima pengaduan gangguan lalu lintas dan infrastruktur jalan Anda. Setiap laporan akan diperiksa oleh petugas verifikator dan dapat Anda pantau perkembangannya melalui menu Laporan Saya.
         </p>
       </Modal>
     </>

@@ -18,6 +18,7 @@ import OfficerReportDetailPage from './pages/officer/OfficerReportDetailPage';
 import AdminDashboard from './pages/AdminDashboard';
 import UnauthorizedPage from './pages/UnauthorizedPage';
 import LandingPage from './pages/LandingPage';
+import NotFoundPage from './pages/NotFoundPage';
 
 function RootRedirect() {
   const { user, isAuthenticated, loading } = useAuth();
@@ -91,8 +92,8 @@ export default function App() {
               </Route>
             </Route>
 
-            {/* Fallback route */}
-            <Route path="*" element={<Navigate to="/" replace />} />
+            {/* Fallback 404 Route */}
+            <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </BrowserRouter>
       </ToastProvider>

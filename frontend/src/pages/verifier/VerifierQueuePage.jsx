@@ -190,10 +190,10 @@ export default function VerifierQueuePage() {
                 nextParams.delete('view');
                 setSearchParams(nextParams, { replace: true });
               }}
-              className={`px-3 py-1.5 rounded-md text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer ${
+              className={`px-3 py-1.5 rounded-md text-xs font-semibold flex items-center gap-1.5 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-focus focus-visible:ring-offset-2 cursor-pointer ${
                 viewMode === 'table'
                   ? 'bg-primary text-white shadow-xs'
-                  : 'text-ink-soft hover:text-ink'
+                  : 'text-ink-soft hover:text-ink hover:bg-slate-100'
               }`}
             >
               <Icon icon={TableIcon} size="sm" />
@@ -207,10 +207,10 @@ export default function VerifierQueuePage() {
                 nextParams.set('view', 'map');
                 setSearchParams(nextParams, { replace: true });
               }}
-              className={`px-3 py-1.5 rounded-md text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer ${
+              className={`px-3 py-1.5 rounded-md text-xs font-semibold flex items-center gap-1.5 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-focus focus-visible:ring-offset-2 cursor-pointer ${
                 viewMode === 'map'
                   ? 'bg-primary text-white shadow-xs'
-                  : 'text-ink-soft hover:text-ink'
+                  : 'text-ink-soft hover:text-ink hover:bg-slate-100'
               }`}
             >
               <Icon icon={MapPin} size="sm" />
@@ -232,10 +232,10 @@ export default function VerifierQueuePage() {
       <div className="mb-4 border-b border-border flex items-center gap-2 overflow-x-auto pb-px">
         <button
           onClick={() => handleTabChange('PENDING_VERIFICATION')}
-          className={`py-2.5 px-4 font-semibold text-xs sm:text-sm border-b-2 transition-colors cursor-pointer whitespace-nowrap flex items-center gap-2 ${
+          className={`py-2.5 px-4 font-semibold text-xs sm:text-sm border-b-2 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-focus focus-visible:ring-offset-2 cursor-pointer whitespace-nowrap flex items-center gap-2 ${
             activeTab === 'PENDING_VERIFICATION'
-              ? 'border-primary text-primary bg-primary-light/30 rounded-t-md'
-              : 'border-transparent text-ink-soft hover:text-ink hover:border-border'
+              ? 'border-primary text-primary bg-slate-100/60 rounded-t-md'
+              : 'border-transparent text-ink-soft hover:text-ink hover:bg-slate-100'
           }`}
         >
           <Icon icon={Clock} size="sm" />
@@ -244,10 +244,10 @@ export default function VerifierQueuePage() {
 
         <button
           onClick={() => handleTabChange('VERIFIED')}
-          className={`py-2.5 px-4 font-semibold text-xs sm:text-sm border-b-2 transition-colors cursor-pointer whitespace-nowrap flex items-center gap-2 ${
+          className={`py-2.5 px-4 font-semibold text-xs sm:text-sm border-b-2 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-focus focus-visible:ring-offset-2 cursor-pointer whitespace-nowrap flex items-center gap-2 ${
             activeTab === 'VERIFIED'
-              ? 'border-primary text-primary bg-primary-light/30 rounded-t-md'
-              : 'border-transparent text-ink-soft hover:text-ink hover:border-border'
+              ? 'border-primary text-primary bg-slate-100/60 rounded-t-md'
+              : 'border-transparent text-ink-soft hover:text-ink hover:bg-slate-100'
           }`}
         >
           <Icon icon={CheckCircle2} size="sm" />
@@ -256,10 +256,10 @@ export default function VerifierQueuePage() {
 
         <button
           onClick={() => handleTabChange('ALL')}
-          className={`py-2.5 px-4 font-semibold text-xs sm:text-sm border-b-2 transition-colors cursor-pointer whitespace-nowrap flex items-center gap-2 ${
+          className={`py-2.5 px-4 font-semibold text-xs sm:text-sm border-b-2 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-focus focus-visible:ring-offset-2 cursor-pointer whitespace-nowrap flex items-center gap-2 ${
             activeTab === 'ALL'
-              ? 'border-primary text-primary bg-primary-light/30 rounded-t-md'
-              : 'border-transparent text-ink-soft hover:text-ink hover:border-border'
+              ? 'border-primary text-primary bg-slate-100/60 rounded-t-md'
+              : 'border-transparent text-ink-soft hover:text-ink hover:bg-slate-100'
           }`}
         >
           <Icon icon={List} size="sm" />

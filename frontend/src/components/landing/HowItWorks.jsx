@@ -3,63 +3,65 @@ import React from 'react';
 const steps = [
   {
     step: '01',
-    title: 'Buat Laporan',
-    description: 'Ambil foto, tentukan titik lokasi presisi di peta, dan jelaskan kendala fasilitas jalan atau lalu lintas yang kamu temui.',
+    title: 'Buat Laporan Pengaduan',
+    description: 'Unggah foto bukti, tentukan titik lokasi presisi pada peta, dan berikan rincian kendala jalan atau fasilitas lalu lintas.',
   },
   {
     step: '02',
-    title: 'Diverifikasi',
-    description: 'Tim verifikator mengecek kelayakan laporan, mengonfirmasi kategori, serta menentukan skala prioritas penanganan.',
+    title: 'Pemeriksaan Verifikator',
+    description: 'Tim Verifikator memeriksa kelayakan laporan, mengonfirmasi kategori, serta menentukan skala prioritas dengan bantuan rekomendasi AI.',
   },
   {
     step: '03',
-    title: 'Ditugaskan ke Petugas',
-    description: 'Laporan diteruskan langsung ke unit petugas lapangan terdekat untuk pemeliharaan atau tindakan perbaikan.',
+    title: 'Penugasan Petugas Lapangan',
+    description: 'Laporan yang telah terverifikasi ditugaskan secara resmi kepada unit petugas lapangan untuk tindak lanjut.',
   },
   {
     step: '04',
-    title: 'Selesai Ditangani',
-    description: 'Petugas memperbarui status penanganan dengan foto hasil perbaikan. Warga dapat memantau linimasa hingga tuntas.',
+    title: 'Penanganan & Penyelesaian',
+    description: 'Petugas melakukan tindakan perbaikan di lokasi dan mencatat hasil akhir penanganan. Perkembangan dapat dipantau pada linimasa status.',
   },
 ];
 
 export function HowItWorks() {
   return (
-    <section id="how-it-works" className="py-16 md:py-24 bg-surface border-t border-border">
+    <section id="how-it-works" className="py-16 md:py-24 bg-surface border-t border-border/80">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-primary/10 text-primary mb-4">
+        <div className="text-center max-w-3xl mx-auto mb-14">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-primary/10 text-primary mb-3">
             Alur Transparan
           </span>
-          <h2 className="text-xl md:text-2xl font-semibold text-ink tracking-tight">
-            Bagaimana SIGAP Bekerja?
+          <h2 className="text-xl md:text-3xl font-bold text-ink tracking-tight">
+            Bagaimana SIGAP Memproses Laporan Anda?
           </h2>
-          <p className="mt-4 text-sm md:text-base text-ink-soft leading-relaxed">
-            Setiap laporan jalan atau kelalulintasan diproses melalui 4 tahapan jelas yang dapat kamu pantau secara real-time.
+          <p className="mt-3 text-sm md:text-base text-ink-soft leading-relaxed">
+            Setiap pengaduan diproses melalui 4 tahapan jelas yang dapat Anda pantau secara berkala.
           </p>
         </div>
 
-        {/* Steps Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
-          {steps.map((item) => {
+        {/* Steps Linear Open Layout */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 relative">
+          {steps.map((item, index) => {
             return (
               <div
                 key={item.step}
-                className="relative bg-background p-6 rounded-2xl border border-border hover:border-primary/40 hover:shadow-lg transition-all duration-300 flex flex-col justify-between group"
+                className="relative flex flex-col justify-between text-left space-y-3"
               >
-                {/* Step badge */}
                 <div>
-                  <div className="flex items-center justify-between mb-6">
-                    <span className="text-base font-semibold text-ink-soft/40 group-hover:text-primary transition-colors">
+                  <div className="flex items-center gap-3 mb-3">
+                    <span className="text-2xl md:text-3xl font-extrabold text-primary/80 font-mono">
                       {item.step}
                     </span>
+                    {index < steps.length - 1 && (
+                      <div className="hidden lg:block flex-1 h-0.5 bg-border/60 mt-1" aria-hidden="true" />
+                    )}
                   </div>
 
-                  <h3 className="text-base font-semibold text-ink mb-2 group-hover:text-primary transition-colors">
+                  <h3 className="text-base font-semibold text-ink mb-1.5">
                     {item.title}
                   </h3>
-                  <p className="text-sm text-ink-soft leading-relaxed">
+                  <p className="text-xs md:text-sm text-ink-soft leading-relaxed">
                     {item.description}
                   </p>
                 </div>

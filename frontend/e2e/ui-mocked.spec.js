@@ -86,7 +86,7 @@ test.describe('SIGAP UI Components & Regression Safety Net Suite', () => {
     await expect(keluarBtn).toBeVisible();
 
     const keluarClasses = await keluarBtn.getAttribute('class');
-    expect(keluarClasses).toContain('hover:bg-background');
+    expect(keluarClasses).toContain('hover:bg-slate-100');
     expect(keluarClasses).toContain('bg-transparent');
     expect(keluarClasses).not.toContain('bg-primary');
     expect(keluarClasses).not.toContain('bg-red-600');
@@ -271,7 +271,8 @@ test.describe('SIGAP UI Components & Regression Safety Net Suite', () => {
     // Navigating to detail page /verifier/reports/101 must keep /verifier link active
     await page.goto('/verifier/reports/101');
     const verifierNavLink = page.locator('aside a[href="/verifier"]');
-    await expect(verifierNavLink).toHaveClass(/bg-primary-light/);
+    await expect(verifierNavLink).toHaveClass(/bg-primary/);
+    await expect(verifierNavLink).toHaveAttribute('aria-current', 'page');
   });
 
   /* -------------------------------------------------------------------------- */
@@ -880,5 +881,209 @@ test.describe('SIGAP UI Components & Regression Safety Net Suite', () => {
     expect(isSidebarVisible).toBe(false);
   });
 
+  /* -------------------------------------------------------------------------- */
+  /* 14. Tahap 3e: Interactive Colors, States, Contrast & Screenshots Verification */
+  /* -------------------------------------------------------------------------- */
+  test('14. Interactive components contrast evaluation (default, hover, focus-visible, selected)', async ({ page }) => {
+    const fs = await import('fs');
+    const path = await import('path');
+    const shotsDir = path.join(process.cwd(), 'e2e/_tmp/shots/tahap-3e');
+    const tmpShotsDir = 'C:\\tmp\\shots\\tahap-3e';
+
+    if (!fs.existsSync(shotsDir)) fs.mkdirSync(shotsDir, { recursive: true });
+    if (!fs.existsSync(tmpShotsDir)) fs.mkdirSync(tmpShotsDir, { recursive: true });
+
+    const verifierUser = { id: 2, email: 'verifier@example.com', full_name: 'Staf Verifikator', role: 'VERIFIER' };
+    const mockReport = {
+      id: 1, nomor_laporan: 'SIGAP-2026-00001', status_raw: 'PENDING_VERIFICATION',
+      category_name: 'Jalan Berlubang', priority: 'HIGH', waktu_kejadian: new Date().toISOString(),
+      created_at: new Date().toISOString(), reporter_name: 'Warga Contoh', alamat_lokasi: 'Jl. Pemuda No 1',
+      latitude: -7.11, longitude: 112.41, deskripsi: 'Tes deskripsi', evidences: [], status_histories: [],
+      field_values: [], action_reports: [], current_assignment: null
+    };
+
+    await page.route('**/api/v1/auth/me', async (route) => {
+      await route.fulfill({ status: 200, headers: { 'Access-Control-Allow-Origin': '*' }, contentType: 'application/json', body: JSON.stringify(verifierUser) });
+    });
+    await page.route('**/api/v1/notifications**', async (route) => {
+      await route.fulfill({ status: 200, headers: { 'Access-Control-Allow-Origin': '*' }, contentType: 'application/json', body: JSON.stringify([]) });
+    });
+    await page.route('**/api/v1/categories**', async (route) => {
+      await route.fulfill({ status: 200, headers: { 'Access-Control-Allow-Origin': '*' }, contentType: 'application/json', body: JSON.stringify([]) });
+    });
+    await page.route('**/api/v1/reports/1**', async (route) => {
+      await route.fulfill({ status: 200, headers: { 'Access-Control-Allow-Origin': '*' }, contentType: 'application/json', body: JSON.stringify(mockReport) });
+    });
+    await page.route('**/api/v1/reports**', async (route) => {
+      await route.fulfill({ status: 200, headers: { 'Access-Control-Allow-Origin': '*' }, contentType: 'application/json', body: JSON.stringify({ items: [mockReport], total: 1 }) });
+    });
+
+    await page.goto('/login');
+    await page.evaluate((u) => {
+      localStorage.setItem('sigap_token', 'fake-jwt-token');
+      localStorage.setItem('sigap_user', JSON.stringify(u));
+    }, verifierUser);
+
+    await page.goto('/verifier');
+    await page.waitForLoadState('networkidle');
+
+    const getStylesAndContrast = async (locator) => {
+      return await locator.evaluate((el) => {
+        if (!el) return null;
+
+        function getEffectiveBgColor(e) {
+          let curr = e;
+          while (curr && curr !== document.documentElement) {
+            const bg = window.getComputedStyle(curr).backgroundColor;
+            if (bg && bg !== 'transparent' && bg !== 'rgba(0, 0, 0, 0)' && !bg.endsWith(', 0)')) {
+              return bg;
+            }
+            curr = curr.parentElement;
+          }
+          return 'rgb(248, 250, 252)';
+        }
+
+        function parseRgb(colorStr) {
+          const match = colorStr.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+          if (!match) return [255, 255, 255];
+          return [parseInt(match[1]), parseInt(match[2]), parseInt(match[3])];
+        }
+
+        function getContrast(fgStr, bgStr) {
+          const fg = parseRgb(fgStr);
+          const bg = parseRgb(bgStr);
+          const getL = (c) => {
+            const s = c.map(v => {
+              v /= 255;
+              return v <= 0.04045 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+            });
+            return s[0] * 0.2126 + s[1] * 0.7152 + s[2] * 0.0722;
+          };
+          const l1 = getL(fg);
+          const l2 = getL(bg);
+          return (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
+        }
+
+        const cs = window.getComputedStyle(el);
+        const fg = cs.color;
+        const bg = getEffectiveBgColor(el);
+        const ratio = getContrast(fg, bg);
+        return {
+          fg,
+          bg,
+          ratio: Math.round(ratio * 100) / 100,
+          pass: ratio >= 4.5
+        };
+      });
+    };
+
+    const interactiveTargets = [
+      { name: 'Secondary Button (Refresh)', selector: 'button:has-text("Refresh")', pageName: 'verifier' },
+      { name: 'Segmented Switcher (Tabel)', selector: 'button:has-text("Tabel")', pageName: 'verifier' },
+      { name: 'Fast Tab (Menunggu Verifikasi)', selector: 'button:has-text("Menunggu Verifikasi")', pageName: 'verifier' },
+      { name: 'Sidebar Item (Antrean Verifikasi)', selector: 'aside a:has-text("Antrean Verifikasi")', pageName: 'verifier' },
+    ];
+
+    const contrastReportTable = [];
+
+    for (const target of interactiveTargets) {
+      const el = page.locator(target.selector).first();
+      await el.waitFor({ state: 'visible' });
+
+      // Default state
+      const defaultState = await getStylesAndContrast(el);
+      await page.screenshot({ path: path.join(shotsDir, `${target.name.replace(/[^a-zA-Z0-9]/g, '_')}_default.png`) });
+      await page.screenshot({ path: path.join(tmpShotsDir, `${target.name.replace(/[^a-zA-Z0-9]/g, '_')}_default.png`) });
+
+      // Hover state
+      await el.hover();
+      await page.waitForTimeout(150);
+      const hoverState = await getStylesAndContrast(el);
+      await page.screenshot({ path: path.join(shotsDir, `${target.name.replace(/[^a-zA-Z0-9]/g, '_')}_hover.png`) });
+      await page.screenshot({ path: path.join(tmpShotsDir, `${target.name.replace(/[^a-zA-Z0-9]/g, '_')}_hover.png`) });
+
+      // Focus-visible state
+      await el.focus();
+      await page.waitForTimeout(150);
+      const focusState = await getStylesAndContrast(el);
+      await page.screenshot({ path: path.join(shotsDir, `${target.name.replace(/[^a-zA-Z0-9]/g, '_')}_focus.png`) });
+      await page.screenshot({ path: path.join(tmpShotsDir, `${target.name.replace(/[^a-zA-Z0-9]/g, '_')}_focus.png`) });
+
+      contrastReportTable.push({
+        component: target.name,
+        state: 'Default',
+        fgColor: defaultState.fg,
+        bgColor: defaultState.bg,
+        contrast: `${defaultState.ratio}:1`,
+        hasil: defaultState.pass ? 'PASS' : 'FAIL'
+      });
+
+      contrastReportTable.push({
+        component: target.name,
+        state: 'Hover',
+        fgColor: hoverState.fg,
+        bgColor: hoverState.bg,
+        contrast: `${hoverState.ratio}:1`,
+        hasil: hoverState.pass ? 'PASS' : 'FAIL'
+      });
+
+      contrastReportTable.push({
+        component: target.name,
+        state: 'Focus',
+        fgColor: focusState.fg,
+        bgColor: focusState.bg,
+        contrast: `${focusState.ratio}:1`,
+        hasil: focusState.pass ? 'PASS' : 'FAIL'
+      });
+
+      expect(defaultState.pass).toBe(true);
+      expect(hoverState.pass).toBe(true);
+      expect(focusState.pass).toBe(true);
+      expect(hoverState.bg !== defaultState.bg || target.name.includes('Segmented') || target.name.includes('Sidebar') || target.name.includes('Tab')).toBe(true);
+    }
+
+    // Now test Detail page (/verifier/reports/1) for Primary Button
+    await page.goto('/verifier/reports/1');
+    await page.waitForLoadState('networkidle');
+
+    const primaryBtn = page.getByRole('button', { name: /Ubah Prioritas|Verifikasi|Tutup Kasus/ }).first();
+    await primaryBtn.waitFor({ state: 'visible' });
+
+    const pDefault = await getStylesAndContrast(primaryBtn);
+    await primaryBtn.hover();
+    await page.waitForTimeout(150);
+    const pHover = await getStylesAndContrast(primaryBtn);
+
+    await page.screenshot({ path: path.join(shotsDir, `PrimaryButton_default.png`) });
+    await page.screenshot({ path: path.join(tmpShotsDir, `PrimaryButton_default.png`) });
+    await page.screenshot({ path: path.join(shotsDir, `PrimaryButton_hover.png`) });
+    await page.screenshot({ path: path.join(tmpShotsDir, `PrimaryButton_hover.png`) });
+
+    contrastReportTable.push({
+      component: 'Primary Button (Verifikasi Laporan)',
+      state: 'Default',
+      fgColor: pDefault.fg,
+      bgColor: pDefault.bg,
+      contrast: `${pDefault.ratio}:1`,
+      hasil: pDefault.pass ? 'PASS' : 'FAIL'
+    });
+
+    contrastReportTable.push({
+      component: 'Primary Button (Verifikasi Laporan)',
+      state: 'Hover',
+      fgColor: pHover.fg,
+      bgColor: pHover.bg,
+      contrast: `${pHover.ratio}:1`,
+      hasil: pHover.pass ? 'PASS' : 'FAIL'
+    });
+
+    expect(pDefault.pass).toBe(true);
+    expect(pHover.pass).toBe(true);
+
+    console.log('\n=== HASIL EVALUASI KONTRAS STATE INTERAKTIF (TAHAP 3e) ===');
+    console.table(contrastReportTable);
+  });
+
 });
+
 

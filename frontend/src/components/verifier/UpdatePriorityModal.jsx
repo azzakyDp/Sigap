@@ -79,10 +79,10 @@ export default function UpdatePriorityModal({ isOpen, onClose, report, onSuccess
                 key={item.value}
                 type="button"
                 onClick={() => setPriority(item.value)}
-                className={`p-3 rounded-lg border text-left text-xs font-semibold flex items-center justify-between transition-all cursor-pointer ${
+                className={`p-3 rounded-lg border text-left text-xs font-semibold flex items-center justify-between transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-focus focus-visible:ring-offset-2 cursor-pointer ${
                   priority === item.value
-                    ? 'border-primary bg-primary-light text-primary ring-2 ring-primary/20'
-                    : 'border-border bg-surface text-ink hover:bg-background'
+                    ? 'border-primary bg-primary text-white shadow-xs'
+                    : 'border-border bg-surface text-ink hover:bg-slate-100'
                 }`}
               >
                 <span>{item.label}</span>

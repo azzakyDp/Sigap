@@ -75,7 +75,7 @@ export default function Pagination({
           type="button"
           onClick={handlePrev}
           disabled={currentPage === 1 || disabled}
-          className="inline-flex items-center justify-center h-9 px-3 text-xs font-semibold text-ink bg-surface border border-border rounded-md hover:bg-background disabled:opacity-40 disabled:cursor-not-allowed transition-colors gap-1 cursor-pointer"
+          className="inline-flex items-center justify-center h-9 px-3 text-xs font-semibold text-ink bg-surface border border-border rounded-md hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-focus focus-visible:ring-offset-2 disabled:opacity-40 disabled:cursor-not-allowed transition-colors duration-150 gap-1 cursor-pointer"
           aria-label="Halaman sebelumnya"
         >
           <Icon icon={ChevronLeft} size="sm" />
@@ -89,10 +89,10 @@ export default function Pagination({
               type="button"
               onClick={() => onPageChange && onPageChange(page)}
               disabled={disabled}
-              className={`h-9 w-9 inline-flex items-center justify-center text-xs font-semibold rounded-md border transition-colors cursor-pointer ${
+              className={`h-9 w-9 inline-flex items-center justify-center text-xs font-semibold rounded-md border transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-focus focus-visible:ring-offset-2 cursor-pointer ${
                 page === currentPage
                   ? 'bg-primary text-white border-primary shadow-xs font-semibold'
-                  : 'bg-surface text-ink border-border hover:bg-background'
+                  : 'bg-surface text-ink border-border hover:bg-slate-100'
               }`}
             >
               {page}
@@ -104,7 +104,7 @@ export default function Pagination({
           type="button"
           onClick={handleNext}
           disabled={currentPage === totalPages || disabled}
-          className="inline-flex items-center justify-center h-9 px-3 text-xs font-semibold text-ink bg-surface border border-border rounded-md hover:bg-background disabled:opacity-40 disabled:cursor-not-allowed transition-colors gap-1 cursor-pointer"
+          className="inline-flex items-center justify-center h-9 px-3 text-xs font-semibold text-ink bg-surface border border-border rounded-md hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-focus focus-visible:ring-offset-2 disabled:opacity-40 disabled:cursor-not-allowed transition-colors duration-150 gap-1 cursor-pointer"
           aria-label="Halaman selanjutnya"
         >
           <span>Selanjutnya</span>

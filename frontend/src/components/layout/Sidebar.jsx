@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Home, FileText, PlusCircle, ClipboardCheck, Wrench, Settings, MapPin } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
@@ -97,21 +97,20 @@ export default function Sidebar({ isOpen, onClose }) {
             const Icon = link.icon;
             const active = isLinkActive(link.path);
             return (
-              <NavLink
+              <Link
                 key={link.path}
                 to={link.path}
                 onClick={onClose}
-                className={
-                  `flex items-center gap-3 px-3.5 py-2.5 rounded-md text-sm font-semibold transition-colors ${
-                    active
-                      ? 'bg-primary-light text-primary border border-primary/20'
-                      : 'text-ink hover:bg-background hover:text-primary'
-                  }`
-                }
+                aria-current={active ? 'page' : undefined}
+                className={`flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-semibold transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-focus focus-visible:ring-offset-2 ${
+                  active
+                    ? 'bg-primary text-white shadow-xs'
+                    : 'text-ink-soft hover:text-ink hover:bg-slate-100'
+                }`}
               >
                 <Icon className="w-5 h-5 shrink-0 text-current" strokeWidth={1.75} />
                 {link.name}
-              </NavLink>
+              </Link>
             );
           })}
         </nav>

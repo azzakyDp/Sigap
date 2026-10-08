@@ -92,8 +92,9 @@ export default function VerifierReportDetailPage() {
 
   const statusRaw = report.status_raw;
   const isPendingVerification = statusRaw === 'PENDING_VERIFICATION';
+  const isPriorityUpdatable = !['CLOSED', 'REJECTED'].includes(statusRaw);
   const isAssignable = ['VERIFIED', 'ASSIGNED', 'UNRESOLVED'].includes(statusRaw);
-  const isClosable = !['CLOSED', 'REJECTED'].includes(statusRaw);
+  const isClosable = ['RESOLVED', 'UNRESOLVED'].includes(statusRaw);
 
   return (
     <>
@@ -115,8 +116,8 @@ export default function VerifierReportDetailPage() {
               </Button>
             )}
 
-            {/* PENDING / VERIFIED / ASSIGNED / IN_PROGRESS -> Ubah Prioritas */}
-            {isClosable && (
+            {/* Non-closed/rejected -> Ubah Prioritas */}
+            {isPriorityUpdatable && (
               <Button
                 variant="secondary"
                 size="sm"
@@ -137,7 +138,7 @@ export default function VerifierReportDetailPage() {
               </Button>
             )}
 
-            {/* Any active case -> Tutup Kasus */}
+            {/* RESOLVED / UNRESOLVED -> Tutup Kasus */}
             {isClosable && (
               <Button
                 variant="secondary"

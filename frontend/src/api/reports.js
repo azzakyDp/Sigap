@@ -20,10 +20,3 @@ export const getReportDetailApi = async (reportId) => {
   const response = await apiClient.get(`/reports/${reportId}`);
   return response.data;
 };
-
-export const getNearbyReportsApi = async (lat, lng, radius = 5.0) => {
-  const response = await apiClient.get('/reports/nearby', {
-    params: { lat, lng, radius },
-  });
-  return response.data;
-};

@@ -69,7 +69,7 @@ export default function ReportDetailView({
               <Badge type="priority" value={report.priority} />
             </div>
 
-            <h1 className="text-xl font-bold text-ink tracking-tight mt-1">
+            <h1 className="text-xl font-bold text-ink tracking-tight mt-1 break-words overflow-wrap-anywhere">
               {report.category_name}
             </h1>
 
@@ -78,7 +78,7 @@ export default function ReportDetailView({
               {audience === 'staff' && (
                 <>
                   <span>•</span>
-                  <span>Oleh <span className="font-semibold text-ink">{reporterName}</span></span>
+                  <span className="break-words overflow-wrap-anywhere">Oleh <span className="font-semibold text-ink">{reporterName}</span></span>
                 </>
               )}
             </p>
@@ -111,7 +111,7 @@ export default function ReportDetailView({
                   <span className="text-xs font-normal text-ink-soft block mb-1">
                     Kategori Pengaduan
                   </span>
-                  <span className="font-normal text-ink">{report.category_name}</span>
+                  <span className="font-normal text-ink break-words overflow-wrap-anywhere">{report.category_name}</span>
                 </div>
                 <div>
                   <span className="text-xs font-normal text-ink-soft block mb-1">
@@ -133,7 +133,7 @@ export default function ReportDetailView({
                     {report.field_values.map((fv, idx) => (
                       <div
                         key={idx}
-                        className="p-3 bg-surface rounded-md border border-border/80 flex flex-col justify-between"
+                        className="p-3 bg-surface rounded-md border border-border/80 flex flex-col justify-between break-words overflow-wrap-anywhere"
                       >
                         <span className="text-xs text-ink-soft font-normal capitalize">
                           {fv.field_name?.replace(/_/g, ' ')}
@@ -150,7 +150,7 @@ export default function ReportDetailView({
                 <h4 className="text-xs font-semibold text-ink-soft">
                   Deskripsi Lengkap Kejadian
                 </h4>
-                <div className="p-4 bg-background rounded-lg border border-border/60 text-ink whitespace-pre-line leading-relaxed">
+                <div className="p-4 bg-background rounded-lg border border-border/60 text-ink whitespace-pre-line leading-relaxed break-words overflow-wrap-anywhere">
                   {report.deskripsi}
                 </div>
               </div>

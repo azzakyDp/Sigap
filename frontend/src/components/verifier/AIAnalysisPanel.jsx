@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ChevronDown, ChevronUp, AlertTriangle, RefreshCw } from 'lucide-react';
+import { ChevronDown, ChevronUp, AlertTriangle, RefreshCw, Cpu, FileText, Clock } from 'lucide-react';
 import Icon from '../ui/Icon';
 import Card from '../ui/Card';
 import Badge from '../ui/Badge';
@@ -18,6 +18,8 @@ export default function AIAnalysisPanel({ reportId }) {
 
   const pollingIntervalRef = useRef(null);
   const pollCountRef = useRef(0);
+  const activeReportIdRef = useRef(reportId);
+  const requestGenRef = useRef(0);
   const maxPollCount = 20; // Maximum 20 cycles (approx 60 seconds at 3s interval)
 
   const stopPolling = () => {
@@ -27,7 +29,7 @@ export default function AIAnalysisPanel({ reportId }) {
     }
   };
 
-  const fetchAnalysisData = async (isInitial = false) => {
+  const fetchAnalysisData = async (isInitial = false, gen = requestGenRef.current) => {
     if (!reportId) return;
     if (isInitial) {
       setLoading(true);
@@ -36,30 +38,32 @@ export default function AIAnalysisPanel({ reportId }) {
 
     try {
       const data = await getOrTriggerAnalysisApi(reportId);
+      if (requestGenRef.current !== gen || activeReportIdRef.current !== reportId) return;
       setAnalysis(data);
       setError(null);
 
       const status = data?.status?.toUpperCase();
 
       if (status === 'PENDING' || status === 'PROCESSING') {
-        startPolling();
+        startPolling(gen);
       } else {
         stopPolling();
       }
     } catch (err) {
+      if (requestGenRef.current !== gen || activeReportIdRef.current !== reportId) return;
       console.warn('Gagal mengambil analisis AI:', err);
       stopPolling();
       if (isInitial) {
         setError(getErrorMessage(err, 'Gagal terhubung ke layanan AI analysis.'));
       }
     } finally {
-      if (isInitial) {
+      if (isInitial && requestGenRef.current === gen && activeReportIdRef.current === reportId) {
         setLoading(false);
       }
     }
   };
 
-  const startPolling = () => {
+  const startPolling = (gen = requestGenRef.current) => {
     if (pollingIntervalRef.current) return;
 
     pollCountRef.current = 0;
@@ -72,20 +76,30 @@ export default function AIAnalysisPanel({ reportId }) {
 
       try {
         const data = await getOrTriggerAnalysisApi(reportId);
+        if (requestGenRef.current !== gen || activeReportIdRef.current !== reportId) {
+          stopPolling();
+          return;
+        }
         setAnalysis(data);
         const status = data?.status?.toUpperCase();
         if (status === 'COMPLETED' || status === 'FAILED') {
           stopPolling();
         }
       } catch (err) {
-        console.warn('Polling AI analysis gagal:', err);
+        if (requestGenRef.current === gen) {
+          console.warn('Polling AI analysis gagal:', err);
+        }
         stopPolling();
       }
     }, 3000);
   };
 
   useEffect(() => {
-    fetchAnalysisData(true);
+    activeReportIdRef.current = reportId;
+    requestGenRef.current += 1;
+    const gen = requestGenRef.current;
+    stopPolling();
+    fetchAnalysisData(true, gen);
 
     return () => {
       stopPolling();
@@ -97,19 +111,26 @@ export default function AIAnalysisPanel({ reportId }) {
     setIsReanalyzing(true);
     stopPolling();
 
+    requestGenRef.current += 1;
+    const gen = requestGenRef.current;
+
     try {
       const newAnalysis = await reanalyzeApi(reportId);
+      if (requestGenRef.current !== gen || activeReportIdRef.current !== reportId) return;
       setAnalysis(newAnalysis);
       setError(null);
       const status = newAnalysis?.status?.toUpperCase();
       if (status === 'PENDING' || status === 'PROCESSING') {
-        startPolling();
+        startPolling(gen);
       }
     } catch (err) {
+      if (requestGenRef.current !== gen || activeReportIdRef.current !== reportId) return;
       console.error('Gagal memicu analisis ulang AI:', err);
       setError(getErrorMessage(err, 'Gagal memicu analisis ulang AI.'));
     } finally {
-      setIsReanalyzing(false);
+      if (requestGenRef.current === gen && activeReportIdRef.current === reportId) {
+        setIsReanalyzing(false);
+      }
     }
   };
 
@@ -151,7 +172,7 @@ export default function AIAnalysisPanel({ reportId }) {
       <Card className="p-4 space-y-3 border-border/80">
         <div className="flex items-center justify-between gap-2 border-b border-border/50 pb-2">
           <div className="flex items-center gap-1.5 text-xs font-semibold text-ink-soft">
-            <Cpu className="w-4 h-4 text-primary shrink-0" />
+            <Icon icon={Cpu} size="sm" className="text-primary shrink-0" />
             <span>Rekomendasi AI — bukan keputusan final</span>
           </div>
         </div>
@@ -170,7 +191,7 @@ export default function AIAnalysisPanel({ reportId }) {
       <Card className="p-4 space-y-3 border-border/80">
         <div className="flex items-center justify-between gap-2 border-b border-border/50 pb-2">
           <div className="flex items-center gap-1.5 text-xs font-semibold text-ink-soft">
-            <Cpu className="w-4 h-4 text-ink-soft shrink-0" />
+            <Icon icon={Cpu} size="sm" className="text-ink-soft shrink-0" />
             <span>Rekomendasi AI — bukan keputusan final</span>
           </div>
         </div>
@@ -312,7 +333,7 @@ export default function AIAnalysisPanel({ reportId }) {
           {analysis?.evidence && analysis.evidence.length > 0 && (
             <div className="space-y-1">
               <span className="font-semibold text-ink-soft flex items-center gap-1">
-                <FileText className="w-3.5 h-3.5 text-primary" />
+                <Icon icon={FileText} size="sm" className="text-primary shrink-0" />
                 Poin Bukti Pendukung:
               </span>
               <ul className="list-disc list-inside space-y-1 p-2.5 bg-background border border-border/60 rounded text-ink">
@@ -326,7 +347,7 @@ export default function AIAnalysisPanel({ reportId }) {
           {/* Timestamp */}
           {analysis?.created_at && (
             <div className="flex items-center gap-1 text-xs text-ink-soft pt-1">
-              <Clock className="w-3 h-3 text-ink-soft" />
+              <Icon icon={Clock} size="sm" className="text-ink-soft shrink-0" />
               <span>Dianalisis pada: {formatDate(analysis.created_at)}</span>
             </div>
           )}

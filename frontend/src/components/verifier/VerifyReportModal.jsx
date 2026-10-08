@@ -92,39 +92,39 @@ export default function VerifyReportModal({ isOpen, onClose, report, onSuccess }
             <button
               type="button"
               onClick={() => setDecision('VERIFIED')}
-              className={`p-3 rounded-lg border text-xs font-semibold flex flex-col items-center gap-1.5 transition-all cursor-pointer ${
+              className={`p-3 rounded-lg border text-xs font-semibold flex flex-col items-center gap-1.5 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-focus focus-visible:ring-offset-2 cursor-pointer ${
                 decision === 'VERIFIED'
-                  ? 'border-primary bg-primary-light text-primary ring-2 ring-primary/20'
-                  : 'border-border bg-surface text-ink hover:bg-background'
+                  ? 'border-primary bg-primary text-white shadow-xs'
+                  : 'border-border bg-surface text-ink hover:bg-slate-100'
               }`}
             >
-              <Icon icon={CheckCircle2} size="nav" className="text-primary" />
+              <Icon icon={CheckCircle2} size="nav" className="text-current" />
               <span>VERIFIED</span>
             </button>
 
             <button
               type="button"
               onClick={() => setDecision('REJECTED')}
-              className={`p-3 rounded-lg border text-xs font-semibold flex flex-col items-center gap-1.5 transition-all cursor-pointer ${
+              className={`p-3 rounded-lg border text-xs font-semibold flex flex-col items-center gap-1.5 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-danger-focus focus-visible:ring-offset-2 cursor-pointer ${
                 decision === 'REJECTED'
-                  ? 'border-danger bg-status-red-bg text-danger ring-2 ring-danger/20'
-                  : 'border-border bg-surface text-ink hover:bg-background'
+                  ? 'border-danger bg-danger text-white shadow-xs'
+                  : 'border-border bg-surface text-ink hover:bg-slate-100'
               }`}
             >
-              <Icon icon={XCircle} size="nav" className="text-danger" />
+              <Icon icon={XCircle} size="nav" className="text-current" />
               <span>REJECTED</span>
             </button>
 
             <button
               type="button"
               onClick={() => setDecision('DUPLICATE')}
-              className={`p-3 rounded-lg border text-xs font-semibold flex flex-col items-center gap-1.5 transition-all cursor-pointer ${
+              className={`p-3 rounded-lg border text-xs font-semibold flex flex-col items-center gap-1.5 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-focus focus-visible:ring-offset-2 cursor-pointer ${
                 decision === 'DUPLICATE'
-                  ? 'border-status-orange-border bg-status-orange-bg text-status-orange-text ring-2 ring-status-orange-border/30'
-                  : 'border-border bg-surface text-ink hover:bg-background'
+                  ? 'border-primary bg-primary text-white shadow-xs'
+                  : 'border-border bg-surface text-ink hover:bg-slate-100'
               }`}
             >
-              <Icon icon={Copy} size="nav" className="text-status-orange-text" />
+              <Icon icon={Copy} size="nav" className="text-current" />
               <span>DUPLICATE</span>
             </button>
           </div>

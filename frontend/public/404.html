@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SIGAP - 404 Halaman Tidak Ditemukan</title>
+  <style>
+    :root {
+      --bg: #F8FAFC;
+      --surface: #FFFFFF;
+      --ink: #0F172A;
+      --ink-soft: #475569;
+      --primary: #2185D5;
+      --primary-hover: #1A6FB3;
+      --border: #BCCCDC;
+      --radius: 8px;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--ink);
+      display: flex;
+      min-height: 100vh;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem;
+      max-width: 440px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+    .badge-404 {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: #F1F5F9;
+      color: var(--ink-soft);
+      font-family: monospace;
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 0.5rem;
+    }
+    p {
+      font-size: 0.875rem;
+      color: var(--ink-soft);
+      line-height: 1.5;
+      margin-bottom: 1.5rem;
+    }
+    .btn-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    @media (min-width: 480px) {
+      .btn-group {
+        flex-direction: row;
+      }
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.625rem 1.25rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: background-color 0.15s ease;
+      cursor: pointer;
+      flex: 1;
+    }
+    .btn-primary {
+      background-color: var(--primary);
+      color: #FFFFFF;
+      border: 1px solid transparent;
+    }
+    .btn-primary:hover {
+      background-color: var(--primary-hover);
+    }
+    .btn-secondary {
+      background-color: #FFFFFF;
+      color: var(--ink);
+      border: 1px solid var(--border);
+    }
+    .btn-secondary:hover {
+      background-color: #F1F5F9;
+    }
+  </style>
+
+  <!-- GitHub Pages Single Page Application (SPA) Redirect Trick -->
+  <script>
+    // Single Page Apps for GitHub Pages
+    // https://github.com/rafgraph/spa-github-pages
+    (function(l) {
+      if (l.search[1] === '/' ) {
+        var decoded = l.search.slice(1).split('&').map(function(s) { 
+          return s.replace(/~and~/g, '&')
+        }).join('?');
+        window.history.replaceState(null, null,
+            l.pathname.slice(0, -1) + decoded + l.hash
+        );
+      }
+    }(window.location));
+  </script>
+</head>
+<body>
+  <div class="card">
+    <div class="badge-404">404</div>
+    <h1>Halaman Tidak Ditemukan</h1>
+    <p>
+      Maaf, alamat URL atau halaman <strong>SIGAP</strong> yang Anda tuju tidak ditemukan atau telah dipindahkan.
+    </p>
+
+    <div class="btn-group">
+      <a href="/" class="btn btn-primary">Kembali ke Beranda</a>
+      <button onclick="window.history.back()" class="btn btn-secondary">Halaman Sebelumnya</button>
+    </div>
+  </div>
+</body>
+</html>

@@ -74,26 +74,26 @@ export default function ResolveReportModal({ isOpen, onClose, report, onSuccess 
             <button
               type="button"
               onClick={() => setDecision('RESOLVED')}
-              className={`p-3.5 rounded-lg border text-xs font-semibold flex flex-col items-center gap-2 transition-all cursor-pointer ${
+              className={`p-3.5 rounded-lg border text-xs font-semibold flex flex-col items-center gap-2 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-focus focus-visible:ring-offset-2 cursor-pointer ${
                 decision === 'RESOLVED'
-                  ? 'border-primary bg-primary-light text-primary ring-2 ring-primary/20'
-                  : 'border-border bg-surface text-ink hover:bg-background'
+                  ? 'border-primary bg-primary text-white shadow-xs'
+                  : 'border-border bg-surface text-ink hover:bg-slate-100'
               }`}
             >
-              <Icon icon={CheckCircle2} size="nav" className="text-primary" />
+              <Icon icon={CheckCircle2} size="nav" className="text-current" />
               <span>RESOLVED (Selesai)</span>
             </button>
 
             <button
               type="button"
               onClick={() => setDecision('UNRESOLVED')}
-              className={`p-3.5 rounded-lg border text-xs font-semibold flex flex-col items-center gap-2 transition-all cursor-pointer ${
+              className={`p-3.5 rounded-lg border text-xs font-semibold flex flex-col items-center gap-2 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-focus focus-visible:ring-offset-2 cursor-pointer ${
                 decision === 'UNRESOLVED'
-                  ? 'border-status-amber-border bg-status-amber-bg text-status-amber-text ring-2 ring-status-amber-border/30'
-                  : 'border-border bg-surface text-ink hover:bg-background'
+                  ? 'border-primary bg-primary text-white shadow-xs'
+                  : 'border-border bg-surface text-ink hover:bg-slate-100'
               }`}
             >
-              <Icon icon={AlertTriangle} size="nav" className="text-status-amber-text" />
+              <Icon icon={AlertTriangle} size="nav" className={decision === 'UNRESOLVED' ? 'text-white' : 'text-status-amber-text'} />
               <span>UNRESOLVED (Belum Selesai)</span>
             </button>
           </div>

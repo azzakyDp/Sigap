@@ -10,9 +10,12 @@
   --text-display: 2rem;
   --text-display--line-height: 1.2;
 
-  --color-primary: #2185D5;
-  --color-primary-hover: #1B6DAE;
-  --color-primary-light: #E8F2FB;
+  --color-primary: #1B6DAE;
+  --color-primary-hover: #155A92;
+  --color-primary-strong: #1B6DAE;
+  --color-primary-strong-hover: #155A92;
+  --color-primary-focus: #2185D5;
+  --color-primary-light: #F1F5F9;
 
   --color-background: #F8FAFC;
   --color-surface: #FFFFFF;
@@ -25,6 +28,7 @@
   --color-danger: #DC2626;
   --color-danger-hover: #B91C1C;
   --color-danger-light: #FEE2E2;
+  --color-danger-focus: #EF4444;
 
   /* Status Colors */
   --color-status-amber-bg: #FEF3C7;
@@ -73,4 +77,9 @@ body {
 
 .animate-fade-in {
   animation: fadeIn 0.15s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.overflow-wrap-anywhere {
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }

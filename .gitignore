@@ -2,12 +2,13 @@
 node_modules/
 .venv/
 venv/
+env/
 __pycache__/
+*.pyc
 
 # Build outputs
 dist/
 build/
-*.pyc
 
 # Environment & local files
 .env
@@ -16,5 +17,9 @@ docs/
 *_BACKUP.md
 
 # Sensitive / Testing files
+test-results/
+.pytest_cache/
+playwright-report/
+*.db
+test_*.db
 frontend/testing gambar/
-
