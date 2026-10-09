@@ -64,6 +64,7 @@ async def run_analysis_job(report_id: int, analysis_id: int) -> None:
             analysis = db.query(AIAnalysis).filter(AIAnalysis.id == analysis_id).first()
             if analysis:
                 analysis.status = AIAnalysisStatus.FAILED
+                analysis.summary = f"Gagal memproses AI: {str(exc)}"
                 analysis.warnings = [f"Gagal menghasilkan analisis: {str(exc)}"]
                 db.commit()
 
@@ -126,7 +127,7 @@ class AIAnalysisService:
             return AIAnalysisResponse.model_validate(failed_analysis)
 
         # 3. Jika belum ada, buat row PENDING baru
-        model_name = settings.AI_MODEL or "gemini-3.1-flash-lite"
+        model_name = settings.AI_MODEL or "gemini-2.0-flash-lite"
         new_analysis = AIAnalysis(
             report_id=report_id,
             model_name=model_name,
@@ -161,7 +162,7 @@ class AIAnalysisService:
         if not report:
             raise NotFoundException(f"Laporan dengan ID {report_id} tidak ditemukan")
 
-        model_name = settings.AI_MODEL or "gemini-3.1-flash-lite"
+        model_name = settings.AI_MODEL or "gemini-2.0-flash-lite"
         new_analysis = AIAnalysis(
             report_id=report_id,
             model_name=model_name,

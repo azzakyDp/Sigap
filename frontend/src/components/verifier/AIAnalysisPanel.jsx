@@ -187,12 +187,17 @@ export default function AIAnalysisPanel({ reportId }) {
 
   // 4. FAILED State
   if (status === 'FAILED') {
+    const errorMessage =
+      analysis?.summary ||
+      (analysis?.warnings && analysis.warnings[0]) ||
+      'Analisis AI belum tersedia untuk laporan ini.';
+
     return (
       <Card className="p-4 space-y-3 border-border/80">
         <div className="flex items-center justify-between gap-2 border-b border-border/50 pb-2">
           <div className="flex items-center gap-1.5 text-xs font-semibold text-ink-soft">
             <Icon icon={Cpu} size="sm" className="text-ink-soft shrink-0" />
-            <span>Rekomendasi AI — bukan keputusan final</span>
+            <span>Rekomendasi AI</span>
           </div>
         </div>
 

@@ -51,7 +51,7 @@ class GeminiProvider(AIProvider):
             raise ConfigurationError("AI_API_KEY belum dikonfigurasi di environment / .env")
 
         start_time = time.time()
-        model_name = settings.AI_MODEL or "gemini-3.1-flash-lite"
+        model_name = settings.AI_MODEL or "gemini-2.0-flash-lite"
         timeout_secs = float(settings.AI_TIMEOUT or 30)
 
         # 1. Ambil daftar kategori aktif dari database

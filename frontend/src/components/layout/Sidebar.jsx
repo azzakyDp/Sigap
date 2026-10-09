@@ -78,14 +78,14 @@ export default function Sidebar({ isOpen, onClose }) {
       {/* Mobile Backdrop */}
       {isOpen && (
         <div
-          className="fixed inset-0 z-30 bg-ink/40 backdrop-blur-xs lg:hidden"
+          className="fixed inset-0 z-50 bg-ink/40 backdrop-blur-xs lg:hidden"
           onClick={onClose}
         />
       )}
 
       {/* Sidebar Container */}
       <aside
-        className={`fixed top-16 left-0 bottom-0 z-30 w-64 bg-surface border-r border-border p-4 transition-transform duration-200 ease-in-out lg:translate-x-0 ${
+        className={`fixed top-16 left-0 bottom-0 z-50 w-64 bg-surface border-r border-border p-4 transition-transform duration-200 ease-in-out lg:translate-x-0 ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >

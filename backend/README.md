@@ -203,7 +203,7 @@ Hasil Pengujian:
 ```
 
 ### 2. Live Gemini API Test & Estimasi Biaya (Phase 7)
-- **Model Digunakan**: `gemini-3.1-flash-lite` (dapat dikonfigurasi via `.env` -> `AI_MODEL`).
+- **Model Digunakan**: `gemini-2.0-flash-lite` (dapat dikonfigurasi via `.env` -> `AI_MODEL`).
 - **Pengujian Manual dengan API Key Nyata**:
   ```bash
   python scripts/test_gemini_manual.py

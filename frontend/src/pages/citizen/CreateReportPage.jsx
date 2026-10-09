@@ -337,22 +337,42 @@ export default function CreateReportPage() {
           </div>
         </Card>
 
-        {/* Desktop Submit Button */}
-        <div className="hidden lg:flex justify-end gap-3 pt-4">
-          <Button variant="secondary" onClick={() => navigate('/dashboard')}>
+        {/* Form Action Buttons (Always visible in form flow for all devices) */}
+        <div className="flex flex-col sm:flex-row justify-end gap-3 pt-6 border-t border-border/60">
+          <Button
+            type="button"
+            variant="secondary"
+            className="w-full sm:w-auto"
+            onClick={() => navigate('/dashboard')}
+          >
             Batal
           </Button>
-          <Button type="submit" variant="primary" loading={submitting} className="min-w-[160px]">
+          <Button
+            type="submit"
+            variant="primary"
+            loading={submitting}
+            className="w-full sm:w-auto min-w-[160px]"
+          >
             Kirim Laporan
           </Button>
         </div>
 
-        {/* Mobile Sticky Bottom Action Bar */}
-        <div className="lg:hidden fixed bottom-0 left-0 right-0 p-3 bg-surface border-t border-border shadow-lg z-30 flex gap-3">
-          <Button variant="secondary" fullWidth onClick={() => navigate('/dashboard')}>
+        {/* Mobile Sticky Floating Bottom Action Bar (Sticky overlay for quick access) */}
+        <div className="lg:hidden fixed bottom-0 left-0 right-0 p-3 pb-[calc(0.75rem+env(safe-area-inset-bottom,0px))] bg-surface/95 backdrop-blur-md border-t border-border shadow-xl z-40 flex gap-3">
+          <Button
+            type="button"
+            variant="secondary"
+            fullWidth
+            onClick={() => navigate('/dashboard')}
+          >
             Batal
           </Button>
-          <Button type="submit" variant="primary" fullWidth loading={submitting}>
+          <Button
+            type="submit"
+            variant="primary"
+            fullWidth
+            loading={submitting}
+          >
             Kirim Laporan
           </Button>
         </div>

@@ -104,12 +104,13 @@ export default function VerifierReportDetailPage() {
         backTo="/verifier"
         backLabel="Kembali ke Antrean Verifikasi"
         actions={
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full sm:w-auto">
             {/* PENDING_VERIFICATION -> Verifikasi Laporan */}
             {isPendingVerification && (
               <Button
                 variant="primary"
                 size="sm"
+                className="w-full sm:w-auto"
                 onClick={() => setShowVerifyModal(true)}
               >
                 Verifikasi Laporan
@@ -121,6 +122,7 @@ export default function VerifierReportDetailPage() {
               <Button
                 variant="secondary"
                 size="sm"
+                className="w-full sm:w-auto"
                 onClick={() => setShowPriorityModal(true)}
               >
                 Ubah Prioritas
@@ -132,6 +134,7 @@ export default function VerifierReportDetailPage() {
               <Button
                 variant="primary"
                 size="sm"
+                className="w-full sm:w-auto"
                 onClick={() => setShowAssignModal(true)}
               >
                 Tugaskan Petugas
@@ -143,6 +146,7 @@ export default function VerifierReportDetailPage() {
               <Button
                 variant="secondary"
                 size="sm"
+                className="w-full sm:w-auto"
                 onClick={() => setShowCloseModal(true)}
               >
                 Tutup Kasus

@@ -123,12 +123,13 @@ export default function OfficerReportDetailPage() {
   const isInProgress = statusRaw === 'IN_PROGRESS';
 
   const actionButtons = isAssignedOfficer ? (
-    <div className="flex flex-wrap items-center gap-2">
+    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full sm:w-auto">
       {/* ASSIGNED -> Mulai Tangani */}
       {isAssigned && (
         <Button
           variant="primary"
           size="sm"
+          className="w-full sm:w-auto"
           loading={startingHandling}
           onClick={handleStartHandling}
         >
@@ -142,6 +143,7 @@ export default function OfficerReportDetailPage() {
           <Button
             variant="primary"
             size="sm"
+            className="w-full sm:w-auto"
             onClick={() => setShowActionForm(true)}
           >
             Catat Tindakan
@@ -149,6 +151,7 @@ export default function OfficerReportDetailPage() {
           <Button
             variant="secondary"
             size="sm"
+            className="w-full sm:w-auto"
             onClick={() => setShowResolveModal(true)}
           >
             Selesaikan

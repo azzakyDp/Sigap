@@ -68,9 +68,9 @@ class Settings(BaseSettings):
 
     # --- AI Service (skeleton saja — Phase 1 tidak mengaktifkan pemanggilan AI apa pun) ---
     # Diisi & dipakai mulai Phase 10 sesuai AI Requirements SIGAP.
-    AI_PROVIDER: str | None = None
+    AI_PROVIDER: str | None = "gemini"
     AI_API_KEY: str | None = None
-    AI_MODEL: str | None = None
+    AI_MODEL: str | None = "gemini-2.0-flash-lite"
     AI_TIMEOUT: int = 30
 
 
