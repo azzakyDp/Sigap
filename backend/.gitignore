@@ -9,8 +9,21 @@ __pycache__/
 *.egg-info/
 .pytest_cache/
 
-# Storage lokal (upload)
-storage/
+# Storage lokal (upload & evidence files) - cantumkan detail folder & file storage lokal
+/storage/
+/storage/*
+/storage/**/*
+/storage/uploads/
+/storage/uploads/*
+/storage/uploads/**/*
+/storage/uploads/evidences/
+/storage/uploads/evidences/*
+/storage/uploads/evidences/**/*
+
+# Pengecualian: jangan ignore kode service storage (Cloudinary)
+!/app/services/storage/
+!/app/services/storage/**
+app/services/storage/__pycache__/
 
 # Alembic
 alembic/*.sqlite
