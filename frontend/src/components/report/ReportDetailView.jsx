@@ -271,8 +271,8 @@ export default function ReportDetailView({
                       <span className="text-xs font-semibold text-ink-soft block">
                         Hasil Akhir:
                       </span>
-                      <p className="text-xs font-semibold text-status-green-text bg-status-green-bg p-3 rounded border border-status-green-border flex items-start gap-1.5">
-                        <Icon icon={CheckCircle2} size="sm" />
+                      <p className="text-xs font-semibold text-ink bg-status-green-bg p-3 rounded border border-status-green-border flex items-start gap-1.5">
+                        <Icon icon={CheckCircle2} size="sm" className="text-ink" />
                         <span>{act.hasil}</span>
                       </p>
                     </div>

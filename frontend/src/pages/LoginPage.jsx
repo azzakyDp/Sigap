@@ -72,15 +72,15 @@ export default function LoginPage() {
 
         <Card title="Masuk ke Akun Anda" subtitle="Masukkan kredensial yang sudah terdaftar">
           {successMessage && (
-            <div className="mb-4 p-3.5 bg-status-green-bg border border-status-green-border rounded-md text-sm text-status-green-text font-medium flex items-center gap-2">
-              <Icon icon={Info} size="sm" />
+            <div className="mb-4 p-3.5 bg-status-green-bg border border-status-green-border rounded-md text-sm text-ink font-medium flex items-center gap-2">
+              <Icon icon={Info} size="sm" className="text-ink" />
               <span>{successMessage}</span>
             </div>
           )}
 
           {error && (
-            <div className="mb-4 p-3.5 bg-danger-light border border-danger/30 rounded-md text-sm text-danger font-medium flex items-center gap-2">
-              <Icon icon={AlertCircle} size="sm" />
+            <div className="mb-4 p-3.5 bg-danger-light border border-danger/30 rounded-md text-sm text-ink font-medium flex items-center gap-2">
+              <Icon icon={AlertCircle} size="sm" className="text-ink" />
               <span>{error}</span>
             </div>
           )}

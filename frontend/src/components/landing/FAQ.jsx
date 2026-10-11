@@ -42,9 +42,6 @@ export function FAQ() {
         
         {/* Section Header */}
         <div className="text-center mb-12">
-          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-primary/10 text-primary mb-3">
-            Pertanyaan Umum
-          </span>
           <h2 className="text-xl md:text-3xl font-bold text-ink tracking-tight">
             Pertanyaan Yang Sering Diajukan
           </h2>

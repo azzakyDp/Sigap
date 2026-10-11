@@ -41,6 +41,7 @@ INVALID_EXE_BYTES = b"MZ\x90\x00\x03\x00\x00\x00"
 
 @pytest.fixture
 def mock_cloudinary_env(monkeypatch):
+    monkeypatch.setattr(settings, "STORAGE_BACKEND", "cloudinary")
     monkeypatch.setattr(settings, "CLOUDINARY_CLOUD_NAME", "sigapcloud")
     monkeypatch.setattr(settings, "CLOUDINARY_API_KEY", "123456789")
     monkeypatch.setattr(settings, "CLOUDINARY_API_SECRET", "supersecret")

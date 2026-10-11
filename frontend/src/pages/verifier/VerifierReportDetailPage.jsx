@@ -72,7 +72,7 @@ export default function VerifierReportDetailPage() {
     return (
       <div className="max-w-2xl mx-auto py-12 px-4 text-center">
         <div className="flex justify-center mb-4">
-          <Icon icon={AlertCircle} size="nav" className="text-status-amber-text" />
+          <Icon icon={AlertCircle} size="nav" className="text-ink" />
         </div>
         <h2 className="text-base font-semibold text-ink mb-2">Laporan Tidak Ditemukan</h2>
         <p className="text-ink-soft text-sm mb-6 max-w-md mx-auto">

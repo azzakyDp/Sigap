@@ -31,7 +31,7 @@ class ReportCreateRequest(BaseModel):
 
     category_id: int = Field(..., description="ID Kategori Pengaduan")
     deskripsi: str = Field(..., min_length=10, description="Deskripsi lengkap kejadian")
-    waktu_kejadian: datetime = Field(..., description="Waktu kejadian berlangsung")
+    waktu_kejadian: datetime | None = Field(default=None, description="Waktu kejadian berlangsung (default: waktu sekarang)")
     latitude: float = Field(..., ge=-90.0, le=90.0, description="Koordinat Latitude (-90 s/d 90)")
     longitude: float = Field(..., ge=-180.0, le=180.0, description="Koordinat Longitude (-180 s/d 180)")
     alamat_lokasi: str = Field(..., min_length=5, description="Alamat / keterangan lokasi detail")

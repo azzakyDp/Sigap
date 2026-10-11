@@ -13,19 +13,19 @@ export default function Alert({
 }) {
   const styles = {
     error: {
-      container: 'bg-status-red-bg border-status-red-border text-status-red-text',
+      container: 'bg-status-red-bg border-status-red-border text-ink',
       icon: AlertCircle,
     },
     success: {
-      container: 'bg-status-green-bg border-status-green-border text-status-green-text',
+      container: 'bg-status-green-bg border-status-green-border text-ink',
       icon: CheckCircle2,
     },
     warning: {
-      container: 'bg-status-amber-bg border-status-amber-border text-status-amber-text',
+      container: 'bg-status-amber-bg border-status-amber-border text-ink',
       icon: AlertTriangle,
     },
     info: {
-      container: 'bg-status-blue-bg border-status-blue-border text-status-blue-text',
+      container: 'bg-status-blue-bg border-status-blue-border text-ink',
       icon: Info,
     },
   };
@@ -41,10 +41,10 @@ export default function Alert({
       role="alert"
     >
       <div className="flex items-start gap-2.5 flex-1 min-w-0">
-        <Icon icon={IconComponent} size="sm" className="mt-0.5" />
+        <Icon icon={IconComponent} size="sm" className="mt-0.5 text-ink" />
         <div className="space-y-1 flex-1 min-w-0">
           {title && <h4 className="font-semibold text-ink leading-snug">{title}</h4>}
-          {content && <div className="leading-relaxed break-words">{content}</div>}
+          {content && <div className="leading-relaxed break-words text-ink">{content}</div>}
         </div>
       </div>
 

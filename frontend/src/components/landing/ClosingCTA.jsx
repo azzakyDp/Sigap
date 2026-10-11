@@ -11,10 +11,6 @@ export function ClosingCTA() {
           <div className="absolute -left-16 -bottom-16 w-72 h-72 rounded-full bg-black/10 blur-2xl pointer-events-none" />
 
           <div className="relative z-10 max-w-3xl mx-auto text-center">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/15 backdrop-blur-md text-xs font-semibold text-white mb-6">
-              Mari Wujudkan Fasilitas Publik Yang Lebih Baik
-            </div>
-
             <h2 className="text-xl md:text-2xl font-semibold tracking-tight leading-tight">
               Menemukan Jalan Rusak atau Gangguan Lalu Lintas?
             </h2>

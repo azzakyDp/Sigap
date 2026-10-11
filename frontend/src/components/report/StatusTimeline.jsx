@@ -10,19 +10,19 @@ const getStatusIcon = (statusRaw) => {
   switch (status) {
     case 'RESOLVED':
     case 'CLOSED':
-      return <Icon icon={CheckCircle2} size="sm" className="text-status-green-text" />;
+      return <Icon icon={CheckCircle2} size="sm" className="text-ink" />;
     case 'REJECTED':
-      return <Icon icon={XCircle} size="sm" className="text-status-red-text" />;
+      return <Icon icon={XCircle} size="sm" className="text-ink" />;
     case 'DUPLICATE':
-      return <Icon icon={AlertCircle} size="sm" className="text-status-orange-text" />;
+      return <Icon icon={AlertCircle} size="sm" className="text-ink" />;
     case 'IN_PROGRESS':
     case 'ASSIGNED':
     case 'VERIFIED':
-      return <Icon icon={Clock} size="sm" className="text-status-blue-text" />;
+      return <Icon icon={Clock} size="sm" className="text-ink" />;
     case 'PENDING_VERIFICATION':
     case 'SUBMITTED':
     default:
-      return <Icon icon={FileSearch} size="sm" className="text-status-amber-text" />;
+      return <Icon icon={FileSearch} size="sm" className="text-ink" />;
   }
 };
 

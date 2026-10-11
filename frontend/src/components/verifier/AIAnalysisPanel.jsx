@@ -177,7 +177,7 @@ export default function AIAnalysisPanel({ reportId }) {
           </div>
         </div>
 
-        <div className="flex items-center gap-2.5 p-3 bg-status-blue-bg/40 border border-status-blue-border rounded-lg text-xs text-status-blue-text font-medium">
+        <div className="flex items-center gap-2.5 p-3 bg-status-blue-bg/40 border border-status-blue-border rounded-lg text-xs text-ink font-medium">
           <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary shrink-0"></div>
           <span>AI sedang menganalisis laporan ini...</span>
         </div>
@@ -241,7 +241,7 @@ export default function AIAnalysisPanel({ reportId }) {
           <span>Asisten AI · saran, bukan keputusan</span>
         </div>
         {analysis?.needs_human_review && (
-          <span className="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-semibold bg-status-amber-bg text-status-amber-text border border-status-amber-border">
+          <span className="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-semibold bg-status-amber-bg text-ink border border-status-amber-border">
             Tinjau Manual
           </span>
         )}
@@ -332,8 +332,8 @@ export default function AIAnalysisPanel({ reportId }) {
           {/* Warnings List */}
           {analysis?.warnings && analysis.warnings.length > 0 && (
             <div className="space-y-1">
-              <span className="font-semibold text-status-amber-text flex items-center gap-1">
-                <Icon icon={AlertTriangle} size="sm" className="text-status-amber-text shrink-0" />
+              <span className="font-semibold text-ink flex items-center gap-1">
+                <Icon icon={AlertTriangle} size="sm" className="text-ink shrink-0" />
                 Peringatan / Catatan Perhatian:
               </span>
               <ul className="list-disc list-inside space-y-1 p-2.5 bg-status-amber-bg/40 border border-status-amber-border rounded text-ink">

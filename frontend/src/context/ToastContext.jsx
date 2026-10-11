@@ -23,10 +23,10 @@ export function ToastProvider({ children }) {
   }, []);
 
   const toastIcons = {
-    success: <Icon icon={CheckCircle2} size="sm" className="text-status-green-text shrink-0" />,
-    error: <Icon icon={AlertCircle} size="sm" className="text-danger shrink-0" />,
-    warning: <Icon icon={AlertTriangle} size="sm" className="text-status-amber-text shrink-0" />,
-    info: <Icon icon={Info} size="sm" className="text-primary shrink-0" />,
+    success: <Icon icon={CheckCircle2} size="sm" className="text-ink shrink-0" />,
+    error: <Icon icon={AlertCircle} size="sm" className="text-ink shrink-0" />,
+    warning: <Icon icon={AlertTriangle} size="sm" className="text-ink shrink-0" />,
+    info: <Icon icon={Info} size="sm" className="text-ink shrink-0" />,
   };
 
   const toastBorders = {

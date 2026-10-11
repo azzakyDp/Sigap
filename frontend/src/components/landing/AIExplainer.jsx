@@ -7,9 +7,6 @@ export function AIExplainer() {
         
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-primary/10 text-primary mb-4">
-            Teknologi Pendukung
-          </span>
           <h2 className="text-xl md:text-2xl font-semibold text-ink tracking-tight">
             Peran Kecerdasan Buatan (AI) di SIGAP
           </h2>

@@ -43,7 +43,7 @@ export default function CategorySelect({ value, onChange, error, disabled = fals
           <span>Memuat daftar kategori...</span>
         </div>
       ) : fetchError ? (
-        <div className="text-xs text-danger p-2.5 border border-danger/30 bg-danger-light rounded-md">
+        <div className="text-xs text-ink p-2.5 border border-danger/30 bg-danger-light rounded-md">
           {fetchError}
         </div>
       ) : (

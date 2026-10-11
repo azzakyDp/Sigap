@@ -62,8 +62,8 @@ export default function UpdatePriorityModal({ isOpen, onClose, report, onSuccess
     >
       <form onSubmit={handleSubmit} className="space-y-4">
         {error && (
-          <div className="p-3 bg-status-red-bg border border-status-red-border rounded-lg text-status-red-text text-xs flex items-center gap-2">
-            <Icon icon={AlertCircle} size="sm" />
+          <div className="p-3 bg-status-red-bg border border-status-red-border rounded-lg text-ink text-xs flex items-center gap-2">
+            <Icon icon={AlertCircle} size="sm" className="text-ink" />
             <span>{error}</span>
           </div>
         )}

@@ -19,10 +19,6 @@ export default function Hero() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
           {/* Left Text Column */}
           <div className="lg:col-span-7 space-y-5 text-left">
-            <div className="inline-flex items-center px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-xs font-semibold text-primary">
-              <span>Layanan Pengaduan Lalu Lintas & Infrastruktur SIGAP</span>
-            </div>
-
             <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-ink tracking-tight leading-tight">
               Laporkan Gangguan Jalan dengan <span className="text-primary">Jelas, Tepat, dan Transparan</span>
             </h1>
@@ -105,15 +101,15 @@ export default function Hero() {
                 </span>
                 <div className="space-y-2 pl-2 border-l-2 border-primary/30 text-xs">
                   <div className="flex items-center gap-2 text-ink">
-                    <Icon icon={CheckCircle2} size="sm" className="text-status-green-text shrink-0" />
+                    <Icon icon={CheckCircle2} size="sm" className="text-ink shrink-0" />
                     <span>Laporan diajukan oleh warga</span>
                   </div>
                   <div className="flex items-center gap-2 text-ink">
-                    <Icon icon={CheckCircle2} size="sm" className="text-status-green-text shrink-0" />
+                    <Icon icon={CheckCircle2} size="sm" className="text-ink shrink-0" />
                     <span>Diverifikasi oleh staf Verifikator</span>
                   </div>
                   <div className="flex items-center gap-2 text-ink font-semibold">
-                    <Icon icon={Clock} size="sm" className="text-primary shrink-0" />
+                    <Icon icon={Clock} size="sm" className="text-ink shrink-0" />
                     <span>Petugas berada di lokasi penanganan</span>
                   </div>
                 </div>

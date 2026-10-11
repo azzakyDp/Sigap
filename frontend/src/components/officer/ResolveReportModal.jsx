@@ -59,8 +59,8 @@ export default function ResolveReportModal({ isOpen, onClose, report, onSuccess 
     >
       <form onSubmit={handleSubmit} className="space-y-4 text-ink">
         {error && (
-          <div className="p-3.5 bg-status-red-bg border border-status-red-border rounded-lg text-status-red-text text-xs flex items-center gap-2">
-            <Icon icon={AlertCircle} size="sm" />
+          <div className="p-3.5 bg-status-red-bg border border-status-red-border rounded-lg text-ink text-xs flex items-center gap-2">
+            <Icon icon={AlertCircle} size="sm" className="text-ink" />
             <span>{error}</span>
           </div>
         )}
@@ -93,7 +93,7 @@ export default function ResolveReportModal({ isOpen, onClose, report, onSuccess 
                   : 'border-border bg-surface text-ink hover:bg-slate-100'
               }`}
             >
-              <Icon icon={AlertTriangle} size="nav" className={decision === 'UNRESOLVED' ? 'text-white' : 'text-status-amber-text'} />
+              <Icon icon={AlertTriangle} size="nav" className={decision === 'UNRESOLVED' ? 'text-white' : 'text-ink'} />
               <span>UNRESOLVED (Belum Selesai)</span>
             </button>
           </div>
@@ -101,12 +101,12 @@ export default function ResolveReportModal({ isOpen, onClose, report, onSuccess 
 
         {/* UNRESOLVED Info Banner */}
         {decision === 'UNRESOLVED' && (
-          <div className="p-3 bg-status-amber-bg border border-status-amber-border rounded-lg text-status-amber-text text-xs space-y-1">
-            <p className="font-semibold flex items-center gap-1.5">
-              <Icon icon={AlertTriangle} size="sm" />
+          <div className="p-3 bg-status-amber-bg border border-status-amber-border rounded-lg text-ink text-xs space-y-1">
+            <p className="font-semibold flex items-center gap-1.5 text-ink">
+              <Icon icon={AlertTriangle} size="sm" className="text-ink" />
               Penanganan Belum Selesai (UNRESOLVED)
             </p>
-            <p className="text-status-amber-text/90">
+            <p className="text-ink/90">
               Jika ditandai UNRESOLVED, Verifikator masih dapat menugaskan kembali laporan ini kepada petugas lain atau tim pendukung tambahan.
             </p>
           </div>

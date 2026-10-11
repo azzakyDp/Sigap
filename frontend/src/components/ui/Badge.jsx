@@ -30,11 +30,11 @@ export default function Badge({
     }
   } else {
     const variants = {
-      default: 'bg-status-gray-bg text-status-gray-text border-status-gray-border',
-      blue: 'bg-status-blue-bg text-status-blue-text border-status-blue-border',
-      emerald: 'bg-status-green-bg text-status-green-text border-status-green-border',
-      amber: 'bg-status-amber-bg text-status-amber-text border-status-amber-border',
-      red: 'bg-status-red-bg text-status-red-text border-status-red-border',
+      default: 'bg-status-gray-bg text-ink border-status-gray-border',
+      blue: 'bg-status-blue-bg text-ink border-status-blue-border',
+      emerald: 'bg-status-green-bg text-ink border-status-green-border',
+      amber: 'bg-status-amber-bg text-ink border-status-amber-border',
+      red: 'bg-status-red-bg text-ink border-status-red-border',
     };
     badgeStyles += ` ${variants[variant] || variants.default}`;
   }

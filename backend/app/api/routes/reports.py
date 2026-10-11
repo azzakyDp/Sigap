@@ -49,7 +49,7 @@ report_service = ReportService()
 def create_report(
     category_id: int = Form(..., description="ID Kategori Pengaduan"),
     deskripsi: str = Form(..., min_length=10, description="Deskripsi lengkap kejadian"),
-    waktu_kejadian: datetime = Form(..., description="Waktu kejadian berlangsung"),
+    waktu_kejadian: datetime | None = Form(None, description="Waktu kejadian berlangsung (opsional, default: waktu saat ini)"),
     latitude: float = Form(..., ge=-90.0, le=90.0, description="Koordinat Latitude (-90 s/d 90)"),
     longitude: float = Form(..., ge=-180.0, le=180.0, description="Koordinat Longitude (-180 s/d 180)"),
     alamat_lokasi: str = Form(..., min_length=5, description="Alamat / keterangan lokasi detail"),

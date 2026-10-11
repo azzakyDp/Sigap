@@ -134,7 +134,8 @@ class ReportService:
                         f"Field wajib '{field_name}' pada kategori '{category.nama_kategori}' belum diisi."
                     )
 
-        year = payload.waktu_kejadian.year
+        effective_waktu_kejadian = payload.waktu_kejadian or datetime.utcnow()
+        year = effective_waktu_kejadian.year
         nomor_laporan = ReportRepository.generate_next_report_number(db, year=year)
 
         # Upload foto (Cloudinary dengan rollback jika gagal, fallback ke StorageService lokal)
@@ -143,7 +144,8 @@ class ReportService:
 
         try:
             for idx, (f_bytes, f_name) in enumerate(validated_file_contents):
-                if self.cloudinary_service.is_configured:
+                if settings.STORAGE_BACKEND == "cloudinary":
+                    self.cloudinary_service._ensure_configured()
                     c_res = self.cloudinary_service.upload_report_photo_sync(f_bytes, f_name)
                     uploaded_cloudinary_pids.append(c_res["public_id"])
                     saved_evidences.append({
@@ -152,8 +154,6 @@ class ReportService:
                         "public_id": c_res["public_id"],
                         "urutan": idx,
                     })
-                elif settings.STORAGE_BACKEND == "cloudinary":
-                    self.cloudinary_service._ensure_configured()
                 else:
                     rel_path, pub_url = self.storage_service.save_evidence_file_from_bytes(f_bytes, f_name)
                     saved_evidences.append({
@@ -177,7 +177,7 @@ class ReportService:
                 citizen_id=current_user.id,
                 category_id=category.id,
                 deskripsi=payload.deskripsi.strip(),
-                waktu_kejadian=payload.waktu_kejadian,
+                waktu_kejadian=effective_waktu_kejadian,
                 latitude=payload.latitude,
                 longitude=payload.longitude,
                 alamat_lokasi=payload.alamat_lokasi.strip(),

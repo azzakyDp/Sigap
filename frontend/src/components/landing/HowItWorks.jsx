@@ -29,9 +29,6 @@ export function HowItWorks() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-14">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-primary/10 text-primary mb-3">
-            Alur Transparan
-          </span>
           <h2 className="text-xl md:text-3xl font-bold text-ink tracking-tight">
             Bagaimana SIGAP Memproses Laporan Anda?
           </h2>

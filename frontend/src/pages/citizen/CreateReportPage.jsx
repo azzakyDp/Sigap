@@ -30,7 +30,8 @@ export default function CreateReportPage() {
   // Form State
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [deskripsi, setDeskripsi] = useState('');
-  const [waktuKejadian, setWaktuKejadian] = useState(getCurrentDateTimeLocal());
+  const [useCurrentTime, setUseCurrentTime] = useState(true);
+  const [waktuKejadian, setWaktuKejadian] = useState('');
   const [location, setLocation] = useState({
     latitude: -6.9175,
     longitude: 107.6191,
@@ -126,8 +127,8 @@ export default function CreateReportPage() {
       errors.deskripsi = 'Deskripsi kejadian minimal 10 karakter.';
     }
 
-    if (!waktuKejadian) {
-      errors.waktu_kejadian = 'Waktu kejadian wajib diisi.';
+    if (!useCurrentTime && !waktuKejadian) {
+      errors.waktu_kejadian = 'Waktu kejadian manual wajib diisi.';
     }
 
     if (!location.alamat_lokasi.trim() || location.alamat_lokasi.length < 5) {
@@ -170,10 +171,14 @@ export default function CreateReportPage() {
     try {
       setSubmitting(true);
 
+      const effectiveWaktu = useCurrentTime
+        ? new Date().toISOString()
+        : toApiDateTime(waktuKejadian);
+
       const formData = new FormData();
       formData.append('category_id', selectedCategory.id);
       formData.append('deskripsi', deskripsi.trim());
-      formData.append('waktu_kejadian', toApiDateTime(waktuKejadian));
+      formData.append('waktu_kejadian', effectiveWaktu);
       formData.append('latitude', location.latitude);
       formData.append('longitude', location.longitude);
       formData.append('alamat_lokasi', location.alamat_lokasi.trim());
@@ -216,8 +221,8 @@ export default function CreateReportPage() {
       </div>
 
       {serverError && (
-        <div className="mb-6 p-4 bg-danger-light border border-danger/30 rounded-lg text-sm text-danger font-semibold flex items-center gap-3">
-          <Icon icon={AlertCircle} size="sm" />
+        <div className="mb-6 p-4 bg-danger-light border border-danger/30 rounded-lg text-sm text-ink font-semibold flex items-center gap-3">
+          <Icon icon={AlertCircle} size="sm" className="text-ink" />
           <span>{serverError}</span>
         </div>
       )}
@@ -258,15 +263,48 @@ export default function CreateReportPage() {
             {fieldErrors.deskripsi && <p className="mt-1 text-xs text-danger font-medium">{fieldErrors.deskripsi}</p>}
           </div>
 
-          <Input
-            label="Waktu Kejadian"
-            type="datetime-local"
-            name="waktu_kejadian"
-            value={waktuKejadian}
-            onChange={(e) => setWaktuKejadian(e.target.value)}
-            error={fieldErrors.waktu_kejadian}
-            required
-          />
+          <div className="mb-4">
+            <div className="flex items-center justify-between mb-1.5">
+              <label className="block text-sm font-medium text-ink">
+                Waktu Kejadian <span className="text-danger">*</span>
+              </label>
+              <button
+                type="button"
+                onClick={() => {
+                  if (useCurrentTime) {
+                    setWaktuKejadian(getCurrentDateTimeLocal());
+                    setUseCurrentTime(false);
+                  } else {
+                    setUseCurrentTime(true);
+                    setWaktuKejadian('');
+                    setFieldErrors((prev) => ({ ...prev, waktu_kejadian: '' }));
+                  }
+                }}
+                className="text-xs font-semibold text-primary hover:underline cursor-pointer"
+              >
+                {useCurrentTime ? 'Atur Waktu Manual' : 'Gunakan Waktu Sekarang'}
+              </button>
+            </div>
+
+            {useCurrentTime ? (
+              <div className="p-3 bg-background border border-border rounded-md flex items-center justify-between text-xs sm:text-sm">
+                <div className="flex items-center gap-2">
+                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 shrink-0"></span>
+                  <span className="font-medium text-ink">Waktu saat ini (Otomatis saat laporan dikirim)</span>
+                </div>
+                <span className="text-xs text-ink-soft">Real-time</span>
+              </div>
+            ) : (
+              <Input
+                type="datetime-local"
+                name="waktu_kejadian"
+                value={waktuKejadian}
+                onChange={(e) => setWaktuKejadian(e.target.value)}
+                error={fieldErrors.waktu_kejadian}
+                required
+              />
+            )}
+          </div>
         </Card>
 
         <Card title="2. Lokasi Kejadian" subtitle="Pilih titik koordinat di peta dan isi rincian alamat">
@@ -395,7 +433,7 @@ export default function CreateReportPage() {
       >
         <div className="text-center py-4">
           <div className="flex justify-center mb-3">
-            <Icon icon={CheckCircle2} size="nav" className="text-status-green-text" />
+            <Icon icon={CheckCircle2} size="nav" className="text-ink" />
           </div>
           <h4 className="text-ink font-semibold text-base mb-1">Terima Kasih Atas Laporan Anda</h4>
           <p className="text-xs text-muted mb-4">Laporan Anda telah tercatat ke dalam sistem SIGAP.</p>

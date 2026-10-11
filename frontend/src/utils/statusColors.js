@@ -10,21 +10,21 @@ export const getStatusBadgeClass = (status) => {
     case 'PENDING_VERIFICATION':
     case 'SUBMITTED':
     case 'UNRESOLVED':
-      return 'bg-status-amber-bg text-status-amber-text border-status-amber-border';
+      return 'bg-status-amber-bg text-ink border-status-amber-border';
     case 'VERIFIED':
     case 'ASSIGNED':
     case 'IN_PROGRESS':
-      return 'bg-status-blue-bg text-status-blue-text border-status-blue-border';
+      return 'bg-status-blue-bg text-ink border-status-blue-border';
     case 'RESOLVED':
-      return 'bg-status-green-bg text-status-green-text border-status-green-border';
+      return 'bg-status-green-bg text-ink border-status-green-border';
     case 'REJECTED':
-      return 'bg-status-red-bg text-status-red-text border-status-red-border';
+      return 'bg-status-red-bg text-ink border-status-red-border';
     case 'DUPLICATE':
-      return 'bg-status-orange-bg text-status-orange-text border-status-orange-border';
+      return 'bg-status-orange-bg text-ink border-status-orange-border';
     case 'CLOSED':
     case 'DRAFT':
     default:
-      return 'bg-status-gray-bg text-status-gray-text border-status-gray-border';
+      return 'bg-status-gray-bg text-ink border-status-gray-border';
   }
 };
 
@@ -109,15 +109,15 @@ export const getPriorityBadgeClass = (priority) => {
   const normalizedPriority = (priority || '').toUpperCase();
   switch (normalizedPriority) {
     case 'LOW':
-      return 'bg-status-gray-bg text-status-gray-text border-status-gray-border';
+      return 'bg-status-gray-bg text-ink border-status-gray-border';
     case 'MEDIUM':
-      return 'bg-status-amber-bg text-status-amber-text border-status-amber-border';
+      return 'bg-status-amber-bg text-ink border-status-amber-border';
     case 'HIGH':
-      return 'bg-status-orange-bg text-status-orange-text border-status-orange-border';
+      return 'bg-status-orange-bg text-ink border-status-orange-border';
     case 'URGENT':
-      return 'bg-status-red-bg text-status-red-text border-status-red-border font-semibold';
+      return 'bg-status-red-bg text-ink border-status-red-border font-semibold';
     default:
-      return 'bg-status-gray-bg text-status-gray-text border-status-gray-border';
+      return 'bg-status-gray-bg text-ink border-status-gray-border';
   }
 };
 
