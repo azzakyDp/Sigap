@@ -32,6 +32,8 @@ class AIAnalysisResult(BaseModel):
     evidence: list[str] = Field(default_factory=list)
     warnings: list[str] = Field(default_factory=list)
     needs_human_review: bool = True
+    photos_analyzed: int = 0
+    photos_total: int = 0
 
     @field_validator("suggested_priority")
     @classmethod

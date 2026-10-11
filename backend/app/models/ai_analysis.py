@@ -36,6 +36,8 @@ class AIAnalysis(Base):
     evidence: Mapped[list[str]] = mapped_column(JSON, nullable=False)
     warnings: Mapped[list[str]] = mapped_column(JSON, nullable=False)
     needs_human_review: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
+    photos_analyzed: Mapped[int] = mapped_column(Integer, default=0, server_default="0", nullable=False)
+    photos_total: Mapped[int] = mapped_column(Integer, default=0, server_default="0", nullable=False)
     status: Mapped[AIAnalysisStatus] = mapped_column(
         Enum(AIAnalysisStatus, native_enum=False),
         nullable=False,

@@ -75,10 +75,16 @@ export default function CreateReportPage() {
 
     // Client-side MIME type validation for instant UX feedback
     const invalidFile = selectedFiles.find(
-      (file) => !['image/jpeg', 'image/jpg', 'image/png'].includes(file.type.toLowerCase())
+      (file) => !['image/jpeg', 'image/jpg', 'image/png', 'image/webp'].includes(file.type.toLowerCase())
     );
     if (invalidFile) {
-      setServerError(`File '${invalidFile.name}' bukan format foto yang diizinkan (hanya JPG, JPEG, PNG).`);
+      setServerError(`File '${invalidFile.name}' bukan format foto yang diizinkan (hanya JPG, JPEG, PNG, WEBP).`);
+      return;
+    }
+
+    const oversizedFile = selectedFiles.find((file) => file.size > 5 * 1024 * 1024);
+    if (oversizedFile) {
+      setServerError(`Ukuran file '${oversizedFile.name}' melebihi batas maksimum 5MB.`);
       return;
     }
 

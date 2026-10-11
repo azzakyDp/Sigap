@@ -24,9 +24,11 @@ pytest==8.3.3
 httpx==0.28.0
 
 # --- AI Integration (Phase 7) ---
-google-genai>=1.0.0
+google-genai==2.28.0
 
-# --- Image Processing (Phase 8 seed) ---
+# --- Image Processing & Cloud Storage (Phase 8 & Cloudinary) ---
 Pillow>=10.0.0
+cloudinary==1.46.3
+
 
 

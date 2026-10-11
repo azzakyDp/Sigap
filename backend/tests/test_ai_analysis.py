@@ -356,3 +356,32 @@ def test_get_ai_provider_factory():
         with pytest.raises(ConfigurationError) as exc_info:
             get_ai_provider()
         assert "tidak dikenal" in exc_info.value.message
+
+
+def test_ai_health_check_endpoints(client: TestClient, monkeypatch):
+    """
+    Verifikasi health check endpoint Gemini AI (GET /api/v1/ai/health, /api/ai/health, & /api/v1/reports/ai-health).
+    """
+    async def mock_health(self):
+        return {
+            "status": "ok",
+            "provider": "gemini",
+            "model": "gemini-2.0-flash-lite",
+            "response": "OK",
+        }
+
+    monkeypatch.setattr(GeminiProvider, "health_check", mock_health)
+
+    res1 = client.get("/api/v1/ai/health")
+    assert res1.status_code == 200
+    assert res1.json()["status"] == "ok"
+    assert res1.json()["response"] == "OK"
+
+    res2 = client.get("/api/ai/health")
+    assert res2.status_code == 200
+    assert res2.json()["status"] == "ok"
+
+    res3 = client.get("/api/v1/reports/ai-health")
+    assert res3.status_code == 200
+    assert res3.json()["status"] == "ok"
+

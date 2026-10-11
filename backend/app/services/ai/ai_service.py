@@ -1,9 +1,5 @@
-"""
-AIAnalysisService — Pintu masuk utama layanan analisis AI SIGAP Backend.
-
-Satu-satunya pintu masuk ke AI dari luar modul services/ai/.
-Route TIDAK boleh mengimpor provider.py secara langsung.
-"""
+import logging
+from typing import Any
 
 from fastapi import BackgroundTasks
 from sqlalchemy.orm import Session
@@ -17,6 +13,8 @@ from app.models.enums import AIAnalysisStatus, ReportPriority
 from app.models.report import Report
 from app.services.ai.provider import get_ai_provider
 from app.services.ai.schemas import AIAnalysisResponse, AnalysisType
+
+logger = logging.getLogger("sigap.ai_service")
 
 
 async def run_analysis_job(report_id: int, analysis_id: int) -> None:
@@ -55,10 +53,13 @@ async def run_analysis_job(report_id: int, analysis_id: int) -> None:
             analysis.evidence = result.evidence
             analysis.warnings = result.warnings
             analysis.needs_human_review = result.needs_human_review
+            analysis.photos_analyzed = result.photos_analyzed
+            analysis.photos_total = result.photos_total
             analysis.status = AIAnalysisStatus.COMPLETED
             db.commit()
 
         except Exception as exc:
+            logger.exception("GEMINI ERROR (background job): %s", repr(exc))
             db.rollback()
             # Re-fetch analysis setelah rollback untuk update status FAILED
             analysis = db.query(AIAnalysis).filter(AIAnalysis.id == analysis_id).first()
@@ -73,6 +74,13 @@ async def run_analysis_job(report_id: int, analysis_id: int) -> None:
 
 
 class AIAnalysisService:
+    async def health_check(self) -> dict[str, Any]:
+        """
+        Melakukan smoke-test / health check koneksi Gemini API.
+        """
+        provider = get_ai_provider()
+        return await provider.health_check()
+
     async def get_or_trigger_analysis(
         self,
         db: Session,
@@ -85,7 +93,6 @@ class AIAnalysisService:
         report = db.query(Report).filter(Report.id == report_id).with_for_update().first()
         if not report:
             raise NotFoundException(f"Laporan dengan ID {report_id} tidak ditemukan")
-
 
         # 1. Cek apakah ada hasil COMPLETED terbaru
         completed_analysis = (
@@ -127,7 +134,7 @@ class AIAnalysisService:
             return AIAnalysisResponse.model_validate(failed_analysis)
 
         # 3. Jika belum ada, buat row PENDING baru
-        model_name = settings.AI_MODEL or "gemini-2.0-flash-lite"
+        model_name = settings.AI_MODEL or "gemini-3.1-flash-lite"
         new_analysis = AIAnalysis(
             report_id=report_id,
             model_name=model_name,
@@ -139,6 +146,8 @@ class AIAnalysisService:
             evidence=[],
             warnings=[],
             needs_human_review=True,
+            photos_analyzed=0,
+            photos_total=0,
             status=AIAnalysisStatus.PENDING,
         )
         db.add(new_analysis)
@@ -162,7 +171,7 @@ class AIAnalysisService:
         if not report:
             raise NotFoundException(f"Laporan dengan ID {report_id} tidak ditemukan")
 
-        model_name = settings.AI_MODEL or "gemini-2.0-flash-lite"
+        model_name = settings.AI_MODEL or "gemini-3.1-flash-lite"
         new_analysis = AIAnalysis(
             report_id=report_id,
             model_name=model_name,
@@ -174,6 +183,8 @@ class AIAnalysisService:
             evidence=[],
             warnings=[],
             needs_human_review=True,
+            photos_analyzed=0,
+            photos_total=0,
             status=AIAnalysisStatus.PENDING,
         )
         db.add(new_analysis)
@@ -183,3 +194,4 @@ class AIAnalysisService:
         background_tasks.add_task(run_analysis_job, report_id, new_analysis.id)
 
         return AIAnalysisResponse.model_validate(new_analysis)
+

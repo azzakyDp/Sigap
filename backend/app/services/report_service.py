@@ -7,11 +7,14 @@ dipusatkan secara atomik di service ini.
 """
 
 from datetime import datetime
+import logging
+from typing import Any
 from fastapi import UploadFile
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from app.core.exceptions import NotFoundException, UnauthorizedException, ValidationException
+from app.core.config import settings
+from app.core.exceptions import ConfigurationError, NotFoundException, UnauthorizedException, ValidationException
 from app.models.action_report import ActionReport
 from app.models.enums import ReportPriority, ReportStatus, UserRole
 from app.models.report import Report
@@ -45,14 +48,22 @@ from app.schemas.workflow import (
     UpdatePriorityRequest,
     VerifyReportRequest,
 )
+from app.services.storage.cloudinary_service import CloudinaryService
 from app.services.storage_service import StorageService
+
+logger = logging.getLogger("sigap.report_service")
 
 
 class ReportService:
     """Service layer utama pengaduan SIGAP."""
 
-    def __init__(self, storage_service: StorageService | None = None) -> None:
+    def __init__(
+        self,
+        storage_service: StorageService | None = None,
+        cloudinary_service: CloudinaryService | None = None,
+    ) -> None:
         self.storage_service = storage_service or StorageService()
+        self.cloudinary_service = cloudinary_service or CloudinaryService()
 
     # --- CATEGORY & PUBLIC ---
 
@@ -81,6 +92,32 @@ class ReportService:
         if len(files) > 5:
             raise ValidationException("Maksimal 5 foto bukti per laporan.")
 
+        # Validasi konten & format file (JPEG, PNG, WEBP, max 5MB)
+        validated_file_contents: list[tuple[bytes, str]] = []
+        for file in files:
+            file_name = file.filename or "photo.jpg"
+            file.file.seek(0)
+            file_bytes = file.file.read()
+            file.file.seek(0)
+
+            if len(file_bytes) == 0:
+                raise ValidationException(f"File foto '{file_name}' kosong.")
+
+            if len(file_bytes) > 5 * 1024 * 1024:
+                raise ValidationException(f"Ukuran file '{file_name}' melebihi batas maksimum 5MB.")
+
+            header = file_bytes[:12]
+            is_jpeg = header.startswith(b"\xff\xd8\xff")
+            is_png = header.startswith(b"\x89PNG\r\n\x1a\n")
+            is_webp = header.startswith(b"RIFF") and len(header) >= 12 and header[8:12] == b"WEBP"
+
+            if not (is_jpeg or is_png or is_webp):
+                raise ValidationException(
+                    f"Format file '{file_name}' tidak didukung (isi file bukan gambar JPEG/PNG atau WEBP yang valid). Hanya file gambar JPEG, PNG, atau WEBP yang diizinkan."
+                )
+
+            validated_file_contents.append((file_bytes, file_name))
+
         category_fields_map = {f.field_name: f for f in category.fields}
 
         for submitted_key in payload.dynamic_fields.keys():
@@ -100,10 +137,39 @@ class ReportService:
         year = payload.waktu_kejadian.year
         nomor_laporan = ReportRepository.generate_next_report_number(db, year=year)
 
-        saved_evidences = []
-        for file in files:
-            relative_path, public_url = self.storage_service.save_evidence_file(file)
-            saved_evidences.append((relative_path, public_url))
+        # Upload foto (Cloudinary dengan rollback jika gagal, fallback ke StorageService lokal)
+        saved_evidences: list[dict[str, Any]] = []
+        uploaded_cloudinary_pids: list[str] = []
+
+        try:
+            for idx, (f_bytes, f_name) in enumerate(validated_file_contents):
+                if self.cloudinary_service.is_configured:
+                    c_res = self.cloudinary_service.upload_report_photo_sync(f_bytes, f_name)
+                    uploaded_cloudinary_pids.append(c_res["public_id"])
+                    saved_evidences.append({
+                        "file_path": c_res["public_id"],
+                        "url": c_res["secure_url"],
+                        "public_id": c_res["public_id"],
+                        "urutan": idx,
+                    })
+                elif settings.STORAGE_BACKEND == "cloudinary":
+                    self.cloudinary_service._ensure_configured()
+                else:
+                    rel_path, pub_url = self.storage_service.save_evidence_file_from_bytes(f_bytes, f_name)
+                    saved_evidences.append({
+                        "file_path": rel_path,
+                        "url": pub_url,
+                        "public_id": None,
+                        "urutan": idx,
+                    })
+        except Exception as upload_exc:
+            # Rollback file yatim di Cloudinary
+            for pid in uploaded_cloudinary_pids:
+                try:
+                    self.cloudinary_service.delete_photo_sync(pid)
+                except Exception as del_err:
+                    logger.warning(f"Gagal rollback foto yatim '{pid}': {del_err}")
+            raise upload_exc
 
         try:
             new_report = Report(
@@ -130,10 +196,13 @@ class ReportService:
                 )
                 db.add(fv)
 
-            for rel_path, pub_url in saved_evidences:
+            for ev_data in saved_evidences:
                 ev = ReportEvidence(
                     report_id=new_report.id,
-                    file_path=rel_path,
+                    file_path=ev_data["file_path"],
+                    url=ev_data["url"],
+                    public_id=ev_data["public_id"],
+                    urutan=ev_data["urutan"],
                 )
                 db.add(ev)
 
@@ -148,6 +217,15 @@ class ReportService:
 
             db.commit()
             db.refresh(new_report)
+        except Exception as db_exc:
+            # Rollback foto di Cloudinary jika transaksi DB gagal
+            for pid in uploaded_cloudinary_pids:
+                try:
+                    self.cloudinary_service.delete_photo_sync(pid)
+                except Exception as del_err:
+                    logger.warning(f"Gagal rollback foto Cloudinary '{pid}' saat DB error: {del_err}")
+            db.rollback()
+            raise db_exc
         except Exception as e:
             db.rollback()
             raise e
@@ -601,7 +679,9 @@ class ReportService:
             ReportEvidenceResponse(
                 id=ev.id,
                 file_path=ev.file_path,
-                url=f"/api/v1/uploads/{ev.file_path}",
+                url=ev.display_url,
+                public_id=ev.public_id,
+                urutan=getattr(ev, "urutan", 0) or 0,
                 uploaded_at=ev.uploaded_at,
             )
             for ev in report.evidences
@@ -674,3 +754,25 @@ class ReportService:
             created_at=report.created_at,
             updated_at=report.updated_at,
         )
+
+    def delete_report(self, db: Session, report_id: int) -> bool:
+        """
+        Menghapus laporan pengaduan beserta fotonya di Cloudinary (best-effort).
+        """
+        report = ReportRepository.get_by_id(db, report_id)
+        if not report:
+            raise NotFoundException("Laporan tidak ditemukan")
+
+        # Hapus foto Cloudinary jika ada
+        if self.cloudinary_service.is_configured:
+            for ev in report.evidences:
+                if ev.public_id:
+                    try:
+                        self.cloudinary_service.delete_photo_sync(ev.public_id)
+                    except Exception as exc:
+                        logger.warning(f"Gagal menghapus foto Cloudinary public_id='{ev.public_id}': {exc}")
+
+        db.delete(report)
+        db.commit()
+        return True
+

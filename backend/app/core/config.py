@@ -24,8 +24,8 @@ class Settings(BaseSettings):
 
     # --- Application ---
     APP_NAME: str = "SIGAP Backend"
-    APP_VERSION: str = "0.1.0"
-    APP_ENV: str = "development"  # development | staging | production
+    APP_VERSION: str = "2.0.0"
+    APP_ENV: str = "staging"  # development | staging | production
     DEBUG: bool = True
 
     # --- Database (MySQL) ---
@@ -41,7 +41,7 @@ class Settings(BaseSettings):
     CORS_ORIGINS: list[str] = [
         "http://localhost:5173",
         "http://localhost:3000",
-        "https://sigap-2hg1.vercel.app",
+        "https://sigaplamongan.vercel.app",
     ]
 
     @field_validator("CORS_ORIGINS", mode="before")
@@ -59,24 +59,29 @@ class Settings(BaseSettings):
             return [v]
         return v
 
-    # --- File / Object Storage (disiapkan strukturnya, diaktifkan di Phase 5) ---
-    STORAGE_BACKEND: str = "local"  # local | s3 | dst (ditentukan saat Phase 5)
+    # --- File / Object Storage ---
+    STORAGE_BACKEND: str = "local"  # local | cloudinary
     STORAGE_LOCAL_PATH: str = "storage/uploads"
+
+    # --- Cloudinary Settings ---
+    CLOUDINARY_CLOUD_NAME: str | None = None
+    CLOUDINARY_API_KEY: str | None = None
+    CLOUDINARY_API_SECRET: str | None = None
+    CLOUDINARY_FOLDER: str = "sigap/reports"
 
     # --- Dashboard / SLA ---
     URGENT_SLA_HOURS: int = 2
 
-    # --- AI Service (skeleton saja — Phase 1 tidak mengaktifkan pemanggilan AI apa pun) ---
-    # Diisi & dipakai mulai Phase 10 sesuai AI Requirements SIGAP.
+    # --- AI Service ---
     AI_PROVIDER: str | None = "gemini"
     AI_API_KEY: str | None = None
-    AI_MODEL: str | None = "gemini-2.0-flash-lite"
+    AI_MODEL: str | None = "gemini-3.1-flash-lite"
+    AI_MODEL_FALLBACK: str | None = "gemini-2.5-flash"
     AI_TIMEOUT: int = 30
 
 
 @lru_cache
 def get_settings() -> Settings:
     return Settings()
-
 
 settings = get_settings()

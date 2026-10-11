@@ -254,6 +254,16 @@ export default function AIAnalysisPanel({ reportId }) {
         </Alert>
       )}
 
+      {/* Alert if photos_analyzed < photos_total */}
+      {typeof analysis?.photos_total === 'number' &&
+        analysis.photos_total > 0 &&
+        typeof analysis?.photos_analyzed === 'number' &&
+        analysis.photos_analyzed < analysis.photos_total && (
+          <Alert variant="warning" title="Sebagian Foto Tidak Teranalisis">
+            {analysis.photos_total - analysis.photos_analyzed} dari {analysis.photos_total} foto bukti tidak dapat dimuat oleh AI. Harap periksa foto bukti secara manual.
+          </Alert>
+        )}
+
       {/* Suggested Category & Priority Badges */}
       <div className="flex flex-wrap items-center gap-2 text-xs">
         {analysis?.suggested_category && (

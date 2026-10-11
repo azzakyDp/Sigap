@@ -45,6 +45,8 @@ class ReportEvidenceResponse(BaseModel):
     id: int
     file_path: str
     url: str
+    public_id: str | None = None
+    urutan: int = 0
     uploaded_at: datetime
 
     model_config = ConfigDict(from_attributes=True)

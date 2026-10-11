@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
@@ -12,6 +12,7 @@ from app.api.routes import (
 )
 from app.core.config import settings
 from app.core.exceptions import SigapException
+from app.services.ai.ai_service import AIAnalysisService
 
 app = FastAPI(
     title=settings.APP_NAME,
@@ -30,10 +31,11 @@ app.add_middleware(
 # Register routers
 app.include_router(auth_router, prefix="/api/v1")
 app.include_router(categories_router, prefix="/api/v1")
+app.include_router(ai_analysis_router, prefix="/api/v1")
 app.include_router(reports_router, prefix="/api/v1")
 app.include_router(uploads_router, prefix="/api/v1")
-app.include_router(ai_analysis_router, prefix="/api/v1")
 app.include_router(dashboard_router, prefix="/api/v1")
+
 
 
 @app.exception_handler(SigapException)
@@ -60,6 +62,19 @@ def root() -> dict:
 def health_check() -> dict:
     """
     Smoke-test endpoint untuk Phase 1.
-    Nantinya bisa dikembangkan untuk cek koneksi database, dsb.
     """
     return {"status": "healthy"}
+
+
+@app.get("/api/ai/health", tags=["health"])
+@app.get("/api/v1/ai/health", tags=["health"])
+async def ai_health_check() -> dict:
+    """
+    Smoke-test endpoint koneksi Gemini AI (tanpa data laporan / foto).
+    """
+    ai_service = AIAnalysisService()
+    try:
+        return await ai_service.health_check()
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=f"Gemini AI Health Check Gagal: {str(exc)}")
+

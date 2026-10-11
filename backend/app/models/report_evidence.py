@@ -24,6 +24,9 @@ class ReportEvidence(Base):
         nullable=False,
     )
     file_path: Mapped[str] = mapped_column(String(500), nullable=False)
+    url: Mapped[str | None] = mapped_column(String(1000), nullable=True)
+    public_id: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    urutan: Mapped[int] = mapped_column(Integer, default=0, server_default="0", nullable=False)
     uploaded_at: Mapped[datetime] = mapped_column(
         DateTime,
         server_default=func.now(),
@@ -32,3 +35,11 @@ class ReportEvidence(Base):
 
     # Relationships
     report: Mapped["Report"] = relationship("Report", back_populates="evidences")
+
+    @property
+    def display_url(self) -> str:
+        """Mengembalikan secure URL Cloudinary jika ada, atau fallback ke endpoint lokal."""
+        if self.url and self.url.strip():
+            return self.url
+        return f"/api/v1/uploads/{self.file_path}"
+
