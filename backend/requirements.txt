@@ -21,7 +21,7 @@ python-multipart==0.0.17
 
 # --- Testing (Phase 11, disiapkan dari awal) ---
 pytest==8.3.3
-httpx==0.28.0
+httpx>=0.28.1,<1.0.0
 
 # --- AI Integration (Phase 7) ---
 google-genai==2.28.0
