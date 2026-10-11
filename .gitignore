@@ -23,3 +23,8 @@ playwright-report/
 *.db
 test_*.db
 frontend/testing gambar/
+
+# Storage lokal backend (upload & bukti)
+/backend/storage/
+!/backend/app/services/storage/
+!/backend/app/services/storage/**
