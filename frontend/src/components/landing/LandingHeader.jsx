@@ -1,18 +1,55 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import Icon from '../ui/Icon';
 import Button from '../ui/Button';
 
+const navItems = [
+  { id: 'how-it-works', label: 'Cara Kerja' },
+  { id: 'ai-explainer', label: 'Peran AI' },
+  { id: 'faq', label: 'FAQ' },
+];
+
 export default function LandingHeader() {
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState(null);
+
+  useEffect(() => {
+    const sectionIds = ['how-it-works', 'ai-explainer', 'faq'];
+
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      const headerOffset = 100; // 64px header + buffer
+      const currentScroll = scrollY + headerOffset;
+
+      let found = null;
+      for (const id of sectionIds) {
+        const el = document.getElementById(id);
+        if (el) {
+          const top = el.offsetTop;
+          const height = el.offsetHeight;
+          if (currentScroll >= top && currentScroll < top + height) {
+            found = id;
+            break;
+          }
+        }
+      }
+
+      setActiveSection(found);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const scrollToSection = (id) => {
     setMobileMenuOpen(false);
     const element = document.getElementById(id);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   };
 
@@ -31,25 +68,23 @@ export default function LandingHeader() {
         </div>
 
         {/* Desktop Navigation Links */}
-        <nav className="hidden md:flex items-center gap-8 text-xs font-semibold text-ink-soft">
-          <button
-            onClick={() => scrollToSection('how-it-works')}
-            className="hover:text-primary transition-colors cursor-pointer"
-          >
-            Cara Kerja
-          </button>
-          <button
-            onClick={() => scrollToSection('ai-explainer')}
-            className="hover:text-primary transition-colors cursor-pointer"
-          >
-            Peran AI
-          </button>
-          <button
-            onClick={() => scrollToSection('faq')}
-            className="hover:text-primary transition-colors cursor-pointer"
-          >
-            FAQ
-          </button>
+        <nav className="hidden md:flex items-center gap-2 text-xs">
+          {navItems.map((item) => {
+            const isActive = activeSection === item.id;
+            return (
+              <button
+                key={item.id}
+                onClick={() => scrollToSection(item.id)}
+                className={`py-1.5 px-3.5 rounded-full text-xs font-semibold transition-all duration-200 cursor-pointer ${
+                  isActive
+                    ? 'bg-primary/10 text-primary border border-primary/25 shadow-2xs font-bold'
+                    : 'text-ink-soft hover:text-ink hover:bg-black/5 border border-transparent'
+                }`}
+              >
+                {item.label}
+              </button>
+            );
+          })}
         </nav>
 
         {/* Action Buttons */}
@@ -84,25 +119,23 @@ export default function LandingHeader() {
       {/* Mobile Drawer Menu */}
       {mobileMenuOpen && (
         <div className="md:hidden bg-surface border-b border-border px-4 pt-3 pb-6 space-y-4 shadow-lg animate-fade-in">
-          <nav className="flex flex-col gap-3 text-sm font-semibold text-ink">
-            <button
-              onClick={() => scrollToSection('how-it-works')}
-              className="text-left py-2 border-b border-border/50 hover:text-primary transition-colors"
-            >
-              Cara Kerja
-            </button>
-            <button
-              onClick={() => scrollToSection('ai-explainer')}
-              className="text-left py-2 border-b border-border/50 hover:text-primary transition-colors"
-            >
-              Peran AI
-            </button>
-            <button
-              onClick={() => scrollToSection('faq')}
-              className="text-left py-2 border-b border-border/50 hover:text-primary transition-colors"
-            >
-              FAQ
-            </button>
+          <nav className="flex flex-col gap-1.5 text-sm">
+            {navItems.map((item) => {
+              const isActive = activeSection === item.id;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => scrollToSection(item.id)}
+                  className={`text-left py-2 px-3 rounded-lg border transition-all cursor-pointer ${
+                    isActive
+                      ? 'bg-primary/10 border-primary/20 text-primary font-bold'
+                      : 'border-transparent text-ink hover:bg-slate-100 font-medium'
+                  }`}
+                >
+                  {item.label}
+                </button>
+              );
+            })}
           </nav>
           <div className="flex flex-col gap-2 pt-2">
             <Button

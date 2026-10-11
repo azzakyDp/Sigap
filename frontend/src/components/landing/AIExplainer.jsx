@@ -2,7 +2,7 @@ import React from 'react';
 
 export function AIExplainer() {
   return (
-    <section id="ai-explainer" className="py-16 md:py-24 bg-background border-t border-border">
+    <section id="ai-explainer" className="scroll-mt-16 py-16 md:py-24 bg-background border-t border-border">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}

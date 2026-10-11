@@ -37,7 +37,7 @@ export function FAQ() {
   };
 
   return (
-    <section id="faq" className="py-16 md:py-24 bg-surface border-t border-border/80">
+    <section id="faq" className="scroll-mt-16 py-16 md:py-24 bg-surface border-t border-border/80">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}

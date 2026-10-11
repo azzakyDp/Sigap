@@ -27,19 +27,40 @@ export function LandingFooter() {
             <h4 className="font-semibold text-sm text-ink mb-4">Navigasi</h4>
             <ul className="space-y-2.5 text-sm">
               <li>
-                <a href="#how-it-works" className="hover:text-primary transition-colors">
+                <button
+                  type="button"
+                  onClick={() => {
+                    const el = document.getElementById('how-it-works');
+                    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  }}
+                  className="hover:text-primary transition-colors cursor-pointer text-left"
+                >
                   Cara Kerja
-                </a>
+                </button>
               </li>
               <li>
-                <a href="#ai-explainer" className="hover:text-primary transition-colors">
+                <button
+                  type="button"
+                  onClick={() => {
+                    const el = document.getElementById('ai-explainer');
+                    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  }}
+                  className="hover:text-primary transition-colors cursor-pointer text-left"
+                >
                   Peran AI di SIGAP
-                </a>
+                </button>
               </li>
               <li>
-                <a href="#faq" className="hover:text-primary transition-colors">
+                <button
+                  type="button"
+                  onClick={() => {
+                    const el = document.getElementById('faq');
+                    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  }}
+                  className="hover:text-primary transition-colors cursor-pointer text-left"
+                >
                   Pertanyaan Umum (FAQ)
-                </a>
+                </button>
               </li>
             </ul>
           </div>
