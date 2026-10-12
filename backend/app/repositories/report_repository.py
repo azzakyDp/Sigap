@@ -138,7 +138,7 @@ class ReportRepository:
 
         offset = (page - 1) * page_size
         items_stmt = (
-            base_stmt.options(joinedload(Report.category), joinedload(Report.citizen))
+            base_stmt.options(joinedload(Report.category))
             .order_by(Report.created_at.desc())
             .offset(offset)
             .limit(page_size)
