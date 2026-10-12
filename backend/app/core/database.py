@@ -19,11 +19,21 @@ if settings.DB_SSL_CA_PATH and os.path.exists(settings.DB_SSL_CA_PATH) and setti
     connect_args["ssl"] = {"ca": settings.DB_SSL_CA_PATH}
 
 
+engine_kwargs: dict = {
+    "pool_pre_ping": True,
+    "pool_recycle": 1800,
+    "echo": settings.DEBUG,
+    "connect_args": connect_args,
+}
+if not settings.DATABASE_URL.startswith("sqlite"):
+    engine_kwargs.update({
+        "pool_size": 5,
+        "max_overflow": 5,
+    })
+
 engine = create_engine(
     settings.DATABASE_URL,
-    pool_pre_ping=True,
-    echo=settings.DEBUG,
-    connect_args=connect_args,
+    **engine_kwargs,
 )
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
