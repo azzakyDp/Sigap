@@ -5,7 +5,7 @@ Model Report SIGAP Backend.
 from datetime import datetime
 from typing import TYPE_CHECKING
 
-from sqlalchemy import DateTime, Enum, Float, ForeignKey, Integer, String, Text, func
+from sqlalchemy import DateTime, Enum, Float, ForeignKey, Index, Integer, String, Text, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.core.database import Base
@@ -24,6 +24,11 @@ if TYPE_CHECKING:
 
 class Report(Base):
     __tablename__ = "reports"
+    __table_args__ = (
+        Index("ix_reports_status_created_at", "status", "created_at"),
+        Index("ix_reports_citizen_created_at", "citizen_id", "created_at"),
+        Index("ix_reports_created_at", "created_at"),
+    )
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     nomor_laporan: Mapped[str] = mapped_column(String(50), unique=True, index=True, nullable=False)

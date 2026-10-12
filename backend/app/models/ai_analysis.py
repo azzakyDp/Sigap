@@ -5,7 +5,7 @@ Model AIAnalysis SIGAP Backend.
 from datetime import datetime
 from typing import TYPE_CHECKING
 
-from sqlalchemy import JSON, Boolean, DateTime, Enum, Float, ForeignKey, Integer, String, Text, func
+from sqlalchemy import JSON, Boolean, DateTime, Enum, Float, ForeignKey, Index, Integer, String, Text, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.core.database import Base
@@ -17,6 +17,9 @@ if TYPE_CHECKING:
 
 class AIAnalysis(Base):
     __tablename__ = "ai_analyses"
+    __table_args__ = (
+        Index("ix_ai_analyses_report_id_status", "report_id", "status"),
+    )
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     report_id: Mapped[int] = mapped_column(

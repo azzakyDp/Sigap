@@ -5,7 +5,7 @@ Model ReportAssignment SIGAP Backend.
 from datetime import datetime
 from typing import TYPE_CHECKING
 
-from sqlalchemy import Boolean, DateTime, ForeignKey, Integer, func
+from sqlalchemy import Boolean, DateTime, ForeignKey, Index, Integer, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.core.database import Base
@@ -17,6 +17,10 @@ if TYPE_CHECKING:
 
 class ReportAssignment(Base):
     __tablename__ = "report_assignments"
+    __table_args__ = (
+        Index("ix_report_assignments_report_id_is_current", "report_id", "is_current"),
+        Index("ix_report_assignments_officer_id_is_current", "officer_id", "is_current"),
+    )
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     report_id: Mapped[int] = mapped_column(
