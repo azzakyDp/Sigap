@@ -163,6 +163,34 @@ class GeminiProvider(AIProvider):
     Model, API Key, Fallback Model, dan Timeout dibaca dari settings (.env).
     """
 
+    @staticmethod
+    def _build_model_config(
+        base_config: types.GenerateContentConfig | None,
+        model_name: str,
+    ) -> types.GenerateContentConfig | None:
+        """
+        Membangun GenerateContentConfig spesifik per model:
+        - Model 3.x memakai thinking_level (misal ThinkingLevel.LOW)
+        - Model 2.5 memakai thinking_budget (misal 0 untuk menghemat kuota & latensi)
+        """
+        if not base_config:
+            return None
+
+        thinking_config: types.ThinkingConfig | None = None
+        if "2.5" in model_name:
+            thinking_config = types.ThinkingConfig(thinking_budget=0)
+        elif "3" in model_name or "gemini-3" in model_name:
+            thinking_config = types.ThinkingConfig(thinking_level=types.ThinkingLevel.LOW)
+        elif hasattr(base_config, "thinking_config"):
+            thinking_config = base_config.thinking_config
+
+        return types.GenerateContentConfig(
+            system_instruction=base_config.system_instruction,
+            response_mime_type=base_config.response_mime_type,
+            temperature=base_config.temperature,
+            thinking_config=thinking_config,
+        )
+
     async def _generate_content_with_fallback(
         self,
         client: genai.Client,
@@ -185,11 +213,12 @@ class GeminiProvider(AIProvider):
         last_err: Exception | None = None
         for idx, model_name in enumerate(models_to_try):
             try:
+                model_config = self._build_model_config(config, model_name)
                 response = await asyncio.wait_for(
                     client.aio.models.generate_content(
                         model=model_name,
                         contents=contents,
-                        config=config,
+                        config=model_config,
                     ),
                     timeout=timeout_secs,
                 )
