@@ -46,14 +46,3 @@ def get_db() -> Generator:
         yield db
     finally:
         db.close()
-
-# connect_args = {}
-# if settings.DB_SSL_CA_PATH:
-#     connect_args["ssl"] = {"ca": settings.DB_SSL_CA_PATH}
-
-# engine = create_engine(
-#     settings.DATABASE_URL,
-#     pool_pre_ping=True,
-#     echo=settings.DEBUG,
-#     connect_args=connect_args,
-# )
