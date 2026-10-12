@@ -22,16 +22,17 @@ export default function MyReportsPage() {
   const [totalPages, setTotalPages] = useState(1);
   const [totalItems, setTotalItems] = useState(0);
 
-  const fetchMyReports = async (currentPage = page) => {
+  const fetchMyReports = async (currentPage = page, signal) => {
     setLoading(true);
     setError(null);
     try {
-      const data = await getMyReportsApi(currentPage, pageSize);
+      const data = await getMyReportsApi(currentPage, pageSize, { signal });
       setReports(data.items || []);
       setTotalItems(data.total || 0);
       setTotalPages(data.total_pages || 1);
       setPage(data.page || currentPage);
     } catch (err) {
+      if (err.name === 'CanceledError' || err.code === 'ERR_CANCELED') return;
       console.error('Gagal mengambil daftar laporan:', err);
       setError(getErrorMessage(err, 'Gagal memuat daftar laporan Anda.'));
     } finally {
@@ -40,7 +41,11 @@ export default function MyReportsPage() {
   };
 
   useEffect(() => {
-    fetchMyReports(page);
+    const controller = new AbortController();
+    fetchMyReports(page, controller.signal);
+    return () => {
+      controller.abort();
+    };
   }, [page]);
 
   return (

@@ -46,7 +46,7 @@ export default function VerifierQueuePage() {
   const [loadingMap, setLoadingMap] = useState(false);
   const [mapTotal, setMapTotal] = useState(0);
 
-  const fetchTableQueue = async (currentPage = page, currentFilters = filters) => {
+  const fetchTableQueue = async (currentPage = page, currentFilters = filters, signal) => {
     setLoadingTable(true);
     setError(null);
     try {
@@ -60,12 +60,13 @@ export default function VerifierQueuePage() {
       if (currentFilters.start_date) params.start_date = currentFilters.start_date;
       if (currentFilters.end_date) params.end_date = currentFilters.end_date;
 
-      const data = await getReportsQueueApi(params);
+      const data = await getReportsQueueApi(params, { signal });
       setReports(data.items || []);
       setTotalItems(data.total || 0);
       setTotalPages(data.total_pages || 1);
       setPage(data.page || currentPage);
     } catch (err) {
+      if (err.name === 'CanceledError' || err.code === 'ERR_CANCELED') return;
       console.error('Gagal mengambil antrean laporan:', err);
       setError(getErrorMessage(err, 'Gagal memuat antrean verifikasi laporan.'));
     } finally {
@@ -73,7 +74,7 @@ export default function VerifierQueuePage() {
     }
   };
 
-  const fetchMapData = async (currentFilters = filters) => {
+  const fetchMapData = async (currentFilters = filters, signal) => {
     setLoadingMap(true);
     setError(null);
     try {
@@ -87,7 +88,7 @@ export default function VerifierQueuePage() {
       if (currentFilters.start_date) baseParams.start_date = currentFilters.start_date;
       if (currentFilters.end_date) baseParams.end_date = currentFilters.end_date;
 
-      const firstPage = await getReportsQueueApi(baseParams);
+      const firstPage = await getReportsQueueApi(baseParams, { signal });
       const total = firstPage.total || 0;
       setMapTotal(total);
 
@@ -97,7 +98,7 @@ export default function VerifierQueuePage() {
       if (totalPagesToFetch > 1) {
         const remainingPromises = [];
         for (let p = 2; p <= totalPagesToFetch; p++) {
-          remainingPromises.push(getReportsQueueApi({ ...baseParams, page: p }));
+          remainingPromises.push(getReportsQueueApi({ ...baseParams, page: p }, { signal }));
         }
         const remainingResults = await Promise.all(remainingPromises);
         remainingResults.forEach((res) => {
@@ -109,6 +110,7 @@ export default function VerifierQueuePage() {
 
       setMapReports(allItems);
     } catch (err) {
+      if (err.name === 'CanceledError' || err.code === 'ERR_CANCELED') return;
       console.error('Gagal memuat data peta sebaran:', err);
       setError(getErrorMessage(err, 'Gagal memuat sebaran laporan di peta.'));
     } finally {
@@ -117,11 +119,15 @@ export default function VerifierQueuePage() {
   };
 
   useEffect(() => {
+    const controller = new AbortController();
     if (viewMode === 'table') {
-      fetchTableQueue(page, filters);
+      fetchTableQueue(page, filters, controller.signal);
     } else {
-      fetchMapData(filters);
+      fetchMapData(filters, controller.signal);
     }
+    return () => {
+      controller.abort();
+    };
   }, [page, filters, viewMode]);
 
   const handleTabChange = (tabKey) => {

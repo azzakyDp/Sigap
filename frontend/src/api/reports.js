@@ -9,9 +9,10 @@ export const createReportApi = async (formData) => {
   return response.data;
 };
 
-export const getMyReportsApi = async (page = 1, pageSize = 10) => {
+export const getMyReportsApi = async (page = 1, pageSize = 10, config = {}) => {
   const response = await apiClient.get('/reports/me', {
     params: { page, page_size: pageSize },
+    ...config,
   });
   return response.data;
 };

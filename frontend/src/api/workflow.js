@@ -1,7 +1,7 @@
 import apiClient from './client';
 
-export const getReportsQueueApi = async (params = {}) => {
-  const response = await apiClient.get('/reports', { params });
+export const getReportsQueueApi = async (params = {}, config = {}) => {
+  const response = await apiClient.get('/reports', { params, ...config });
   return response.data;
 };
 
