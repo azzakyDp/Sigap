@@ -260,7 +260,7 @@ class ReportService:
             raise NotFoundException("Laporan tidak ditemukan")
 
         citizen_name = report.citizen.nama if report.citizen else ""
-        return self._build_detail_response(db, report.id, citizen_name)
+        return self._build_detail_response(db, report, citizen_name)
 
     def get_reports_nearby(
         self,
@@ -670,10 +670,18 @@ class ReportService:
             total_pages=total_pages,
         )
 
-    def _build_detail_response(self, db: Session, report_id: int, citizen_name: str) -> ReportDetailResponse:
-        report = ReportRepository.get_by_id(db, report_id)
-        if not report:
-            raise NotFoundException("Laporan tidak ditemukan")
+    def _build_detail_response(
+        self,
+        db: Session,
+        report_or_id: Report | int,
+        citizen_name: str,
+    ) -> ReportDetailResponse:
+        if isinstance(report_or_id, Report):
+            report = report_or_id
+        else:
+            report = ReportRepository.get_by_id(db, report_or_id)
+            if not report:
+                raise NotFoundException("Laporan tidak ditemukan")
 
         evidences = [
             ReportEvidenceResponse(
