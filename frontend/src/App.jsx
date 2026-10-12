@@ -1,34 +1,38 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { ToastProvider } from './context/ToastContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import DashboardLayout from './components/layout/DashboardLayout';
 
-import LoginPage from './pages/LoginPage';
-import RegisterPage from './pages/RegisterPage';
-import CitizenDashboard from './pages/CitizenDashboard';
-import CreateReportPage from './pages/citizen/CreateReportPage';
-import MyReportsPage from './pages/citizen/MyReportsPage';
-import ReportDetailPage from './pages/citizen/ReportDetailPage';
-import VerifierQueuePage from './pages/verifier/VerifierQueuePage';
-import VerifierReportDetailPage from './pages/verifier/VerifierReportDetailPage';
-import AssignedReportsPage from './pages/officer/AssignedReportsPage';
-import OfficerReportDetailPage from './pages/officer/OfficerReportDetailPage';
-import AdminDashboard from './pages/AdminDashboard';
-import UnauthorizedPage from './pages/UnauthorizedPage';
-import LandingPage from './pages/LandingPage';
-import NotFoundPage from './pages/NotFoundPage';
+const LoginPage = lazy(() => import('./pages/LoginPage'));
+const RegisterPage = lazy(() => import('./pages/RegisterPage'));
+const CitizenDashboard = lazy(() => import('./pages/CitizenDashboard'));
+const CreateReportPage = lazy(() => import('./pages/citizen/CreateReportPage'));
+const MyReportsPage = lazy(() => import('./pages/citizen/MyReportsPage'));
+const ReportDetailPage = lazy(() => import('./pages/citizen/ReportDetailPage'));
+const VerifierQueuePage = lazy(() => import('./pages/verifier/VerifierQueuePage'));
+const VerifierReportDetailPage = lazy(() => import('./pages/verifier/VerifierReportDetailPage'));
+const AssignedReportsPage = lazy(() => import('./pages/officer/AssignedReportsPage'));
+const OfficerReportDetailPage = lazy(() => import('./pages/officer/OfficerReportDetailPage'));
+const AdminDashboard = lazy(() => import('./pages/AdminDashboard'));
+const UnauthorizedPage = lazy(() => import('./pages/UnauthorizedPage'));
+const LandingPage = lazy(() => import('./pages/LandingPage'));
+const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
+
+function PageLoadingFallback() {
+  return (
+    <div className="min-h-screen bg-background flex items-center justify-center">
+      <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary"></div>
+    </div>
+  );
+}
 
 function RootRedirect() {
   const { user, isAuthenticated, loading } = useAuth();
 
   if (loading) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary"></div>
-      </div>
-    );
+    return <PageLoadingFallback />;
   }
 
   if (!isAuthenticated) {
@@ -53,48 +57,50 @@ export default function App() {
     <AuthProvider>
       <ToastProvider>
         <BrowserRouter>
-          <Routes>
-            {/* Root Redirect */}
-            <Route path="/" element={<RootRedirect />} />
+          <Suspense fallback={<PageLoadingFallback />}>
+            <Routes>
+              {/* Root Redirect */}
+              <Route path="/" element={<RootRedirect />} />
 
-            {/* Public Routes */}
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} />
-            <Route path="/unauthorized" element={<UnauthorizedPage />} />
+              {/* Public Routes */}
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/register" element={<RegisterPage />} />
+              <Route path="/unauthorized" element={<UnauthorizedPage />} />
 
-            {/* Protected Routes by Role */}
-            <Route element={<ProtectedRoute allowedRoles={['CITIZEN']} />}>
-              <Route element={<DashboardLayout />}>
-                <Route path="/dashboard" element={<CitizenDashboard />} />
-                <Route path="/reports/create" element={<CreateReportPage />} />
-                <Route path="/reports/me" element={<MyReportsPage />} />
-                <Route path="/reports/:id" element={<ReportDetailPage />} />
+              {/* Protected Routes by Role */}
+              <Route element={<ProtectedRoute allowedRoles={['CITIZEN']} />}>
+                <Route element={<DashboardLayout />}>
+                  <Route path="/dashboard" element={<CitizenDashboard />} />
+                  <Route path="/reports/create" element={<CreateReportPage />} />
+                  <Route path="/reports/me" element={<MyReportsPage />} />
+                  <Route path="/reports/:id" element={<ReportDetailPage />} />
+                </Route>
               </Route>
-            </Route>
 
-            <Route element={<ProtectedRoute allowedRoles={['VERIFIER', 'ADMIN']} />}>
-              <Route element={<DashboardLayout />}>
-                <Route path="/verifier" element={<VerifierQueuePage />} />
-                <Route path="/verifier/reports/:id" element={<VerifierReportDetailPage />} />
+              <Route element={<ProtectedRoute allowedRoles={['VERIFIER', 'ADMIN']} />}>
+                <Route element={<DashboardLayout />}>
+                  <Route path="/verifier" element={<VerifierQueuePage />} />
+                  <Route path="/verifier/reports/:id" element={<VerifierReportDetailPage />} />
+                </Route>
               </Route>
-            </Route>
 
-            <Route element={<ProtectedRoute allowedRoles={['OFFICER']} />}>
-              <Route element={<DashboardLayout />}>
-                <Route path="/officer" element={<AssignedReportsPage />} />
-                <Route path="/officer/reports/:id" element={<OfficerReportDetailPage />} />
+              <Route element={<ProtectedRoute allowedRoles={['OFFICER']} />}>
+                <Route element={<DashboardLayout />}>
+                  <Route path="/officer" element={<AssignedReportsPage />} />
+                  <Route path="/officer/reports/:id" element={<OfficerReportDetailPage />} />
+                </Route>
               </Route>
-            </Route>
 
-            <Route element={<ProtectedRoute allowedRoles={['ADMIN']} />}>
-              <Route element={<DashboardLayout />}>
-                <Route path="/admin" element={<AdminDashboard />} />
+              <Route element={<ProtectedRoute allowedRoles={['ADMIN']} />}>
+                <Route element={<DashboardLayout />}>
+                  <Route path="/admin" element={<AdminDashboard />} />
+                </Route>
               </Route>
-            </Route>
 
-            {/* Fallback 404 Route */}
-            <Route path="*" element={<NotFoundPage />} />
-          </Routes>
+              {/* Fallback 404 Route */}
+              <Route path="*" element={<NotFoundPage />} />
+            </Routes>
+          </Suspense>
         </BrowserRouter>
       </ToastProvider>
     </AuthProvider>
