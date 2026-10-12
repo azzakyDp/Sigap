@@ -6,6 +6,7 @@ Seluruh business logic transisi status, verifikasi, penugasan, penanganan, dan p
 dipusatkan secara atomik di service ini.
 """
 
+import concurrent.futures
 from datetime import datetime
 import logging
 from typing import Any
@@ -138,32 +139,51 @@ class ReportService:
         year = effective_waktu_kejadian.year
         nomor_laporan = ReportRepository.generate_next_report_number(db, year=year)
 
-        # Upload foto (Cloudinary dengan rollback jika gagal, fallback ke StorageService lokal)
-        saved_evidences: list[dict[str, Any]] = []
+        # Upload foto (Cloudinary dengan paralel ThreadPoolExecutor dan rollback jika gagal, fallback ke StorageService lokal)
+        saved_evidences: list[dict[str, Any]] = [None] * len(validated_file_contents)
         uploaded_cloudinary_pids: list[str] = []
 
         try:
-            for idx, (f_bytes, f_name) in enumerate(validated_file_contents):
-                if settings.STORAGE_BACKEND == "cloudinary":
-                    self.cloudinary_service._ensure_configured()
-                    c_res = self.cloudinary_service.upload_report_photo_sync(f_bytes, f_name)
-                    uploaded_cloudinary_pids.append(c_res["public_id"])
-                    saved_evidences.append({
-                        "file_path": c_res["public_id"],
-                        "url": c_res["secure_url"],
-                        "public_id": c_res["public_id"],
-                        "urutan": idx,
-                    })
-                else:
+            if settings.STORAGE_BACKEND == "cloudinary":
+                self.cloudinary_service._ensure_configured()
+
+                def _upload_single(idx: int, f_bytes: bytes, f_name: str) -> tuple[int, dict[str, Any]]:
+                    res = self.cloudinary_service.upload_report_photo_sync(f_bytes, f_name)
+                    return idx, res
+
+                with concurrent.futures.ThreadPoolExecutor(max_workers=min(5, len(validated_file_contents))) as executor:
+                    future_to_idx = {
+                        executor.submit(_upload_single, idx, f_bytes, f_name): idx
+                        for idx, (f_bytes, f_name) in enumerate(validated_file_contents)
+                    }
+                    first_exc = None
+                    for fut in concurrent.futures.as_completed(future_to_idx):
+                        try:
+                            idx, c_res = fut.result()
+                            uploaded_cloudinary_pids.append(c_res["public_id"])
+                            saved_evidences[idx] = {
+                                "file_path": c_res["public_id"],
+                                "url": c_res["secure_url"],
+                                "public_id": c_res["public_id"],
+                                "urutan": idx,
+                            }
+                        except Exception as exc:
+                            if not first_exc:
+                                first_exc = exc
+
+                    if first_exc:
+                        raise first_exc
+            else:
+                for idx, (f_bytes, f_name) in enumerate(validated_file_contents):
                     rel_path, pub_url = self.storage_service.save_evidence_file_from_bytes(f_bytes, f_name)
-                    saved_evidences.append({
+                    saved_evidences[idx] = {
                         "file_path": rel_path,
                         "url": pub_url,
                         "public_id": None,
                         "urutan": idx,
-                    })
+                    }
         except Exception as upload_exc:
-            # Rollback file yatim di Cloudinary
+            # Rollback seluruh file yang sempat terunggah di Cloudinary jika terjadi kegagalan sebagian
             for pid in uploaded_cloudinary_pids:
                 try:
                     self.cloudinary_service.delete_photo_sync(pid)

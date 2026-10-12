@@ -367,3 +367,91 @@ async def test_legacy_report_disk_path_does_not_crash(mock_cloudinary_env, db_se
         assert result.photos_analyzed == 0
         assert result.photos_total == 1
         assert "tidak dapat dianalisis" in result.summary
+
+
+def test_parallel_upload_partial_failure_rollback(mock_cloudinary_env, db_session, ai_test_setup):
+    """Memverifikasi bahwa kegagalan sebagian pada upload paralel memicu rollback seluruh foto yang sempat terunggah."""
+    setup = ai_test_setup
+    service = ReportService()
+    payload = ReportCreateRequest(
+        category_id=setup["category"].id,
+        deskripsi="Laporan upload paralel 3 foto dengan kegagalan sebagian.",
+        waktu_kejadian=datetime.now(),
+        latitude=-7.12,
+        longitude=112.41,
+        alamat_lokasi="Jl. Merdeka No. 1",
+    )
+
+    files = [
+        create_upload_file("foto1.jpg", VALID_JPEG_BYTES),
+        create_upload_file("foto2.jpg", VALID_PNG_BYTES),
+        create_upload_file("foto3.webp", VALID_WEBP_BYTES),
+    ]
+
+    def mock_upload(file_bytes, **kwargs):
+        # foto2 gagal
+        if file_bytes == VALID_PNG_BYTES:
+            raise RuntimeError("Cloudinary upload failed on photo 2")
+        pid = "sigap/reports/photo_1" if file_bytes == VALID_JPEG_BYTES else "sigap/reports/photo_3"
+        return {
+            "secure_url": f"https://res.cloudinary.com/sigapcloud/image/upload/v1/{pid}.jpg",
+            "public_id": pid,
+            "width": 800,
+            "height": 600,
+            "bytes": len(file_bytes),
+        }
+
+    with patch("cloudinary.uploader.upload", side_effect=mock_upload):
+        with patch("cloudinary.uploader.destroy", return_value={"result": "ok"}) as mock_destroy:
+            with pytest.raises(RuntimeError):
+                service.create_report(db_session, setup["citizen"], payload, files)
+
+            # Foto 1 dan Foto 3 yang sempat terunggah harus di-rollback
+            deleted_pids = [call.args[0] for call in mock_destroy.call_args_list]
+            assert "sigap/reports/photo_1" in deleted_pids
+            assert "sigap/reports/photo_3" in deleted_pids
+
+
+def test_parallel_upload_preserves_order(mock_cloudinary_env, db_session, ai_test_setup):
+    """Memverifikasi bahwa upload paralel mempertahankan urutan input foto pada database."""
+    setup = ai_test_setup
+    service = ReportService()
+    payload = ReportCreateRequest(
+        category_id=setup["category"].id,
+        deskripsi="Laporan upload paralel 3 foto dengan urutan terjaga.",
+        waktu_kejadian=datetime.now(),
+        latitude=-7.12,
+        longitude=112.41,
+        alamat_lokasi="Jl. Merdeka No. 1",
+    )
+
+    files = [
+        create_upload_file("first.jpg", VALID_JPEG_BYTES),
+        create_upload_file("second.png", VALID_PNG_BYTES),
+        create_upload_file("third.webp", VALID_WEBP_BYTES),
+    ]
+
+    def mock_upload(file_bytes, **kwargs):
+        if file_bytes == VALID_JPEG_BYTES:
+            pid = "sigap/reports/first"
+        elif file_bytes == VALID_PNG_BYTES:
+            pid = "sigap/reports/second"
+        else:
+            pid = "sigap/reports/third"
+        return {
+            "secure_url": f"https://res.cloudinary.com/sigapcloud/image/upload/v1/{pid}.jpg",
+            "public_id": pid,
+            "width": 800,
+            "height": 600,
+            "bytes": len(file_bytes),
+        }
+
+    with patch("cloudinary.uploader.upload", side_effect=mock_upload):
+        res = service.create_report(db_session, setup["citizen"], payload, files)
+        assert len(res.evidences) == 3
+        assert res.evidences[0].urutan == 0
+        assert res.evidences[0].public_id == "sigap/reports/first"
+        assert res.evidences[1].urutan == 1
+        assert res.evidences[1].public_id == "sigap/reports/second"
+        assert res.evidences[2].urutan == 2
+        assert res.evidences[2].public_id == "sigap/reports/third"
