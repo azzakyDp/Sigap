@@ -94,44 +94,20 @@ class AIAnalysisService:
         if not report:
             raise NotFoundException(f"Laporan dengan ID {report_id} tidak ditemukan")
 
-        # 1. Cek apakah ada hasil COMPLETED terbaru
-        completed_analysis = (
+        # 1. Cek analisis AI terbaru untuk report ini (1 query efisien menggantikan 3 query terpisah)
+        latest_analysis = (
             db.query(AIAnalysis)
-            .filter(
-                AIAnalysis.report_id == report_id,
-                AIAnalysis.status == AIAnalysisStatus.COMPLETED,
-            )
+            .filter(AIAnalysis.report_id == report_id)
             .order_by(AIAnalysis.id.desc())
             .first()
         )
-        if completed_analysis:
-            return AIAnalysisResponse.model_validate(completed_analysis)
-
-        # 2. Cek apakah ada proses PENDING / PROCESSING yang masih berjalan
-        running_analysis = (
-            db.query(AIAnalysis)
-            .filter(
-                AIAnalysis.report_id == report_id,
-                AIAnalysis.status.in_([AIAnalysisStatus.PENDING, AIAnalysisStatus.PROCESSING]),
-            )
-            .order_by(AIAnalysis.id.desc())
-            .first()
-        )
-        if running_analysis:
-            return AIAnalysisResponse.model_validate(running_analysis)
-
-        # 3. Cek apakah ada hasil FAILED sebelumnya (agar tidak loop pemicuan otomatis saat polling)
-        failed_analysis = (
-            db.query(AIAnalysis)
-            .filter(
-                AIAnalysis.report_id == report_id,
-                AIAnalysis.status == AIAnalysisStatus.FAILED,
-            )
-            .order_by(AIAnalysis.id.desc())
-            .first()
-        )
-        if failed_analysis:
-            return AIAnalysisResponse.model_validate(failed_analysis)
+        if latest_analysis and latest_analysis.status in (
+            AIAnalysisStatus.COMPLETED,
+            AIAnalysisStatus.PENDING,
+            AIAnalysisStatus.PROCESSING,
+            AIAnalysisStatus.FAILED,
+        ):
+            return AIAnalysisResponse.model_validate(latest_analysis)
 
         # 3. Jika belum ada, buat row PENDING baru
         model_name = settings.AI_MODEL or "gemini-3.1-flash-lite"
