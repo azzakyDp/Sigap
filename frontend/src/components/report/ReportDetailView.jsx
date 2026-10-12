@@ -9,7 +9,7 @@ import Modal from '../ui/Modal';
 import MapPicker from '../ui/MapPicker';
 import StatusTimeline from './StatusTimeline';
 import { formatDate } from '../../utils/formatters';
-import { getImageUrl } from '../../utils/url';
+import { getImageUrl, getThumbnailUrl } from '../../utils/url';
 import { getCitizenStatusLabel, getStaffStatusLabel } from '../../utils/statusColors';
 
 export default function ReportDetailView({
@@ -163,6 +163,7 @@ export default function ReportDetailView({
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
                 {report.evidences.map((ev) => {
                   const fullUrl = getImageUrl(ev.url);
+                  const thumbUrl = getThumbnailUrl(ev.url, 600);
                   const isFailed = failedImages[ev.id];
                   return (
                     <div
@@ -179,8 +180,9 @@ export default function ReportDetailView({
                       ) : (
                         <>
                           <img
-                            src={fullUrl}
+                            src={thumbUrl}
                             alt="Bukti Pengaduan"
+                            loading="lazy"
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
                             onError={() => handleImageError(ev.id)}
                           />
