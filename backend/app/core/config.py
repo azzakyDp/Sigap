@@ -42,6 +42,7 @@ class Settings(BaseSettings):
         "http://localhost:5173",
         "http://localhost:3000",
         "https://sigaplamongan.vercel.app",
+        "https://sigap-69n9.onrender.com",
     ]
 
     @field_validator("CORS_ORIGINS", mode="before")
