@@ -37,7 +37,7 @@ function ChangeView({ center }) {
 }
 
 export default function MapPicker({
-  center = [-6.9175, 107.6191], // Default coordinates
+  center = [-7.1189, 112.4150], // Koordinat default Lamongan
   marker = null, // { lat, lng }
   onLocationSelect,
   readOnly = false,

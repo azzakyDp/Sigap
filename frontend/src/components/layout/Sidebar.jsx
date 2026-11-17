@@ -90,7 +90,7 @@ export default function Sidebar({ isOpen, onClose }) {
         }`}
       >
         <div className="text-xs font-semibold text-ink-soft mb-3 px-3">
-          Menu utama ({user?.role})
+          Menu utama
         </div>
         <nav className="space-y-1">
           {links.map((link) => {

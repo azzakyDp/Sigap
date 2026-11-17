@@ -5,8 +5,13 @@ const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(() => {
-    const savedUser = localStorage.getItem('sigap_user');
-    return savedUser ? JSON.parse(savedUser) : null;
+    try {
+      const savedUser = localStorage.getItem('sigap_user');
+      return savedUser ? JSON.parse(savedUser) : null;
+    } catch {
+      localStorage.removeItem('sigap_user');
+      return null;
+    }
   });
   const [token, setToken] = useState(() => localStorage.getItem('sigap_token'));
   const [loading, setLoading] = useState(true);

@@ -22,7 +22,7 @@ router = APIRouter(prefix="/auth", tags=["Auth"])
     "/register",
     response_model=UserResponse,
     status_code=status.HTTP_201_CREATED,
-    summary="Registrasi Akun Masyarakat (CITIZEN)",
+    summary="Registrasi Akun Masyarakat",
 )
 def register(payload: RegisterRequest, db: Session = Depends(get_db)) -> UserResponse:
     """
@@ -70,6 +70,14 @@ def login(payload: LoginRequest, db: Session = Depends(get_db)) -> TokenResponse
     untuk mencegah user enumeration attack (PRD 12.1).
     """
     identifier = payload.identifier.strip()
+
+    # Normalisasi nomor HP: +62xxx atau 62xxx → 0xxx
+    if '@' not in identifier:
+        if identifier.startswith('+62'):
+            identifier = '0' + identifier[3:]
+        elif identifier.startswith('62') and len(identifier) > 10:
+            identifier = '0' + identifier[2:]
+
     user = UserRepository.get_by_identifier(db, identifier)
 
     if not user or not verify_password(payload.password, user.password_hash):

@@ -15,7 +15,7 @@ export default function CitizenDashboard() {
     <>
       <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-ink tracking-tight">Dashboard Masyarakat (Citizen)</h1>
+          <h1 className="text-2xl font-bold text-ink tracking-tight">Dashboard Masyarakat</h1>
           <p className="text-ink-soft text-sm mt-1">Selamat datang kembali di portal layanan pengaduan SIGAP.</p>
         </div>
         <div className="flex items-center gap-3">

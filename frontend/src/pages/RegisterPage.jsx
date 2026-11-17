@@ -99,7 +99,7 @@ export default function RegisterPage() {
       <div className="w-full max-w-lg">
         <div className="text-center mb-6">
           <h1 className="text-2xl font-bold text-ink tracking-tight">Registrasi Akun SIGAP</h1>
-          <p className="text-ink-soft text-xs mt-1">Daftarkan akun masyarakat (CITIZEN) untuk menyampaikan laporan</p>
+          <p className="text-ink-soft text-xs mt-1">Daftarkan akun masyarakat untuk menyampaikan laporan</p>
         </div>
 
         <Card title="Buat Akun Baru" subtitle="Isi formulir pendaftaran di bawah ini">

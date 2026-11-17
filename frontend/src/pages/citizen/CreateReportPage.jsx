@@ -33,8 +33,8 @@ export default function CreateReportPage() {
   const [useCurrentTime, setUseCurrentTime] = useState(true);
   const [waktuKejadian, setWaktuKejadian] = useState('');
   const [location, setLocation] = useState({
-    latitude: -6.9175,
-    longitude: 107.6191,
+    latitude: -7.1189,
+    longitude: 112.4150,
     alamat_lokasi: '',
   });
   const [dynamicValues, setDynamicValues] = useState({});
