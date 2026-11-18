@@ -14,7 +14,12 @@ export function AuthProvider({ children }) {
     }
   });
   const [token, setToken] = useState(() => localStorage.getItem('sigap_token'));
-  const [loading, setLoading] = useState(true);
+  // Optimasi Performa: Jika user & token sudah ada di localStorage, jangan blokir UI (render instan)
+  const [loading, setLoading] = useState(() => {
+    const storedToken = localStorage.getItem('sigap_token');
+    const storedUser = localStorage.getItem('sigap_user');
+    return !(storedToken && storedUser);
+  });
 
   useEffect(() => {
     const verifyAuth = async () => {
