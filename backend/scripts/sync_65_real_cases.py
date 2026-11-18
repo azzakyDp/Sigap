@@ -94,40 +94,59 @@ def prepare_65_cases(limit: int = 65) -> list[dict]:
 
 
 def run():
-    print(f"=== Sinkronisasi 65 Data Laporan Kasus Riil ===")
+    print(f"=== Sinkronisasi 65 Data Laporan Kasus Riil (Teroptimasi) ===")
+    print(f"Target Backend API: {API_BASE_URL}")
     print(f"Membaca dataset dari: {DATASET_PATH}")
     cases = prepare_65_cases(65)
     print(f"Berhasil menyiapkan {len(cases)} kasus riil.")
 
-    # 1. Login Admin
+    # 1. Login Admin dengan retry cold-start (Render Free Tier)
     print("\nMelakukan login sebagai Admin...")
-    login_res = requests.post(
-        f"{API_BASE_URL}/auth/login",
-        json={"identifier": "admin1@sigap.test", "password": "Admin123!"},
-        timeout=30,
-    )
-    if login_res.status_code != 200:
-        print(f"Gagal login admin: {login_res.status_code} - {login_res.text}")
+    session = requests.Session()
+    max_retries = 3
+    login_res = None
+
+    for attempt in range(1, max_retries + 1):
+        try:
+            print(f"  Percobaan {attempt}/{max_retries} menghubungi server...")
+            login_res = session.post(
+                f"{API_BASE_URL}/auth/login",
+                json={"identifier": "admin1@sigap.test", "password": "Admin123!"},
+                timeout=45,
+            )
+            if login_res.status_code == 200:
+                break
+        except requests.exceptions.RequestException as e:
+            print(f"  Server sedang bangun (cold-start): {e}. Menunggu 5 detik...")
+            import time
+            time.sleep(5)
+
+    if not login_res or login_res.status_code != 200:
+        print(f"Gagal login admin: {login_res.status_code if login_res else 'No response'} - {login_res.text if login_res else ''}")
         return
 
     token = login_res.json()["access_token"]
-    print("Login admin berhasil.")
+    print("Login admin berhasil (Token diperoleh).")
 
     # 2. Panggil Endpoint Apply Real Dataset
     print("\nMengirim batch 65 kasus riil ke endpoint /reports/admin/apply-real-dataset...")
-    res = requests.post(
-        f"{API_BASE_URL}/reports/admin/apply-real-dataset",
-        json={"cases": cases},
-        headers={"Authorization": f"Bearer {token}"},
-        timeout=60,
-    )
+    try:
+        res = session.post(
+            f"{API_BASE_URL}/reports/admin/apply-real-dataset",
+            json={"cases": cases},
+            headers={"Authorization": f"Bearer {token}"},
+            timeout=90,
+        )
 
-    if res.status_code == 200:
-        print(f"\n[SUKSES] {res.json().get('message')}")
-        print(f"Total laporan diperbarui: {res.json().get('updated_count')}")
-    else:
-        print(f"\n[INFO / STATUS] {res.status_code}: {res.text}")
-        print("Catatan: Jika endpoint belum aktif di Render, kode perlu di-push ke GitHub agar Render meng-update.")
+        if res.status_code == 200:
+            res_data = res.json()
+            print(f"\n[SUKSES] {res_data.get('message')}")
+            print(f"Total laporan diperbarui: {res_data.get('updated_count')}")
+        else:
+            print(f"\n[INFO / STATUS] {res.status_code}: {res.text}")
+            print("Catatan: Pastikan perubahan backend telah di-push ke GitHub dan dideploy di Render.")
+    except Exception as e:
+        print(f"\n[ERROR] Koneksi terputus: {e}")
 
 
 if __name__ == "__main__":

@@ -296,7 +296,7 @@ def resolve_report(
 
 @router.post(
     "/reports/admin/apply-real-dataset",
-    summary="Mengganti data dummy laporan menjadi dataset kasus riil (ADMIN only)",
+    summary="Mengganti data dummy laporan menjadi dataset kasus riil secara teroptimasi (ADMIN only)",
 )
 def apply_real_dataset(
     payload: dict,
@@ -304,19 +304,20 @@ def apply_real_dataset(
     db: Session = Depends(get_db),
 ) -> dict:
     """
-    Mengganti N laporan (default: 65) berstatus PENDING_VERIFICATION menjadi dataset kasus riil.
-    Payload: {"cases": [...]}
+    Mengganti N laporan berstatus PENDING_VERIFICATION menjadi dataset kasus riil.
+    Dioptimasi menggunakan bulk query, eager caching category fields, dan batch insert.
     """
+    from app.models.category_field import CategoryField
     from app.models.report import Report
     from app.models.report_evidence import ReportEvidence
     from app.models.report_field_value import ReportFieldValue
-    from sqlalchemy import select, delete
+    from sqlalchemy import delete, select
 
     cases = payload.get("cases", [])
     if not cases:
         raise ValidationException("Daftar kasus (cases) tidak boleh kosong.")
 
-    # Ambil laporan pending yang akan di-replace (urut dari id tertua atau terlama)
+    # 1. Ambil laporan pending yang akan di-update
     stmt = (
         select(Report)
         .where(Report.status == ReportStatus.PENDING_VERIFICATION)
@@ -324,48 +325,79 @@ def apply_real_dataset(
         .limit(len(cases))
     )
     reports_to_update = db.scalars(stmt).all()
+    if not reports_to_update:
+        return {"status": "success", "message": "Tidak ada laporan pending untuk diupdate.", "updated_count": 0}
 
+    target_report_ids = [r.id for r in reports_to_update]
+
+    # 2. Bulk delete relasi lama dalam 1 query untuk menghindari N+1 roundtrip
+    db.execute(delete(ReportFieldValue).where(ReportFieldValue.report_id.in_(target_report_ids)))
+    db.execute(delete(ReportEvidence).where(ReportEvidence.report_id.in_(target_report_ids)))
+
+    # 3. Cache seluruh CategoryField sekali saja di memory
+    all_cat_fields = db.scalars(select(CategoryField)).all()
+    fields_by_category: dict[int, list[CategoryField]] = {}
+    for f in all_cat_fields:
+        fields_by_category.setdefault(f.category_id, []).append(f)
+
+    new_field_values: list[ReportFieldValue] = []
+    new_evidences: list[ReportEvidence] = []
     updated_count = 0
+
+    # 4. Update core fields & susun bulk records
     for idx, report in enumerate(reports_to_update):
         case_data = cases[idx]
         report.deskripsi = case_data.get("deskripsi", report.deskripsi)
         report.category_id = case_data.get("category_id", report.category_id)
-        report.latitude = float(case_data.get("latitude", report.latitude))
-        report.longitude = float(case_data.get("longitude", report.longitude))
+        
+        try:
+            report.latitude = float(case_data.get("latitude", report.latitude))
+            report.longitude = float(case_data.get("longitude", report.longitude))
+        except (ValueError, TypeError):
+            report.latitude = -7.1189
+            report.longitude = 112.4150
+
         report.alamat_lokasi = case_data.get("alamat_lokasi", report.alamat_lokasi)
         if "priority" in case_data:
-            report.priority = ReportPriority(case_data["priority"])
+            try:
+                report.priority = ReportPriority(case_data["priority"])
+            except ValueError:
+                pass
 
-        # Reset & update dynamic fields jika ada
+        # Dynamic fields
         dyn_fields = case_data.get("dynamic_fields", {})
-        if dyn_fields:
-            db.execute(delete(ReportFieldValue).where(ReportFieldValue.report_id == report.id))
-            from app.models.category_field import CategoryField
-            cat_fields = db.scalars(select(CategoryField).where(CategoryField.category_id == report.category_id)).all()
-            for f_spec in cat_fields:
-                val = dyn_fields.get(f_spec.field_name, "Normal")
-                db.add(ReportFieldValue(report_id=report.id, category_field_id=f_spec.id, value=str(val)))
+        cat_fields = fields_by_category.get(report.category_id, [])
+        for f_spec in cat_fields:
+            val = dyn_fields.get(f_spec.field_name, "Normal")
+            new_field_values.append(
+                ReportFieldValue(report_id=report.id, category_field_id=f_spec.id, value=str(val))
+            )
 
-        # Update / inject evidences foto
+        # Evidences
         ev_urls = case_data.get("evidence_urls", [])
-        if ev_urls:
-            db.execute(delete(ReportEvidence).where(ReportEvidence.report_id == report.id))
-            for order_idx, url in enumerate(ev_urls):
-                db.add(
-                    ReportEvidence(
-                        report_id=report.id,
-                        file_path=f"real_evidence_{report.id}_{order_idx+1}.jpg",
-                        url=url,
-                        urutan=order_idx,
-                    )
+        for order_idx, url in enumerate(ev_urls):
+            new_evidences.append(
+                ReportEvidence(
+                    report_id=report.id,
+                    file_path=f"real_evidence_{report.id}_{order_idx+1}.jpg",
+                    url=url,
+                    urutan=order_idx,
                 )
+            )
 
         updated_count += 1
 
+    # 5. Batch insert sekaligus
+    if new_field_values:
+        db.add_all(new_field_values)
+    if new_evidences:
+        db.add_all(new_evidences)
+
     db.commit()
+
     return {
         "status": "success",
-        "message": f"Berhasil memperbarui {updated_count} laporan dengan dataset kasus riil.",
+        "message": f"Berhasil memperbarui {updated_count} laporan dengan dataset kasus riil secara teroptimasi.",
         "updated_count": updated_count,
     }
 
