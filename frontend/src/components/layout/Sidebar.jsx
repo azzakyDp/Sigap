@@ -77,7 +77,7 @@ export default function Sidebar({ isOpen, onClose }) {
     <>
       {/* Mobile Backdrop with Smooth Fade Animation */}
       <div
-        className={`fixed inset-0 top-16 z-40 bg-ink/40 backdrop-blur-xs lg:hidden transition-opacity duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+        className={`fixed inset-0 top-16 z-40 bg-ink/40 backdrop-blur-xs lg:hidden transition-opacity duration-500 ease-in-out ${
           isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         }`}
         onClick={onClose}
@@ -86,12 +86,12 @@ export default function Sidebar({ isOpen, onClose }) {
 
       {/* Navigation Container: Smooth Slide-Down on Mobile, Fixed Column on Desktop */}
       <aside
-        className={`fixed top-16 left-0 z-50 bg-surface border-border transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform
-          /* Mobile view: Slide-down menu right below navbar */
+        className={`fixed top-16 left-0 z-50 bg-surface border-border transition-all duration-500 ease-in-out will-change-transform
+          /* Mobile view: Slide-down menu right below navbar with subtle rhythm */
           w-full max-h-[calc(100vh-4rem)] overflow-y-auto border-b p-4 shadow-xl lg:shadow-none
-          ${isOpen ? 'translate-y-0 opacity-100 pointer-events-auto' : '-translate-y-6 opacity-0 pointer-events-none'}
+          ${isOpen ? 'translate-y-0 opacity-100 pointer-events-auto delay-75' : '-translate-y-8 opacity-0 pointer-events-none delay-0'}
           /* Desktop view: Standard fixed sidebar on the left */
-          lg:w-64 lg:bottom-0 lg:border-r lg:border-b-0 lg:translate-y-0 lg:opacity-100 lg:pointer-events-auto
+          lg:w-64 lg:bottom-0 lg:border-r lg:border-b-0 lg:translate-y-0 lg:opacity-100 lg:pointer-events-auto lg:delay-0
         `}
       >
         <div className="text-xs font-semibold text-ink-soft mb-3 px-3">

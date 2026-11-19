@@ -14,22 +14,22 @@ export default function Navbar({ isOpen = false, onToggleSidebar }) {
           {onToggleSidebar && (
             <button
               onClick={onToggleSidebar}
-              className="lg:hidden text-ink hover:bg-background active:scale-95 p-1.5 rounded-md border border-border transition-all duration-200 relative w-9 h-9 flex items-center justify-center shrink-0 cursor-pointer overflow-hidden shadow-2xs"
+              className="lg:hidden text-ink hover:bg-background active:scale-95 p-1.5 rounded-md border border-border transition-all duration-300 ease-in-out relative w-9 h-9 flex items-center justify-center shrink-0 cursor-pointer overflow-hidden shadow-2xs"
               aria-label={isOpen ? 'Tutup navigasi' : 'Buka navigasi'}
             >
-              {/* Hamburger Icon with smooth rotate & fade */}
+              {/* Hamburger Icon: Berputar 180° perlahan & memudar halus */}
               <span
-                className={`absolute inset-0 flex items-center justify-center transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-                  isOpen ? 'opacity-0 rotate-90 scale-75' : 'opacity-100 rotate-0 scale-100'
+                className={`absolute inset-0 flex items-center justify-center transition-all duration-500 ease-in-out ${
+                  isOpen ? 'opacity-0 rotate-180 scale-50' : 'opacity-100 rotate-0 scale-100'
                 }`}
               >
                 <Menu className="w-5 h-5 text-current" strokeWidth={1.75} />
               </span>
 
-              {/* X (Close) Icon with smooth counter-rotate & fade */}
+              {/* X (Close) Icon: Berputar masuk dari -180° perlahan & membesar */}
               <span
-                className={`absolute inset-0 flex items-center justify-center transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-                  isOpen ? 'opacity-100 rotate-0 scale-100' : 'opacity-0 -rotate-90 scale-75'
+                className={`absolute inset-0 flex items-center justify-center transition-all duration-500 ease-in-out ${
+                  isOpen ? 'opacity-100 rotate-0 scale-100' : 'opacity-0 -rotate-180 scale-50'
                 }`}
               >
                 <X className="w-5 h-5 text-current" strokeWidth={1.75} />
