@@ -1,10 +1,10 @@
 import React from 'react';
-import { Menu } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import Button from '../ui/Button';
 import Badge from '../ui/Badge';
 
-export default function Navbar({ onToggleSidebar }) {
+export default function Navbar({ isOpen = false, onToggleSidebar }) {
   const { user, logout } = useAuth();
 
   return (
@@ -14,10 +14,26 @@ export default function Navbar({ onToggleSidebar }) {
           {onToggleSidebar && (
             <button
               onClick={onToggleSidebar}
-              className="lg:hidden text-ink hover:bg-background active:scale-95 p-1.5 rounded-md border border-border transition-all duration-200 inline-flex items-center justify-center shrink-0 cursor-pointer shadow-2xs"
-              aria-label="Toggle navigation menu"
+              className="lg:hidden text-ink hover:bg-background active:scale-95 p-1.5 rounded-md border border-border transition-all duration-200 relative w-9 h-9 flex items-center justify-center shrink-0 cursor-pointer overflow-hidden shadow-2xs"
+              aria-label={isOpen ? 'Tutup navigasi' : 'Buka navigasi'}
             >
-              <Menu className="w-5 h-5 text-current transition-transform duration-200 hover:rotate-6" strokeWidth={1.75} />
+              {/* Hamburger Icon with smooth rotate & fade */}
+              <span
+                className={`absolute inset-0 flex items-center justify-center transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                  isOpen ? 'opacity-0 rotate-90 scale-75' : 'opacity-100 rotate-0 scale-100'
+                }`}
+              >
+                <Menu className="w-5 h-5 text-current" strokeWidth={1.75} />
+              </span>
+
+              {/* X (Close) Icon with smooth counter-rotate & fade */}
+              <span
+                className={`absolute inset-0 flex items-center justify-center transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                  isOpen ? 'opacity-100 rotate-0 scale-100' : 'opacity-0 -rotate-90 scale-75'
+                }`}
+              >
+                <X className="w-5 h-5 text-current" strokeWidth={1.75} />
+              </span>
             </button>
           )}
 
