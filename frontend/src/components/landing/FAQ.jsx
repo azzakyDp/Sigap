@@ -64,27 +64,37 @@ export function FAQ() {
                   onClick={() => toggleAccordion(idx)}
                   aria-expanded={isOpen}
                   aria-controls={contentId}
-                  className="w-full text-left flex items-center justify-between gap-4 font-semibold text-ink hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-focus focus-visible:ring-offset-2 rounded-md py-1 cursor-pointer"
+                  className="w-full text-left flex items-center justify-between gap-4 font-semibold text-ink hover:text-primary transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-focus focus-visible:ring-offset-2 rounded-md py-1 cursor-pointer"
                 >
                   <span className="text-sm md:text-base">{faq.question}</span>
                   <Icon
                     icon={ChevronDown}
                     size="sm"
-                    className={`transition-transform duration-200 shrink-0 ${
-                      isOpen ? 'rotate-180 text-primary' : 'text-ink-soft'
+                    className={`transition-transform duration-500 ease-in-out shrink-0 ${
+                      isOpen ? 'rotate-180 text-primary' : 'rotate-0 text-ink-soft'
                     }`}
                   />
                 </button>
-                {isOpen && (
-                  <div
-                    id={contentId}
-                    role="region"
-                    aria-labelledby={headerId}
-                    className="pt-3 pb-1 text-xs md:text-sm text-ink-soft leading-relaxed"
-                  >
-                    {faq.answer}
+
+                {/* Smooth Expand/Collapse with Slow-down & Staggered Delay */}
+                <div
+                  id={contentId}
+                  role="region"
+                  aria-labelledby={headerId}
+                  className={`grid transition-all duration-500 ease-in-out ${
+                    isOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'
+                  }`}
+                >
+                  <div className="overflow-hidden">
+                    <p
+                      className={`pt-3 pb-1 text-xs md:text-sm text-ink-soft leading-relaxed transition-all duration-500 ease-in-out ${
+                        isOpen ? 'translate-y-0 opacity-100 delay-75' : '-translate-y-2 opacity-0 delay-0'
+                      }`}
+                    >
+                      {faq.answer}
+                    </p>
                   </div>
-                )}
+                </div>
               </div>
             );
           })}
