@@ -132,61 +132,83 @@ export default function LandingHeader() {
         </button>
       </div>
 
-      {/* Mobile Drawer Menu with Smooth Grid Expand & Staggered Slide-Down */}
+      {/* Mobile Backdrop Overlay with Fade Animation */}
       <div
-        className={`md:hidden grid transition-all duration-500 ease-in-out border-b border-border bg-surface/98 backdrop-blur-md shadow-xl ${
-          mobileMenuOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0 border-b-transparent pointer-events-none'
+        className={`fixed inset-0 z-50 bg-ink/50 backdrop-blur-xs md:hidden transition-opacity duration-400 ease-in-out ${
+          mobileMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+        }`}
+        onClick={() => setMobileMenuOpen(false)}
+        aria-hidden="true"
+      />
+
+      {/* Mobile Sidebar Drawer: Smooth Pop from Left */}
+      <aside
+        className={`fixed top-0 left-0 bottom-0 z-50 w-72 sm:w-80 bg-surface border-r border-border shadow-2xl md:hidden flex flex-col justify-between p-6 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform ${
+          mobileMenuOpen ? 'translate-x-0 opacity-100 scale-100' : '-translate-x-full opacity-0 scale-[0.98]'
         }`}
       >
-        <div className="overflow-hidden">
-          <div
-            className={`px-4 pt-3 pb-6 space-y-4 transition-all duration-500 ease-in-out ${
-              mobileMenuOpen ? 'translate-y-0 opacity-100 delay-75' : '-translate-y-4 opacity-0 delay-0'
-            }`}
-          >
-            <nav className="flex flex-col gap-1.5 text-sm">
-              {navItems.map((item) => {
-                const isActive = activeSection === item.id;
-                return (
-                  <button
-                    key={item.id}
-                    onClick={() => scrollToSection(item.id)}
-                    className={`text-left py-2 px-3 rounded-lg border transition-all duration-300 cursor-pointer ${
-                      isActive
-                        ? 'bg-primary/10 border-primary/20 text-primary font-bold'
-                        : 'border-transparent text-ink hover:bg-slate-100 font-medium'
-                    }`}
-                  >
-                    {item.label}
-                  </button>
-                );
-              })}
-            </nav>
-            <div className="flex flex-col gap-2 pt-2">
-              <Button
-                variant="secondary"
-                fullWidth={true}
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  navigate('/login');
-                }}
-              >
-                Masuk
-              </Button>
-              <Button
-                variant="primary"
-                fullWidth={true}
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  navigate('/register');
-                }}
-              >
-                Buat Laporan
-              </Button>
+        <div>
+          {/* Sidebar Top Bar */}
+          <div className="flex items-center justify-between pb-5 border-b border-border mb-6">
+            <div className="flex flex-col">
+              <span className="font-bold text-lg text-ink tracking-tight">SIGAP</span>
+              <span className="text-xs text-ink-soft font-medium -mt-0.5">Sistem Pengaduan Lalu Lintas</span>
             </div>
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen(false)}
+              className="p-1.5 text-ink-soft hover:text-ink hover:bg-background rounded-md transition-colors cursor-pointer"
+              aria-label="Tutup menu"
+            >
+              <X className="w-5 h-5 text-current" strokeWidth={1.75} />
+            </button>
           </div>
+
+          {/* Navigation Links */}
+          <nav className="flex flex-col gap-2">
+            {navItems.map((item) => {
+              const isActive = activeSection === item.id;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => scrollToSection(item.id)}
+                  className={`text-left py-2.5 px-3.5 rounded-lg border text-sm font-semibold transition-all duration-200 cursor-pointer ${
+                    isActive
+                      ? 'bg-primary text-white border-primary shadow-xs font-bold'
+                      : 'border-transparent text-ink hover:bg-slate-100'
+                  }`}
+                >
+                  {item.label}
+                </button>
+              );
+            })}
+          </nav>
         </div>
-      </div>
+
+        {/* Action Buttons at Bottom */}
+        <div className="flex flex-col gap-2.5 pt-6 border-t border-border">
+          <Button
+            variant="secondary"
+            fullWidth={true}
+            onClick={() => {
+              setMobileMenuOpen(false);
+              navigate('/login');
+            }}
+          >
+            Masuk
+          </Button>
+          <Button
+            variant="primary"
+            fullWidth={true}
+            onClick={() => {
+              setMobileMenuOpen(false);
+              navigate('/register');
+            }}
+          >
+            Buat Laporan
+          </Button>
+        </div>
+      </aside>
     </header>
   );
 }

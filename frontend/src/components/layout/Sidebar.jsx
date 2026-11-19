@@ -77,22 +77,18 @@ export default function Sidebar({ isOpen, onClose }) {
     <>
       {/* Mobile Backdrop with Smooth Fade Animation */}
       <div
-        className={`fixed inset-0 top-16 z-40 bg-ink/40 backdrop-blur-xs lg:hidden transition-opacity duration-500 ease-in-out ${
+        className={`fixed inset-0 z-40 bg-ink/40 backdrop-blur-xs lg:hidden transition-opacity duration-400 ease-in-out ${
           isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         }`}
         onClick={onClose}
         aria-hidden="true"
       />
 
-      {/* Navigation Container: Smooth Slide-Down on Mobile, Fixed Column on Desktop */}
+      {/* Sidebar Container: Smooth Pop from Left on Mobile, Fixed Column on Desktop */}
       <aside
-        className={`fixed top-16 left-0 z-50 bg-surface border-border transition-all duration-500 ease-in-out will-change-transform
-          /* Mobile view: Slide-down menu right below navbar with subtle rhythm */
-          w-full max-h-[calc(100vh-4rem)] overflow-y-auto border-b p-4 shadow-xl lg:shadow-none
-          ${isOpen ? 'translate-y-0 opacity-100 pointer-events-auto delay-75' : '-translate-y-8 opacity-0 pointer-events-none delay-0'}
-          /* Desktop view: Standard fixed sidebar on the left */
-          lg:w-64 lg:bottom-0 lg:border-r lg:border-b-0 lg:translate-y-0 lg:opacity-100 lg:pointer-events-auto lg:delay-0
-        `}
+        className={`fixed top-16 left-0 bottom-0 z-50 w-64 bg-surface border-r border-border p-4 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform lg:translate-x-0 lg:opacity-100 lg:scale-100 lg:shadow-none ${
+          isOpen ? 'translate-x-0 opacity-100 scale-100 shadow-2xl' : '-translate-x-full opacity-90 scale-[0.98] shadow-none'
+        }`}
       >
         <div className="text-xs font-semibold text-ink-soft mb-3 px-3">
           Menu utama
