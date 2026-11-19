@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, FileText, PlusCircle, ClipboardCheck, Wrench, Settings, MapPin } from 'lucide-react';
+import { Home, FileText, PlusCircle, ClipboardCheck, Wrench, Settings, MapPin, X } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
 export default function Sidebar({ isOpen, onClose }) {
@@ -84,37 +84,66 @@ export default function Sidebar({ isOpen, onClose }) {
         aria-hidden="true"
       />
 
-      {/* Sidebar Container: Smooth Pop from Left on Mobile, Fixed Column on Desktop */}
+      {/* Sidebar Container: Full 100% Height on Mobile (No gaps), Left-pinned Column on Desktop */}
       <aside
-        className={`fixed top-16 left-0 bottom-0 z-50 w-64 bg-surface border-r border-border p-4 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform lg:translate-x-0 lg:opacity-100 lg:scale-100 lg:shadow-none ${
-          isOpen ? 'translate-x-0 opacity-100 scale-100 shadow-2xl' : '-translate-x-full opacity-90 scale-[0.98] shadow-none'
-        }`}
+        className={`fixed z-50 bg-surface border-r border-border p-4 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform
+          /* Mobile view: full 100% height from top to bottom (inset-y-0 h-full) with smooth pop from left */
+          top-0 left-0 bottom-0 h-full w-72 max-w-[85vw] shadow-2xl flex flex-col justify-between
+          ${isOpen ? 'translate-x-0 opacity-100 scale-100 pointer-events-auto' : '-translate-x-full opacity-90 scale-[0.98] pointer-events-none'}
+          /* Desktop view: fixed beneath navbar (top-16) */
+          lg:top-16 lg:left-0 lg:bottom-0 lg:w-64 lg:h-auto lg:translate-x-0 lg:opacity-100 lg:scale-100 lg:shadow-none lg:pointer-events-auto
+        `}
       >
-        <div className="text-xs font-semibold text-ink-soft mb-3 px-3">
-          Menu utama
+        <div className="flex-1 overflow-y-auto">
+          {/* Mobile-Only Header with Brand & Close Button */}
+          <div className="flex lg:hidden items-center justify-between pb-4 border-b border-border mb-4">
+            <div className="flex items-center gap-2">
+              <span className="font-bold text-base text-ink">SIGAP</span>
+              <span className="text-2xs text-ink-soft bg-slate-100 px-2 py-0.5 rounded border border-border">
+                {user?.role || 'User'}
+              </span>
+            </div>
+            <button
+              type="button"
+              onClick={onClose}
+              className="p-1.5 text-ink-soft hover:text-ink hover:bg-slate-100 rounded-md transition-colors cursor-pointer"
+              aria-label="Tutup menu"
+            >
+              <X className="w-5 h-5 text-current" strokeWidth={1.75} />
+            </button>
+          </div>
+
+          <div className="text-xs font-semibold text-ink-soft mb-3 px-3">
+            Menu utama
+          </div>
+          <nav className="space-y-1">
+            {links.map((link) => {
+              const Icon = link.icon;
+              const active = isLinkActive(link.path);
+              return (
+                <Link
+                  key={link.path}
+                  to={link.path}
+                  onClick={onClose}
+                  aria-current={active ? 'page' : undefined}
+                  className={`flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-semibold transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-focus focus-visible:ring-offset-2 ${
+                    active
+                      ? 'bg-primary text-white shadow-xs'
+                      : 'text-ink-soft hover:text-ink hover:bg-slate-100'
+                  }`}
+                >
+                  <Icon className="w-5 h-5 shrink-0 text-current" strokeWidth={1.75} />
+                  {link.name}
+                </Link>
+              );
+            })}
+          </nav>
         </div>
-        <nav className="space-y-1">
-          {links.map((link) => {
-            const Icon = link.icon;
-            const active = isLinkActive(link.path);
-            return (
-              <Link
-                key={link.path}
-                to={link.path}
-                onClick={onClose}
-                aria-current={active ? 'page' : undefined}
-                className={`flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-semibold transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-focus focus-visible:ring-offset-2 ${
-                  active
-                    ? 'bg-primary text-white shadow-xs'
-                    : 'text-ink-soft hover:text-ink hover:bg-slate-100'
-                }`}
-              >
-                <Icon className="w-5 h-5 shrink-0 text-current" strokeWidth={1.75} />
-                {link.name}
-              </Link>
-            );
-          })}
-        </nav>
+
+        {/* Footer in Mobile view */}
+        <div className="pt-4 border-t border-border/80 lg:hidden text-2xs text-ink-soft text-center">
+          SIGAP Kabupaten Lamongan
+        </div>
       </aside>
     </>
   );

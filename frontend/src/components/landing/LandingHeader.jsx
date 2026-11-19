@@ -132,47 +132,32 @@ export default function LandingHeader() {
         </button>
       </div>
 
-      {/* Mobile Backdrop Overlay with Fade Animation */}
+      {/* Mobile Backdrop Overlay (below header) */}
       <div
-        className={`fixed inset-0 z-50 bg-ink/50 backdrop-blur-xs md:hidden transition-opacity duration-400 ease-in-out ${
+        className={`fixed inset-0 top-16 z-30 bg-ink/40 backdrop-blur-xs md:hidden transition-opacity duration-500 ease-in-out ${
           mobileMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         }`}
         onClick={() => setMobileMenuOpen(false)}
         aria-hidden="true"
       />
 
-      {/* Mobile Sidebar Drawer: Smooth Pop from Left */}
-      <aside
-        className={`fixed top-0 left-0 bottom-0 z-50 w-72 sm:w-80 bg-surface border-r border-border shadow-2xl md:hidden flex flex-col justify-between p-6 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform ${
-          mobileMenuOpen ? 'translate-x-0 opacity-100 scale-100' : '-translate-x-full opacity-0 scale-[0.98]'
+      {/* Mobile Dropdown Navbar: Smooth Slide Down from Top */}
+      <div
+        className={`md:hidden absolute top-full left-0 right-0 bg-surface border-b border-border shadow-2xl transition-all duration-500 ease-in-out will-change-transform z-40 ${
+          mobileMenuOpen
+            ? 'translate-y-0 opacity-100 pointer-events-auto'
+            : '-translate-y-6 opacity-0 pointer-events-none'
         }`}
       >
-        <div>
-          {/* Sidebar Top Bar */}
-          <div className="flex items-center justify-between pb-5 border-b border-border mb-6">
-            <div className="flex flex-col">
-              <span className="font-bold text-lg text-ink tracking-tight">SIGAP</span>
-              <span className="text-xs text-ink-soft font-medium -mt-0.5">Sistem Pengaduan Lalu Lintas</span>
-            </div>
-            <button
-              type="button"
-              onClick={() => setMobileMenuOpen(false)}
-              className="p-1.5 text-ink-soft hover:text-ink hover:bg-background rounded-md transition-colors cursor-pointer"
-              aria-label="Tutup menu"
-            >
-              <X className="w-5 h-5 text-current" strokeWidth={1.75} />
-            </button>
-          </div>
-
-          {/* Navigation Links */}
-          <nav className="flex flex-col gap-2">
+        <div className="px-5 pt-3 pb-6 space-y-4">
+          <nav className="flex flex-col gap-1.5 text-sm">
             {navItems.map((item) => {
               const isActive = activeSection === item.id;
               return (
                 <button
                   key={item.id}
                   onClick={() => scrollToSection(item.id)}
-                  className={`text-left py-2.5 px-3.5 rounded-lg border text-sm font-semibold transition-all duration-200 cursor-pointer ${
+                  className={`text-left py-2.5 px-3.5 rounded-lg border text-sm font-semibold transition-all duration-300 cursor-pointer ${
                     isActive
                       ? 'bg-primary text-white border-primary shadow-xs font-bold'
                       : 'border-transparent text-ink hover:bg-slate-100'
@@ -183,32 +168,31 @@ export default function LandingHeader() {
               );
             })}
           </nav>
-        </div>
 
-        {/* Action Buttons at Bottom */}
-        <div className="flex flex-col gap-2.5 pt-6 border-t border-border">
-          <Button
-            variant="secondary"
-            fullWidth={true}
-            onClick={() => {
-              setMobileMenuOpen(false);
-              navigate('/login');
-            }}
-          >
-            Masuk
-          </Button>
-          <Button
-            variant="primary"
-            fullWidth={true}
-            onClick={() => {
-              setMobileMenuOpen(false);
-              navigate('/register');
-            }}
-          >
-            Buat Laporan
-          </Button>
+          <div className="flex flex-col gap-2.5 pt-3 border-t border-border/80">
+            <Button
+              variant="secondary"
+              fullWidth={true}
+              onClick={() => {
+                setMobileMenuOpen(false);
+                navigate('/login');
+              }}
+            >
+              Masuk
+            </Button>
+            <Button
+              variant="primary"
+              fullWidth={true}
+              onClick={() => {
+                setMobileMenuOpen(false);
+                navigate('/register');
+              }}
+            >
+              Buat Laporan
+            </Button>
+          </div>
         </div>
-      </aside>
+      </div>
     </header>
   );
 }
