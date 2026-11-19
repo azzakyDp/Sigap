@@ -105,62 +105,88 @@ export default function LandingHeader() {
           </Button>
         </div>
 
-        {/* Mobile Menu Button */}
+        {/* Mobile Menu Button with Smooth Rotate Transition */}
         <button
           type="button"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="md:hidden p-2 text-ink-soft hover:text-ink rounded-md hover:bg-background transition-colors cursor-pointer inline-flex items-center justify-center shrink-0"
-          aria-label="Buka menu navigasi"
+          className="md:hidden p-2 text-ink-soft hover:text-ink active:scale-95 rounded-md hover:bg-background transition-all duration-300 ease-in-out relative w-9 h-9 flex items-center justify-center shrink-0 cursor-pointer overflow-hidden"
+          aria-label={mobileMenuOpen ? 'Tutup navigasi' : 'Buka navigasi'}
         >
-          {mobileMenuOpen ? <Icon icon={X} size="nav" /> : <Icon icon={Menu} size="nav" />}
+          {/* Hamburger Icon: Berputar 180° perlahan & memudar */}
+          <span
+            className={`absolute inset-0 flex items-center justify-center transition-all duration-500 ease-in-out ${
+              mobileMenuOpen ? 'opacity-0 rotate-180 scale-50' : 'opacity-100 rotate-0 scale-100'
+            }`}
+          >
+            <Menu className="w-5 h-5 text-current" strokeWidth={1.75} />
+          </span>
+
+          {/* X (Close) Icon: Berputar masuk dari -180° perlahan & membesar */}
+          <span
+            className={`absolute inset-0 flex items-center justify-center transition-all duration-500 ease-in-out ${
+              mobileMenuOpen ? 'opacity-100 rotate-0 scale-100' : 'opacity-0 -rotate-180 scale-50'
+            }`}
+          >
+            <X className="w-5 h-5 text-current" strokeWidth={1.75} />
+          </span>
         </button>
       </div>
 
-      {/* Mobile Drawer Menu */}
-      {mobileMenuOpen && (
-        <div className="md:hidden bg-surface border-b border-border px-4 pt-3 pb-6 space-y-4 shadow-lg animate-fade-in">
-          <nav className="flex flex-col gap-1.5 text-sm">
-            {navItems.map((item) => {
-              const isActive = activeSection === item.id;
-              return (
-                <button
-                  key={item.id}
-                  onClick={() => scrollToSection(item.id)}
-                  className={`text-left py-2 px-3 rounded-lg border transition-all cursor-pointer ${
-                    isActive
-                      ? 'bg-primary/10 border-primary/20 text-primary font-bold'
-                      : 'border-transparent text-ink hover:bg-slate-100 font-medium'
-                  }`}
-                >
-                  {item.label}
-                </button>
-              );
-            })}
-          </nav>
-          <div className="flex flex-col gap-2 pt-2">
-            <Button
-              variant="secondary"
-              fullWidth={true}
-              onClick={() => {
-                setMobileMenuOpen(false);
-                navigate('/login');
-              }}
-            >
-              Masuk
-            </Button>
-            <Button
-              variant="primary"
-              fullWidth={true}
-              onClick={() => {
-                setMobileMenuOpen(false);
-                navigate('/register');
-              }}
-            >
-              Buat Laporan
-            </Button>
+      {/* Mobile Drawer Menu with Smooth Grid Expand & Staggered Slide-Down */}
+      <div
+        className={`md:hidden grid transition-all duration-500 ease-in-out border-b border-border bg-surface/98 backdrop-blur-md shadow-xl ${
+          mobileMenuOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0 border-b-transparent pointer-events-none'
+        }`}
+      >
+        <div className="overflow-hidden">
+          <div
+            className={`px-4 pt-3 pb-6 space-y-4 transition-all duration-500 ease-in-out ${
+              mobileMenuOpen ? 'translate-y-0 opacity-100 delay-75' : '-translate-y-4 opacity-0 delay-0'
+            }`}
+          >
+            <nav className="flex flex-col gap-1.5 text-sm">
+              {navItems.map((item) => {
+                const isActive = activeSection === item.id;
+                return (
+                  <button
+                    key={item.id}
+                    onClick={() => scrollToSection(item.id)}
+                    className={`text-left py-2 px-3 rounded-lg border transition-all duration-300 cursor-pointer ${
+                      isActive
+                        ? 'bg-primary/10 border-primary/20 text-primary font-bold'
+                        : 'border-transparent text-ink hover:bg-slate-100 font-medium'
+                    }`}
+                  >
+                    {item.label}
+                  </button>
+                );
+              })}
+            </nav>
+            <div className="flex flex-col gap-2 pt-2">
+              <Button
+                variant="secondary"
+                fullWidth={true}
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  navigate('/login');
+                }}
+              >
+                Masuk
+              </Button>
+              <Button
+                variant="primary"
+                fullWidth={true}
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  navigate('/register');
+                }}
+              >
+                Buat Laporan
+              </Button>
+            </div>
           </div>
         </div>
-      )}
+      </div>
     </header>
   );
 }
