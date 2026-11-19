@@ -81,7 +81,7 @@ export default function ResolveReportModal({ isOpen, onClose, report, onSuccess 
               }`}
             >
               <Icon icon={CheckCircle2} size="nav" className="text-current" />
-              <span>RESOLVED (Selesai)</span>
+              <span>Selesai</span>
             </button>
 
             <button
@@ -94,7 +94,7 @@ export default function ResolveReportModal({ isOpen, onClose, report, onSuccess 
               }`}
             >
               <Icon icon={AlertTriangle} size="nav" className={decision === 'UNRESOLVED' ? 'text-white' : 'text-ink'} />
-              <span>UNRESOLVED (Belum Selesai)</span>
+              <span>Belum Selesai</span>
             </button>
           </div>
         </div>

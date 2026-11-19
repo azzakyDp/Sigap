@@ -82,7 +82,7 @@ export default function ReportFilterBar({ filters = {}, onFilterChange, onReset 
             <option value="">-- Semua Status --</option>
             {statusOptions.map((st) => (
               <option key={st} value={st}>
-                {getStaffStatusLabel(st)} ({st})
+                {getStaffStatusLabel(st)}
               </option>
             ))}
           </select>

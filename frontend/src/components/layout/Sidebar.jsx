@@ -75,18 +75,19 @@ export default function Sidebar({ isOpen, onClose }) {
 
   return (
     <>
-      {/* Mobile Backdrop */}
-      {isOpen && (
-        <div
-          className="fixed inset-0 z-50 bg-ink/40 backdrop-blur-xs lg:hidden"
-          onClick={onClose}
-        />
-      )}
+      {/* Mobile Backdrop with Smooth Fade Animation */}
+      <div
+        className={`fixed inset-0 z-40 bg-ink/40 backdrop-blur-xs lg:hidden transition-opacity duration-300 ease-in-out ${
+          isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+        }`}
+        onClick={onClose}
+        aria-hidden="true"
+      />
 
-      {/* Sidebar Container */}
+      {/* Sidebar Container with Smooth Slide Animation */}
       <aside
-        className={`fixed top-16 left-0 bottom-0 z-50 w-64 bg-surface border-r border-border p-4 transition-transform duration-200 ease-in-out lg:translate-x-0 ${
-          isOpen ? 'translate-x-0' : '-translate-x-full'
+        className={`fixed top-16 left-0 bottom-0 z-50 w-64 bg-surface border-r border-border p-4 transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] lg:translate-x-0 ${
+          isOpen ? 'translate-x-0 shadow-xl' : '-translate-x-full shadow-none'
         }`}
       >
         <div className="text-xs font-semibold text-ink-soft mb-3 px-3">

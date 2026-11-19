@@ -14,10 +14,10 @@ export default function Navbar({ onToggleSidebar }) {
           {onToggleSidebar && (
             <button
               onClick={onToggleSidebar}
-              className="lg:hidden text-ink hover:bg-background p-1.5 rounded-md border border-border transition-colors inline-flex items-center justify-center shrink-0 cursor-pointer"
+              className="lg:hidden text-ink hover:bg-background active:scale-95 p-1.5 rounded-md border border-border transition-all duration-200 inline-flex items-center justify-center shrink-0 cursor-pointer shadow-2xs"
               aria-label="Toggle navigation menu"
             >
-              <Menu className="w-5 h-5 text-current" strokeWidth={1.75} />
+              <Menu className="w-5 h-5 text-current transition-transform duration-200 hover:rotate-6" strokeWidth={1.75} />
             </button>
           )}
 
