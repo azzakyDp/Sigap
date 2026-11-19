@@ -7,6 +7,7 @@ import Card from '../../components/ui/Card';
 import Button from '../../components/ui/Button';
 import Pagination from '../../components/ui/Pagination';
 import ReportList from '../../components/report/ReportList';
+import TableSkeleton from '../../components/ui/TableSkeleton';
 import Alert from '../../components/ui/Alert';
 import { getErrorMessage } from '../../utils/errors';
 
@@ -79,7 +80,7 @@ export default function MyReportsPage() {
       </div>
 
       {/* Main Container */}
-      <Card className="p-0 overflow-hidden">
+      <Card className="p-0 overflow-hidden min-h-[520px]">
         {/* Error Alert */}
         {error && (
           <Alert
@@ -97,10 +98,7 @@ export default function MyReportsPage() {
 
         {/* Loading State */}
         {loading ? (
-          <div className="py-16 text-center text-ink-soft">
-            <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary mb-3"></div>
-            <p className="text-sm font-medium">Memuat daftar laporan Anda...</p>
-          </div>
+          <TableSkeleton rows={pageSize} />
         ) : reports.length === 0 ? (
           /* Empty State Verification */
           <div className="py-16 px-4 text-center">

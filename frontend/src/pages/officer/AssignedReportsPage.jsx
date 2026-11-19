@@ -6,6 +6,7 @@ import Card from '../../components/ui/Card';
 import Button from '../../components/ui/Button';
 import Pagination from '../../components/ui/Pagination';
 import ReportList from '../../components/report/ReportList';
+import TableSkeleton from '../../components/ui/TableSkeleton';
 import { getAssignedToMeApi } from '../../api/workflow';
 import Alert from '../../components/ui/Alert';
 import { getErrorMessage } from '../../utils/errors';
@@ -68,7 +69,7 @@ export default function AssignedReportsPage() {
       </div>
 
       {/* Main Container */}
-      <Card className="p-0 overflow-hidden">
+      <Card className="p-0 overflow-hidden min-h-[520px]">
         {error && (
           <Alert
             variant="error"
@@ -84,10 +85,7 @@ export default function AssignedReportsPage() {
         )}
 
         {loading ? (
-          <div className="py-16 text-center text-ink-soft">
-            <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary mb-3"></div>
-            <p className="text-sm font-medium">Memuat daftar tugas penanganan Anda...</p>
-          </div>
+          <TableSkeleton rows={pageSize} />
         ) : reports.length === 0 ? (
           <div className="py-16 px-4 text-center">
             <h3 className="text-base font-semibold text-ink mb-1">

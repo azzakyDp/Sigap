@@ -7,8 +7,14 @@ import { MapPin, ExternalLink } from 'lucide-react';
 import Badge from './Badge';
 import { getStaffStatusLabel } from '../../utils/statusColors';
 
+const iconCache = new Map();
+
 const createColoredMarkerIcon = (statusRaw) => {
   const normalized = (statusRaw || '').toUpperCase();
+  if (iconCache.has(normalized)) {
+    return iconCache.get(normalized);
+  }
+
   let color = '#4b5563';
   if (['PENDING_VERIFICATION', 'UNRESOLVED'].includes(normalized)) {
     color = '#d97706';
@@ -27,13 +33,16 @@ const createColoredMarkerIcon = (statusRaw) => {
     <circle cx="12" cy="9" r="3" fill="#ffffff"/>
   </svg>`;
 
-  return L.divIcon({
+  const icon = L.divIcon({
     className: 'custom-leaflet-marker',
     html: svg,
     iconSize: [30, 42],
     iconAnchor: [15, 42],
     popupAnchor: [0, -40],
   });
+
+  iconCache.set(normalized, icon);
+  return icon;
 };
 
 function AutoFitBounds({ validItems }) {

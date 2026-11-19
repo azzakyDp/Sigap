@@ -9,6 +9,7 @@ import Pagination from '../../components/ui/Pagination';
 import ReportList from '../../components/report/ReportList';
 import ReportFilterBar from '../../components/verifier/ReportFilterBar';
 import ReportsMapPage from './ReportsMapPage';
+import TableSkeleton from '../../components/ui/TableSkeleton';
 import { getReportsQueueApi } from '../../api/workflow';
 import Alert from '../../components/ui/Alert';
 import { getErrorMessage } from '../../utils/errors';
@@ -284,7 +285,7 @@ export default function VerifierQueuePage() {
 
       {/* Content View Rendering */}
       {viewMode === 'table' ? (
-        <Card className="p-0 overflow-hidden">
+        <Card className="p-0 overflow-hidden min-h-[560px]">
           {error && (
             <Alert
               variant="error"
@@ -300,10 +301,7 @@ export default function VerifierQueuePage() {
           )}
 
           {loadingTable ? (
-            <div className="py-16 text-center text-ink-soft">
-              <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary mb-3"></div>
-              <p className="text-sm font-medium">Memuat antrean laporan...</p>
-            </div>
+            <TableSkeleton rows={pageSize} />
           ) : reports.length === 0 ? (
             <div className="py-16 px-4 text-center">
               <div className="w-16 h-16 bg-primary-light rounded-full flex items-center justify-center mx-auto mb-4 border border-primary/20">

@@ -169,7 +169,7 @@ export default function ReportDetailView({
                     <div
                       key={ev.id}
                       onClick={() => !isFailed && setSelectedPhoto(fullUrl)}
-                      className={`group relative aspect-square rounded-lg border border-border overflow-hidden bg-background ${
+                      className={`group relative aspect-square rounded-lg border border-border overflow-hidden bg-slate-100 ${
                         !isFailed ? 'cursor-pointer hover:border-primary' : ''
                       } transition-all shadow-xs`}
                     >
@@ -183,6 +183,8 @@ export default function ReportDetailView({
                             src={thumbUrl}
                             alt="Bukti Pengaduan"
                             loading="lazy"
+                            width="300"
+                            height="300"
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
                             onError={() => handleImageError(ev.id)}
                           />
